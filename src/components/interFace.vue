@@ -2,23 +2,23 @@
 import { ref } from 'vue';
 
 // Direkter Wert aus Input
-const eingabe = ref('');
+const eingegebeneFunktion = ref('');
 
 // Ist Input eine gültige Polynomfunktion?
 const polynomGueltig = ref(false);
 
-// Einzelner Term aus dem Input
-const terme = ref([]);
+// Ausgabe
+const ausgabe = ref('');
 
 // Funktion, die den Wert des Inputs aktualisiert und überprüft, ob es sich um eine gültige Polynomfunktion handelt
 
-const inputGueltigOderNicht = (input) => {
-    if (checkeRegEx(input)) {
+const inputGueltigOderNicht = (eingabe) => {
+    if (checkeRegEx(eingabe)) {
         polynomGueltig.value = true;
-        if (input.match(/^[+-\s]*$/)) {
+        if (eingabe.match(/^[+-\s]*$/)) {
             polynomGueltig.value = false;
         }
-        const inputVerarbeitet = input.replace(/\s/g, '');
+        const inputVerarbeitet = eingabe.replace(/\s/g, '');
         if (inputVerarbeitet[inputVerarbeitet.length - 1] === '+' || inputVerarbeitet[inputVerarbeitet.length - 1] === '-') {
             polynomGueltig.value = false;
         }
@@ -32,48 +32,50 @@ const inputGueltigOderNicht = (input) => {
 
 // Überprüft, ob der Input eine gültige Polynomfunktion ist
 
-const checkeRegEx = (input) => {
+const checkeRegEx = (eingabe) => {
     // Regulärer Ausdruck einer Polynomfunktion
     const POLYNOM_REGEX = /^\s*[+-]?\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?(\s*[+-]\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*)*$/;
-    return POLYNOM_REGEX.test(input);
+    return POLYNOM_REGEX.test(eingabe);
 }
 
 // Liest einzelne Terme und Werte aus RegEx aus
 
-const polynomfunktionAuslesen = (input) => {
+const polynomfunktionAuslesen = (eingabe) => {
+    // Hier sollen die einzelnen Terme gespeichert werden
+    const terme = ref([]);
     terme.value = [];
 
     // Entfernt alle Leerzeichen aus dem Input
     let i = 0;
-    while (i < input.length) {
+    while (i < eingabe.length) {
         i++;
-        if (input[i] === ' ') {
-            input = input.slice(0, i) + input.slice(i + 1);
+        if (eingabe[i] === ' ') {
+            eingabe = eingabe.slice(0, i) + eingabe.slice(i + 1);
         }
 
     }
     // Fügt dem Input ein '+' vor, wenn der erste Buchstabe kein '+' oder '-' ist, damit erster Term auch erkannt wird
-    if (input[0] != '+' && input[0] != '-') {
-        input = '+' + input;
+    if (eingabe[0] != '+' && eingabe[0] != '-') {
+        eingabe = '+' + eingabe;
     }
     // Fügt dem Input ein '*' vor dem 'x' hinzu, wenn es nicht schon da ist
     i = 0;
     let nachVorzeichen = false;
-    while (i < input.length) {
-        if (input[i] === '+' || input[i] === '-') {
+    while (i < eingabe.length) {
+        if (eingabe[i] === '+' || eingabe[i] === '-') {
             nachVorzeichen = true;
         }
-        if (nachVorzeichen && input[i] === 'x' && input[i - 1] != '*') {
-            input = input.slice(0, i) + '*' + input.slice(i);
+        if (nachVorzeichen && eingabe[i] === 'x' && eingabe[i - 1] != '*') {
+            eingabe = eingabe.slice(0, i) + '*' + eingabe.slice(i);
             nachVorzeichen = false;
         }
         i++;
     }
     // Fügt dem Input ein '^1' hinzu, wenn es nicht schon da ist
     i = 0;
-    while (i < input.length) {
-        if (input[i] === 'x' && input[i + 1] != '^') {
-            input = input.slice(0, i + 1) + '^1' + input.slice(i + 1);
+    while (i < eingabe.length) {
+        if (eingabe[i] === 'x' && eingabe[i + 1] != '^') {
+            eingabe = eingabe.slice(0, i + 1) + '^1' + eingabe.slice(i + 1);
         }
         i++;
     }
@@ -81,45 +83,45 @@ const polynomfunktionAuslesen = (input) => {
     // Falls es sich um eine Konstante bzw. x^0 handelt, wird 'x^0' hinzugefügt
     i = 1;
     let xIstVorhanden = false;
-    while (i < input.length) {
+    while (i < eingabe.length) {
         xIstVorhanden = false;
-        while (input[i] != '+' && input[i] != '-' && i < input.length) {
-            if (input[i] === 'x') {
+        while (eingabe[i] != '+' && eingabe[i] != '-' && i < eingabe.length) {
+            if (eingabe[i] === 'x') {
                 xIstVorhanden = true;
             }
             i++;
         }
         if (!xIstVorhanden) {
-            input = input.slice(0, i) + '*x^0' + input.slice(i);
+            eingabe = eingabe.slice(0, i) + '*x^0' + eingabe.slice(i);
             i += 5;
         }
     }
 
     const einzelnerTerm = /[+-]\d*\*x\^\d+/g;
 
-    for (const match of input.matchAll(einzelnerTerm)) {
+    for (const match of eingabe.matchAll(einzelnerTerm)) {
         if (match) {
             terme.value += match + ',';
         }
     }
+    ausgabe.value = terme.value; //TODO: WEGMACHEN
 }
 
 // Verarbeitet den Input, führt obige Funktionen aus
-const eingabeVerarbeiten = (input) => {
-    inputGueltigOderNicht(input);
-    polynomfunktionAuslesen(input);
+const eingabeVerarbeiten = (eingabe) => {
+    inputGueltigOderNicht(eingabe);
+    polynomfunktionAuslesen(eingabe);
 }
-
 </script>
 
 <template>
     <div class="view">
-        <input type="text" v-model="eingabe" placeholder="Gib hier deine Funktion ein" />
-        <button @click="eingabeVerarbeiten(eingabe)">Führe Polynomdivision</button>
+        <input type="text" v-model="eingegebeneFunktion" placeholder="Gib hier deine Funktion ein" @keyup.enter="eingabeVerarbeiten(eingegebeneFunktion)" />
+        <button @click="eingabeVerarbeiten(eingegebeneFunktion)">Führe Polynomdivision</button>
     </div>
     <div class="anzeige">
         <div v-if="polynomGueltig">
-            <p>Der Term ist: {{ terme }} </p>
+            <p>Der Term ist: {{ ausgabe }} </p>
         </div>
         <div v-else>
             <p>Die Funktion ist ungültig</p>
