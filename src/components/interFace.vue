@@ -107,17 +107,45 @@ const polynomfunktionAuslesen = (eingabe) => {
     ausgabe.value = terme.value; //TODO: WEGMACHEN
 }
 
+const polynomfunktionZuArrays = () => {
+    // Arrays für Vorzeichen, Koeffizienten und Exponenten
+    const vorzeichen = [];
+    const koeffizienten = [];
+    const exponenten = [];
+
+    // Vorzeichen extrahieren
+    for (let match of ausgabe.value.matchAll(/[+-]/g)) {
+        vorzeichen.push(match[0]);
+    }
+
+    // Koeffizienten und Exponenten extrahieren
+    let i = 0;
+    for(let match of ausgabe.value.matchAll(/\d+/g)) {
+        if (i % 2 === 0) {
+            koeffizienten.push(match[0]);
+        } else {
+            exponenten.push(match[0]);
+        }
+        i++;
+    }
+
+    ausgabe.value = `Vorzeichen: ${vorzeichen}\nKoeffizienten: ${koeffizienten}\nExponenten: ${exponenten}`; //TODO: WEGMACHEN
+}
+
+
 // Verarbeitet den Input, führt obige Funktionen aus
 const eingabeVerarbeiten = (eingabe) => {
     inputGueltigOderNicht(eingabe);
     polynomfunktionAuslesen(eingabe);
+    polynomfunktionZuArrays();
 }
 </script>
 
 <template>
     <div class="view">
-        <input type="text" v-model="eingegebeneFunktion" placeholder="Gib hier deine Funktion ein" @keyup.enter="eingabeVerarbeiten(eingegebeneFunktion)" />
-        <button @click="eingabeVerarbeiten(eingegebeneFunktion)">Führe Polynomdivision</button>
+        <input type="text" v-model="eingegebeneFunktion" placeholder="Gib hier deine Funktion ein"
+            @keyup.enter="eingabeVerarbeiten(eingegebeneFunktion)" />
+        <button @click="eingabeVerarbeiten(eingegebeneFunktion)">Führe Polynomdivision aus</button>
     </div>
     <div class="anzeige">
         <div v-if="polynomGueltig">
