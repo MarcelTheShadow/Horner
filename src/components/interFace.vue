@@ -4,30 +4,25 @@ import { ref } from 'vue';
 // Direkter Wert aus Input
 const eingabe = ref('');
 
-// Durch Button aktualisierter Wert des Inputs
-const polynomOnClick = ref('');
-
 // Ist Input eine gültige Polynomfunktion?
 const polynomGueltig = ref(false);
 
 // Einzelner Term aus dem Input
-const term = ref('');
 const terme = ref([]);
 
 // Funktion, die den Wert des Inputs aktualisiert und überprüft, ob es sich um eine gültige Polynomfunktion handelt
 
 const inputGueltigOderNicht = (input) => {
-    polynomOnClick.value = input;
-    if (checkeRegEx(polynomOnClick.value)) {
+    if (checkeRegEx(input)) {
         polynomGueltig.value = true;
         if (input.match(/^[+-\s]*$/)) {
             polynomGueltig.value = false;
         }
         const inputVerarbeitet = input.replace(/\s/g, '');
-        if(inputVerarbeitet[inputVerarbeitet.length - 1] === '+' || inputVerarbeitet[inputVerarbeitet.length - 1] === '-') {
+        if (inputVerarbeitet[inputVerarbeitet.length - 1] === '+' || inputVerarbeitet[inputVerarbeitet.length - 1] === '-') {
             polynomGueltig.value = false;
         }
-        if(inputVerarbeitet.match(/\+\+|--|\+-|-\+/g)){
+        if (inputVerarbeitet.match(/\+\+|--|\+-|-\+/g)) {
             polynomGueltig.value = false;
         }
     } else {
@@ -84,7 +79,21 @@ const polynomfunktionAuslesen = (input) => {
     }
 
     // Falls es sich um eine Konstante bzw. x^0 handelt, wird 'x^0' hinzugefügt
-   
+    i = 1;
+    let xIstVorhanden = false;
+    while (i < input.length) {
+        xIstVorhanden = false;
+        while (input[i] != '+' && input[i] != '-' && i < input.length) {
+            if (input[i] === 'x') {
+                xIstVorhanden = true;
+            }
+            i++;
+        }
+        if (!xIstVorhanden) {
+            input = input.slice(0, i) + '*x^0' + input.slice(i);
+            i += 5;
+        }
+    }
 
     const einzelnerTerm = /[+-]\d*\*x\^\d+/g;
 
@@ -95,20 +104,29 @@ const polynomfunktionAuslesen = (input) => {
     }
 }
 
+// Verarbeitet den Input, führt obige Funktionen aus
+const eingabeVerarbeiten = (input) => {
+    inputGueltigOderNicht(input);
+    polynomfunktionAuslesen(input);
+}
+
 </script>
 
 <template>
     <div class="view">
-        <input type="text" v-model="eingabe" placeholder="Gib hier deine Zahl ein" />
-        <button @click="inputGueltigOderNicht(eingabe)">Berechne</button>
-        <button @click="polynomfunktionAuslesen(eingabe)">Term auslesen</button>
+        <input type="text" v-model="eingabe" placeholder="Gib hier deine Funktion ein" />
+        <button @click="eingabeVerarbeiten(eingabe)">Führe Polynomdivision</button>
     </div>
     <div class="anzeige">
-        <p>Die Funktion ist: {{ polynomOnClick }}</p>
-        <p v-if="polynomGueltig">Die Funktion ist gültig</p>
-        <p v-else>Die Funktion ist ungültig</p>
+        <div v-if="polynomGueltig">
+            <p>Der Term ist: {{ terme }} </p>
+        </div>
+        <div v-else>
+            <p>Die Funktion ist ungültig</p>
+            <p>Arbeite mit dem Format a*x^n +- b*x^m +- c*x^k...</p>
+            <p> Die Koeffizienten a,b,c... sowie die Exponenten n,m,k... müssen natürliche Zahlen sein</p>
+        </div>
 
-        <p>Der Term ist: {{ terme }} </p>
     </div>
 </template>
 
