@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { h, ref } from 'vue';
 
 // Direkter Wert aus Input über v-model
 const eingegebeneFunktion = ref('');
@@ -13,6 +13,12 @@ const polynomGueltig = ref(false);
 
 // Ausgabe auf der Webseite
 const ausgabe = ref('');
+
+
+// Arrays für Vorzeichen, Koeffizienten und Exponenten
+let vorzeichen = ref([]);
+let koeffizienten = ref([]);
+let exponenten = ref([]);
 
 // Funktion, die den Wert des Inputs aktualisiert und überprüft, ob es sich um eine gültige Polynomfunktion handelt
 
@@ -111,29 +117,55 @@ const polynomfunktionAuslesen = () => {
     zwischenstand.value = terme.value;
 }
 
-const   polynomfunktionZuArrays = () => {
+// Konvertiert die Polynomfunktion in Arrays für Vorzeichen, Koeffizienten und Exponenten
+
+const polynomfunktionZuArrays = () => {
     // Arrays für Vorzeichen, Koeffizienten und Exponenten
-    const vorzeichen = [];
-    const koeffizienten = [];
-    const exponenten = [];
+    vorzeichen = ref([]);
+    koeffizienten = ref([]);
+    exponenten = ref([]);
 
     // Vorzeichen extrahieren
     for (let match of zwischenstand.value.matchAll(/[+-]/g)) {
-        vorzeichen.push(match[0]);
+        vorzeichen.value.push(match[0]);
     }
 
     // Koeffizienten und Exponenten extrahieren
     let i = 0;
-    for(let match of zwischenstand.value.matchAll(/\d+/g)) {
+    for (let match of zwischenstand.value.matchAll(/\d+/g)) {
         if (i % 2 === 0) {
-            koeffizienten.push(match[0]);
+            koeffizienten.value.push(parseInt(match[0]));
         } else {
-            exponenten.push(match[0]);
+            exponenten.value.push(parseInt(match[0]));
         }
         i++;
     }
+}
 
-    ausgabe.value = `Vorzeichen: ${vorzeichen}\nKoeffizienten: ${koeffizienten}\nExponenten: ${exponenten}`;
+// Sortiert die Arrays für Vorzeichen, Koeffizienten und Exponenten nach den Exponenten
+
+const arraysSortieren = () => {
+    let highestExponent = 0;
+    for(let i = 0; i < exponenten.value.length; i++) {
+        if (exponenten.value[i] > highestExponent) {
+            highestExponent = exponenten.value[i];
+        }
+    }
+
+    const sortedKoeffizienten = ref(new Array(highestExponent.value).fill(0));
+
+    for (let i = 0; i < exponenten.value.length; i++) {
+        let index = exponenten.value[i];
+        if (vorzeichen.value[i] === '+') {
+            sortedKoeffizienten.value[index] = koeffizienten.value[i];
+        } else {
+            sortedKoeffizienten.value[index] = koeffizienten.value[i];
+        }
+    }
+
+    koeffizienten.value = sortedKoeffizienten.value;
+
+    ausgabe.value = `Ergebnis: ${koeffizienten.value}`;
 }
 
 
@@ -143,6 +175,7 @@ const eingabeVerarbeiten = () => {
     inputGueltigOderNicht();
     polynomfunktionAuslesen();
     polynomfunktionZuArrays();
+    arraysSortieren();
 }
 </script>
 
