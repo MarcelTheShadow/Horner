@@ -1,5 +1,5 @@
 <script setup>
-import interFace from './components/interFace.vue'
+import interFace from './components/interface.vue'
 </script>
 
 <template>

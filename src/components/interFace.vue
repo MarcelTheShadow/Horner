@@ -1,24 +1,28 @@
 <script setup>
 import { ref } from 'vue';
 
-// Direkter Wert aus Input
+// Direkter Wert aus Input über v-model
 const eingegebeneFunktion = ref('');
+
+
+// Zwischenstand von eingegebeneFunktion, um den Input zu verarbeiten
+const zwischenstand = ref('');
 
 // Ist Input eine gültige Polynomfunktion?
 const polynomGueltig = ref(false);
 
-// Ausgabe
+// Ausgabe auf der Webseite
 const ausgabe = ref('');
 
 // Funktion, die den Wert des Inputs aktualisiert und überprüft, ob es sich um eine gültige Polynomfunktion handelt
 
-const inputGueltigOderNicht = (eingabe) => {
-    if (checkeRegEx(eingabe)) {
+const inputGueltigOderNicht = () => {
+    if (checkeRegEx()) {
         polynomGueltig.value = true;
-        if (eingabe.match(/^[+-\s]*$/)) {
+        if (zwischenstand.value.match(/^[+-\s]*$/)) {
             polynomGueltig.value = false;
         }
-        const inputVerarbeitet = eingabe.replace(/\s/g, '');
+        const inputVerarbeitet = zwischenstand.value.replace(/\s/g, '');
         if (inputVerarbeitet[inputVerarbeitet.length - 1] === '+' || inputVerarbeitet[inputVerarbeitet.length - 1] === '-') {
             polynomGueltig.value = false;
         }
@@ -32,50 +36,50 @@ const inputGueltigOderNicht = (eingabe) => {
 
 // Überprüft, ob der Input eine gültige Polynomfunktion ist
 
-const checkeRegEx = (eingabe) => {
+const checkeRegEx = () => {
     // Regulärer Ausdruck einer Polynomfunktion
     const POLYNOM_REGEX = /^\s*[+-]?\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?(\s*[+-]\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*)*$/;
-    return POLYNOM_REGEX.test(eingabe);
+    return POLYNOM_REGEX.test(zwischenstand.value);
 }
 
 // Liest einzelne Terme und Werte aus RegEx aus
 
-const polynomfunktionAuslesen = (eingabe) => {
+const polynomfunktionAuslesen = () => {
     // Hier sollen die einzelnen Terme gespeichert werden
     const terme = ref([]);
     terme.value = [];
 
     // Entfernt alle Leerzeichen aus dem Input
     let i = 0;
-    while (i < eingabe.length) {
+    while (i < zwischenstand.value.length) {
         i++;
-        if (eingabe[i] === ' ') {
-            eingabe = eingabe.slice(0, i) + eingabe.slice(i + 1);
+        if (zwischenstand.value[i] === ' ') {
+            zwischenstand.value = zwischenstand.value.slice(0, i) + zwischenstand.value.slice(i + 1);
         }
 
     }
     // Fügt dem Input ein '+' vor, wenn der erste Buchstabe kein '+' oder '-' ist, damit erster Term auch erkannt wird
-    if (eingabe[0] != '+' && eingabe[0] != '-') {
-        eingabe = '+' + eingabe;
+    if (zwischenstand.value[0] != '+' && zwischenstand.value[0] != '-') {
+        zwischenstand.value = '+' + zwischenstand.value;
     }
     // Fügt dem Input ein '*' vor dem 'x' hinzu, wenn es nicht schon da ist
     i = 0;
     let nachVorzeichen = false;
-    while (i < eingabe.length) {
-        if (eingabe[i] === '+' || eingabe[i] === '-') {
+    while (i < zwischenstand.value.length) {
+        if (zwischenstand.value[i] === '+' || zwischenstand.value[i] === '-') {
             nachVorzeichen = true;
         }
-        if (nachVorzeichen && eingabe[i] === 'x' && eingabe[i - 1] != '*') {
-            eingabe = eingabe.slice(0, i) + '*' + eingabe.slice(i);
+        if (nachVorzeichen && zwischenstand.value[i] === 'x' && zwischenstand.value[i - 1] != '*') {
+            zwischenstand.value = zwischenstand.value.slice(0, i) + '*' + zwischenstand.value.slice(i);
             nachVorzeichen = false;
         }
         i++;
     }
     // Fügt dem Input ein '^1' hinzu, wenn es nicht schon da ist
     i = 0;
-    while (i < eingabe.length) {
-        if (eingabe[i] === 'x' && eingabe[i + 1] != '^') {
-            eingabe = eingabe.slice(0, i + 1) + '^1' + eingabe.slice(i + 1);
+    while (i < zwischenstand.value.length) {
+        if (zwischenstand.value[i] === 'x' && zwischenstand.value[i + 1] != '^') {
+            zwischenstand.value = zwischenstand.value.slice(0, i + 1) + '^1' + zwischenstand.value.slice(i + 1);
         }
         i++;
     }
@@ -83,44 +87,44 @@ const polynomfunktionAuslesen = (eingabe) => {
     // Falls es sich um eine Konstante bzw. x^0 handelt, wird 'x^0' hinzugefügt
     i = 1;
     let xIstVorhanden = false;
-    while (i < eingabe.length) {
+    while (i < zwischenstand.value.length) {
         xIstVorhanden = false;
-        while (eingabe[i] != '+' && eingabe[i] != '-' && i < eingabe.length) {
-            if (eingabe[i] === 'x') {
+        while (zwischenstand.value[i] != '+' && zwischenstand.value[i] != '-' && i < zwischenstand.value.length) {
+            if (zwischenstand.value[i] === 'x') {
                 xIstVorhanden = true;
             }
             i++;
         }
         if (!xIstVorhanden) {
-            eingabe = eingabe.slice(0, i) + '*x^0' + eingabe.slice(i);
+            zwischenstand.value = zwischenstand.value.slice(0, i) + '*x^0' + zwischenstand.value.slice(i);
             i += 5;
         }
     }
 
     const einzelnerTerm = /[+-]\d*\*x\^\d+/g;
 
-    for (const match of eingabe.matchAll(einzelnerTerm)) {
+    for (const match of zwischenstand.value.matchAll(einzelnerTerm)) {
         if (match) {
             terme.value += match + ',';
         }
     }
-    ausgabe.value = terme.value; //TODO: WEGMACHEN
+    zwischenstand.value = terme.value;
 }
 
-const polynomfunktionZuArrays = () => {
+const   polynomfunktionZuArrays = () => {
     // Arrays für Vorzeichen, Koeffizienten und Exponenten
     const vorzeichen = [];
     const koeffizienten = [];
     const exponenten = [];
 
     // Vorzeichen extrahieren
-    for (let match of ausgabe.value.matchAll(/[+-]/g)) {
+    for (let match of zwischenstand.value.matchAll(/[+-]/g)) {
         vorzeichen.push(match[0]);
     }
 
     // Koeffizienten und Exponenten extrahieren
     let i = 0;
-    for(let match of ausgabe.value.matchAll(/\d+/g)) {
+    for(let match of zwischenstand.value.matchAll(/\d+/g)) {
         if (i % 2 === 0) {
             koeffizienten.push(match[0]);
         } else {
@@ -129,14 +133,15 @@ const polynomfunktionZuArrays = () => {
         i++;
     }
 
-    ausgabe.value = `Vorzeichen: ${vorzeichen}\nKoeffizienten: ${koeffizienten}\nExponenten: ${exponenten}`; //TODO: WEGMACHEN
+    ausgabe.value = `Vorzeichen: ${vorzeichen}\nKoeffizienten: ${koeffizienten}\nExponenten: ${exponenten}`;
 }
 
 
 // Verarbeitet den Input, führt obige Funktionen aus
-const eingabeVerarbeiten = (eingabe) => {
-    inputGueltigOderNicht(eingabe);
-    polynomfunktionAuslesen(eingabe);
+const eingabeVerarbeiten = () => {
+    zwischenstand.value = eingegebeneFunktion.value;
+    inputGueltigOderNicht();
+    polynomfunktionAuslesen();
     polynomfunktionZuArrays();
 }
 </script>
@@ -144,8 +149,8 @@ const eingabeVerarbeiten = (eingabe) => {
 <template>
     <div class="view">
         <input type="text" v-model="eingegebeneFunktion" placeholder="Gib hier deine Funktion ein"
-            @keyup.enter="eingabeVerarbeiten(eingegebeneFunktion)" />
-        <button @click="eingabeVerarbeiten(eingegebeneFunktion)">Führe Polynomdivision aus</button>
+            @keyup.enter="eingabeVerarbeiten()" />
+        <button @click="eingabeVerarbeiten()">Führe Polynomdivision aus</button>
     </div>
     <div class="anzeige">
         <div v-if="polynomGueltig">
