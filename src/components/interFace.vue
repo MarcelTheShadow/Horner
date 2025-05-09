@@ -146,7 +146,7 @@ const polynomfunktionZuArrays = () => {
 
 const arraysSortieren = () => {
     let highestExponent = 0;
-    for(let i = 0; i < exponenten.value.length; i++) {
+    for (let i = 0; i < exponenten.value.length; i++) {
         if (exponenten.value[i] > highestExponent) {
             highestExponent = exponenten.value[i];
         }
@@ -180,6 +180,9 @@ const eingabeVerarbeiten = () => {
 </script>
 
 <template>
+    <div class="Intro">
+        Horner-Rechner
+    </div>
     <div class="view">
         <input type="text" v-model="eingegebeneFunktion" placeholder="Gib hier deine Funktion ein"
             @keyup.enter="eingabeVerarbeiten()" />
@@ -194,18 +197,27 @@ const eingabeVerarbeiten = () => {
             <p>Arbeite mit dem Format a*x^n +- b*x^m +- c*x^k...</p>
             <p> Die Koeffizienten a,b,c... sowie die Exponenten n,m,k... müssen natürliche Zahlen sein</p>
         </div>
-
     </div>
 </template>
 
 <style scoped>
+.Intro{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color:white;
+    padding-top: 30px;
+    font-size: 50px;
+    font-weight: 600;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
 .view {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 60%;
-
+    height: 300px;
 }
 
 .anzeige {
@@ -213,7 +225,9 @@ const eingabeVerarbeiten = () => {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 40%;
+    color:white;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    height: 0px;
 }
 
 input {

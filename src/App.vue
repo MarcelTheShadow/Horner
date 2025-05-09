@@ -1,16 +1,16 @@
 <script setup>
 import interFace from './components/interFace.vue'
 </script>
-
 <template>
   <div class="App">
-    <interFace/>
+    <interFace />
   </div>
 </template>
 
 <style scoped>
-.App{
-  background-color: wheat;
+.App {
+  background-color: lightskyblue;
+  margin: 0;
   height: 100vh;
 }
 </style>
