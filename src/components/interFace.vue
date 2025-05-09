@@ -1,9 +1,11 @@
 <script setup>
-import { h, ref } from 'vue';
+import { ref } from 'vue';
 
-// Direkter Wert aus Input über v-model
+// Direkter Wert der Polynomfunktion aus Input über v-model
 const eingegebeneFunktion = ref('');
 
+// Direkter Werte der Nullstelle aus Input über v-model 
+const eingegebeneNullstelle = ref('');
 
 // Zwischenstand von eingegebeneFunktion, um den Input zu verarbeiten
 const zwischenstand = ref('');
@@ -16,9 +18,9 @@ const ausgabe = ref('');
 
 
 // Arrays für Vorzeichen, Koeffizienten und Exponenten
-let vorzeichen = ref([]);
-let koeffizienten = ref([]);
-let exponenten = ref([]);
+const vorzeichen = ref([]);
+const koeffizienten = ref([]);
+const exponenten = ref([]);
 
 // Funktion, die den Wert des Inputs aktualisiert und überprüft, ob es sich um eine gültige Polynomfunktion handelt
 
@@ -61,8 +63,8 @@ const polynomfunktionAuslesen = () => {
         i++;
         if (zwischenstand.value[i] === ' ') {
             zwischenstand.value = zwischenstand.value.slice(0, i) + zwischenstand.value.slice(i + 1);
+            i--;
         }
-
     }
     // Fügt dem Input ein '+' vor, wenn der erste Buchstabe kein '+' oder '-' ist, damit erster Term auch erkannt wird
     if (zwischenstand.value[0] != '+' && zwischenstand.value[0] != '-') {
@@ -121,9 +123,9 @@ const polynomfunktionAuslesen = () => {
 
 const polynomfunktionZuArrays = () => {
     // Arrays für Vorzeichen, Koeffizienten und Exponenten
-    vorzeichen = ref([]);
-    koeffizienten = ref([]);
-    exponenten = ref([]);
+    vorzeichen.value = [];
+    koeffizienten.value = [];
+    exponenten.value = [];
 
     // Vorzeichen extrahieren
     for (let match of zwischenstand.value.matchAll(/[+-]/g)) {
@@ -145,6 +147,7 @@ const polynomfunktionZuArrays = () => {
 // Sortiert die Arrays für Vorzeichen, Koeffizienten und Exponenten nach den Exponenten
 
 const arraysSortieren = () => {
+    // Höchster Exponent in gesamter Polynomfunktion
     let highestExponent = 0;
     for (let i = 0; i < exponenten.value.length; i++) {
         if (exponenten.value[i] > highestExponent) {
@@ -152,20 +155,36 @@ const arraysSortieren = () => {
         }
     }
 
-    const sortedKoeffizienten = ref(new Array(highestExponent.value).fill(0));
+    // In Array sollen alle Koeffizienten entsprechend der Höhe ihrer Exponenten gespeichert werden
+    let sortedKoeffizienten = ref(new Array(highestExponent.value));
 
+    // Initialisiert das Array mit 0
+    for (let i = 0; i <= highestExponent; i++) {
+        sortedKoeffizienten.value[i] = 0;
+    }
+
+    //Füge Koeffizienten termweise aus dem Array von polynomfunktionZuArrays in das Array sortedKoeffizienten ein
     for (let i = 0; i < exponenten.value.length; i++) {
         let index = exponenten.value[i];
         if (vorzeichen.value[i] === '+') {
-            sortedKoeffizienten.value[index] = koeffizienten.value[i];
+            sortedKoeffizienten.value[index] += koeffizienten.value[i];
         } else {
-            sortedKoeffizienten.value[index] = koeffizienten.value[i];
+            sortedKoeffizienten.value[index] -= koeffizienten.value[i];
         }
     }
+
+    // Kehre Array um, da das Horner-Schema beim höchsten Exponenten beginnt
+    sortedKoeffizienten.value.reverse();
 
     koeffizienten.value = sortedKoeffizienten.value;
 
     ausgabe.value = `Ergebnis: ${koeffizienten.value}`;
+}
+
+// Auf Basis der sortierten Daten von arraysSortieren wird das Horner-Schema ausgeführt
+
+const hornerSchema = () => {
+
 }
 
 
@@ -176,6 +195,7 @@ const eingabeVerarbeiten = () => {
     polynomfunktionAuslesen();
     polynomfunktionZuArrays();
     arraysSortieren();
+    hornerSchema();
 }
 </script>
 
@@ -201,15 +221,15 @@ const eingabeVerarbeiten = () => {
 </template>
 
 <style scoped>
-.Intro{
+.Intro {
     display: flex;
     justify-content: center;
     align-items: center;
-    color:white;
+    color: white;
     padding-top: 30px;
     font-size: 50px;
     font-weight: 600;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .view {
@@ -225,8 +245,8 @@ const eingabeVerarbeiten = () => {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    color:white;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: white;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     height: 0px;
 }
 
