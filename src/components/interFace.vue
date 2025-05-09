@@ -13,14 +13,14 @@ const zwischenstand = ref('');
 // Ist Input eine gültige Polynomfunktion?
 const polynomGueltig = ref(false);
 
-// Ausgabe auf der Webseite
-const ausgabe = ref('');
-
-
-// Arrays für Vorzeichen, Koeffizienten und Exponenten
+// Arrays für Vorzeichen, Koeffizienten und Exponenten beim Verarbeiten der Polynomfunktion
 const vorzeichen = ref([]);
 const koeffizienten = ref([]);
 const exponenten = ref([]);
+
+// Ausgabe auf der Webseite
+const ausgabe = ref('');
+
 
 // Funktion, die den Wert des Inputs aktualisiert und überprüft, ob es sich um eine gültige Polynomfunktion handelt
 
@@ -50,7 +50,7 @@ const checkeRegEx = () => {
     return POLYNOM_REGEX.test(zwischenstand.value);
 }
 
-// Liest einzelne Terme und Werte aus RegEx aus
+// Liest einzelne Terme und Werte aus RegEx aus und wandelt sie in Format um, das für das Auslesen der Vorzeichen, Koeffizienten und Exponenten geeignet ist
 
 const polynomfunktionAuslesen = () => {
     // Hier sollen die einzelnen Terme gespeichert werden
@@ -78,12 +78,12 @@ const polynomfunktionAuslesen = () => {
             nachVorzeichen = true;
         }
         if (nachVorzeichen && zwischenstand.value[i] === 'x' && zwischenstand.value[i - 1] != '*') {
-            if (zwischenstand.value[i-1] === '+' || zwischenstand.value[i-1] === '-') {
+            if (zwischenstand.value[i - 1] === '+' || zwischenstand.value[i - 1] === '-') {
                 zwischenstand.value = zwischenstand.value.slice(0, i) + '1*' + zwischenstand.value.slice(i);
             }
-            else{
+            else {
                 zwischenstand.value = zwischenstand.value.slice(0, i) + '*' + zwischenstand.value.slice(i);
-            }       
+            }
             nachVorzeichen = false;
         }
         i++;
@@ -205,44 +205,63 @@ const eingabeVerarbeiten = () => {
 </script>
 
 <template>
-    <div class="Intro">
+    <div class="Ueberschrift">
         Horner-Rechner
     </div>
-    <div class="view">
-        <input type="text" v-model="eingegebeneFunktion" placeholder="Gib hier deine Funktion ein"
-            @keyup.enter="eingabeVerarbeiten()" />
+
+    <div class="eingabeAlles">
+        <div class="inputs">
+            <input type="text" v-model="eingegebeneFunktion" placeholder="Polynomfunktion"
+                style="width: 20vw;" />
+            <input type="text" v-model="eingegebeneNullstelle" placeholder="Nullstelle"
+                style="width: 10vw;">
+        </div>
         <button @click="eingabeVerarbeiten()">Führe Polynomdivision aus</button>
     </div>
+
     <div class="anzeige">
         <div v-if="polynomGueltig">
             <p>Der Term ist: {{ ausgabe }} </p>
         </div>
         <div v-else>
-            <p>Die Funktion ist ungültig</p>
-            <p>Arbeite mit dem Format a*x^n +- b*x^m +- c*x^k...</p>
-            <p> Die Koeffizienten a,b,c... sowie die Exponenten n,m,k... müssen natürliche Zahlen sein</p>
+            <p>Die Funktion ist ungültig!</p>
+            <p>Für die Eingabe ist zu beachten:</p>
+            <li>Arbeite für die Polynomfunktion mit dem Format a*x^n +- b*x^m +- c*x^k...</li> <br>
+            <li>Die Koeffizienten a,b,c... , die Exponenten n,m,k... sowie die Nullstelle müssen natürliche Zahlen sein
+            </li>
+            <p></p>
         </div>
     </div>
 </template>
 
 <style scoped>
-.Intro {
+.Ueberschrift {
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
-    padding-top: 30px;
-    font-size: 50px;
+    padding-top: 3%;
+    font-size: 300%;
     font-weight: 600;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.view {
+.eingabeAlles {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 300px;
+    height: 40%;
+    row-gap: 10%;
+}
+
+.inputs {
+    display: flex;
+    justify-content: center;
+    align-items: row;
+    flex-direction: row;
+    height: 20%;
+    gap: 5%;
 }
 
 .anzeige {
@@ -252,17 +271,15 @@ const eingabeVerarbeiten = () => {
     flex-direction: column;
     color: white;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    height: 0px;
-}
-
-input {
-    height: 40px;
-    width: 400px;
-    margin-bottom: 20px;
+    text-align: center;
 }
 
 button {
-    height: 40px;
-    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15%;
+    width: 15%;
+    width: fit-content
 }
 </style>

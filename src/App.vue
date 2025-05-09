@@ -9,8 +9,9 @@ import interFace from './components/interFace.vue'
 
 <style scoped>
 .App {
-  background-color: lightskyblue;
+  background-color: lightseagreen;
   margin: 0;
   height: 100vh;
+  width: 100vw;
 }
 </style>
