@@ -70,7 +70,7 @@ const polynomfunktionAuslesen = () => {
     if (zwischenstand.value[0] != '+' && zwischenstand.value[0] != '-') {
         zwischenstand.value = '+' + zwischenstand.value;
     }
-    // Fügt dem Input ein '*' vor dem 'x' hinzu, wenn es nicht schon da ist
+    // Fügt dem Input ein '*' oder '1*' vor dem 'x' hinzu, wenn es nicht schon da ist
     i = 0;
     let nachVorzeichen = false;
     while (i < zwischenstand.value.length) {
@@ -78,7 +78,12 @@ const polynomfunktionAuslesen = () => {
             nachVorzeichen = true;
         }
         if (nachVorzeichen && zwischenstand.value[i] === 'x' && zwischenstand.value[i - 1] != '*') {
-            zwischenstand.value = zwischenstand.value.slice(0, i) + '*' + zwischenstand.value.slice(i);
+            if (zwischenstand.value[i-1] === '+' || zwischenstand.value[i-1] === '-') {
+                zwischenstand.value = zwischenstand.value.slice(0, i) + '1*' + zwischenstand.value.slice(i);
+            }
+            else{
+                zwischenstand.value = zwischenstand.value.slice(0, i) + '*' + zwischenstand.value.slice(i);
+            }       
             nachVorzeichen = false;
         }
         i++;
