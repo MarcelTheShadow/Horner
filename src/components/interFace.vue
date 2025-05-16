@@ -2,16 +2,22 @@
 import { ref } from 'vue';
 
 // Direkter Wert der Polynomfunktion aus Input über v-model
-const eingegebeneFunktion = ref('');
+const eingabeFunktion = ref('');
 
 // Direkter Werte der Nullstelle aus Input über v-model 
-const eingegebeneNullstelle = ref('');
+const eingabeNullstelle = ref('');
+
+// Nullstelle zum Zeitpunkt des Drückens des Buttons
+const nullstelle = ref('');
 
 // Zwischenstand von eingegebeneFunktion, um den Input zu verarbeiten
 const zwischenstand = ref('');
 
 // Ist Input eine gültige Polynomfunktion?
-const polynomGueltig = ref(false);
+const funktionGueltig = ref(false);
+
+// Handelt es sich bei der eingegebenen Nullstelle tatsächlich um eine Nullstelle für die gegebene Funktion?
+const nullstelleGueltig = ref(false);
 
 // Arrays für Vorzeichen, Koeffizienten und Exponenten beim Verarbeiten der Polynomfunktion
 const vorzeichen = ref([]);
@@ -26,19 +32,19 @@ const ausgabe = ref('');
 
 const inputGueltigOderNicht = () => {
     if (checkeRegEx()) {
-        polynomGueltig.value = true;
+        funktionGueltig.value = true;
         if (zwischenstand.value.match(/^[+-\s]*$/)) {
-            polynomGueltig.value = false;
+            funktionGueltig.value = false;
         }
         const inputVerarbeitet = zwischenstand.value.replace(/\s/g, '');
         if (inputVerarbeitet[inputVerarbeitet.length - 1] === '+' || inputVerarbeitet[inputVerarbeitet.length - 1] === '-') {
-            polynomGueltig.value = false;
+            funktionGueltig.value = false;
         }
         if (inputVerarbeitet.match(/\+\+|--|\+-|-\+/g)) {
-            polynomGueltig.value = false;
+            funktionGueltig.value = false;
         }
     } else {
-        polynomGueltig.value = false;
+        funktionGueltig.value = false;
     }
 }
 
@@ -161,29 +167,42 @@ const arraysSortieren = () => {
     }
 
     // In Array sollen alle Koeffizienten entsprechend der Höhe ihrer Exponenten gespeichert werden
-    let sortedKoeffizienten = ref(new Array(highestExponent.value));
+    let sortierteKoeffizienten = ref(new Array(highestExponent.value));
 
     // Initialisiert das Array mit 0
     for (let i = 0; i <= highestExponent; i++) {
-        sortedKoeffizienten.value[i] = 0;
+        sortierteKoeffizienten.value[i] = 0;
     }
 
     //Füge Koeffizienten termweise aus dem Array von polynomfunktionZuArrays in das Array sortedKoeffizienten ein
     for (let i = 0; i < exponenten.value.length; i++) {
         let index = exponenten.value[i];
         if (vorzeichen.value[i] === '+') {
-            sortedKoeffizienten.value[index] += koeffizienten.value[i];
+            sortierteKoeffizienten.value[index] += koeffizienten.value[i];
         } else {
-            sortedKoeffizienten.value[index] -= koeffizienten.value[i];
+            sortierteKoeffizienten.value[index] -= koeffizienten.value[i];
         }
     }
 
     // Kehre Array um, da das Horner-Schema beim höchsten Exponenten beginnt
-    sortedKoeffizienten.value.reverse();
+    sortierteKoeffizienten.value.reverse();
 
-    koeffizienten.value = sortedKoeffizienten.value;
+    koeffizienten.value = sortierteKoeffizienten.value;
 
     ausgabe.value = `Ergebnis: ${koeffizienten.value}`;
+}
+
+const nullstelleVerifizieren = () => {
+    const sum = ref(0);
+    for (let i = 0; i < koeffizienten.value.length; i++) {
+        sum.value += koeffizienten.value[i] * (Math.pow(parseInt(nullstelle.value), koeffizienten.value.length - i - 1));
+    }
+    if (sum.value === 0) {
+        nullstelleGueltig.value = true;
+    }
+    else {
+        nullstelleGueltig.value = false;
+    }
 }
 
 // Auf Basis der sortierten Daten von arraysSortieren wird das Horner-Schema ausgeführt
@@ -195,11 +214,13 @@ const hornerSchema = () => {
 
 // Verarbeitet den Input, führt obige Funktionen aus
 const eingabeVerarbeiten = () => {
-    zwischenstand.value = eingegebeneFunktion.value;
+    zwischenstand.value = eingabeFunktion.value;
+    nullstelle.value = eingabeNullstelle.value;
     inputGueltigOderNicht();
     polynomfunktionAuslesen();
     polynomfunktionZuArrays();
     arraysSortieren();
+    nullstelleVerifizieren();
     hornerSchema();
 }
 </script>
@@ -211,25 +232,32 @@ const eingabeVerarbeiten = () => {
 
     <div class="eingabeAlles">
         <div class="inputs">
-            <input type="text" v-model="eingegebeneFunktion" placeholder="Polynomfunktion"
-                style="width: 20vw;" />
-            <input type="text" v-model="eingegebeneNullstelle" placeholder="Nullstelle"
+            <input type="text" v-model="eingabeFunktion" @keyup.enter="eingabeVerarbeiten()"
+                placeholder="Polynomfunktion" style="width: 20vw;" />
+            <input type="text" v-model="eingabeNullstelle" @keyup.enter="eingabeVerarbeiten()" placeholder="Nullstelle"
                 style="width: 10vw;">
         </div>
         <button @click="eingabeVerarbeiten()">Führe Polynomdivision aus</button>
     </div>
 
     <div class="anzeige">
-        <div v-if="polynomGueltig">
-            <p>Der Term ist: {{ ausgabe }} </p>
+        <div v-if="funktionGueltig & nullstelleGueltig">
+            <p>Ergebnis der Polynomdivision: {{ ausgabe }} </p>
+            <p>Nullstelle: {{ nullstelle }}</p>
         </div>
         <div v-else>
-            <p>Die Funktion ist ungültig!</p>
-            <p>Für die Eingabe ist zu beachten:</p>
-            <li>Arbeite für die Polynomfunktion mit dem Format a*x^n +- b*x^m +- c*x^k...</li> <br>
-            <li>Die Koeffizienten a,b,c... , die Exponenten n,m,k... sowie die Nullstelle müssen natürliche Zahlen sein
-            </li>
-            <p></p>
+            <div v-if="!funktionGueltig">
+                <p>Die Funktion ist ungültig!</p>
+                <p>Für die Eingabe ist zu beachten:</p>
+                <li>Arbeite für die Polynomfunktion mit dem Format a*x^n +- b*x^m +- c*x^k...</li> <br>
+                <li>Die Koeffizienten a,b,c... , die Exponenten n,m,k... sowie die Nullstelle müssen natürliche Zahlen
+                    sein
+                </li>
+            </div>
+            <div else>
+                <p>Die Nullstelle ist ungültig! Wenn man die angegebene Stelle in die Polynomfunktion eingibt, muss 0
+                    als Ergebnis rausbekommen!</p>
+            </div>
         </div>
     </div>
 </template>
