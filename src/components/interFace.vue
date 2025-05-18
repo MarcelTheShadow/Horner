@@ -7,6 +7,9 @@ const eingabeFunktion = ref('');
 // Direkter Werte der Nullstelle aus Input über v-model 
 const eingabeNullstelle = ref('');
 
+// Polynomfunktion zum Zeitpunkt des Drückens des Buttons
+const polynomfunktion = ref('');
+
 // Nullstelle zum Zeitpunkt des Drückens des Buttons
 const nullstelle = ref('');
 
@@ -188,8 +191,6 @@ const arraysSortieren = () => {
     sortierteKoeffizienten.value.reverse();
 
     koeffizienten.value = sortierteKoeffizienten.value;
-
-    ausgabe.value = `Ergebnis: ${koeffizienten.value}`;
 }
 
 const nullstelleVerifizieren = () => {
@@ -208,13 +209,43 @@ const nullstelleVerifizieren = () => {
 // Auf Basis der sortierten Daten von arraysSortieren wird das Horner-Schema ausgeführt
 
 const hornerSchema = () => {
-
+    //Horner-Schema
+    const tmp = ref(0);
+    for (let i = 0; i < koeffizienten.value.length; i++) {
+        koeffizienten.value[i] = koeffizienten.value[i] + tmp.value;
+        tmp.value = koeffizienten.value[i] * parseInt(nullstelle.value);
+    }
+    // Umwandlung zu lesebarer Funktion
+    const ausgabeTmp = ref('');
+    const highestExponent = ref(koeffizienten.value.length - 2);
+    for (let i = 0; i < koeffizienten.value.length; i++) {
+        if (koeffizienten.value[i] != 0) {
+            if (koeffizienten.value[i] > 0) {
+                ausgabeTmp.value += ' +';
+            }
+            else{
+                ausgabeTmp.value += ' ';
+            }
+            if (highestExponent.value - i === 0) {
+                ausgabeTmp.value += koeffizienten.value[i];
+            }
+            else if(highestExponent.value - i === 1) {
+                ausgabeTmp.value += koeffizienten.value[i] + 'x';
+            }
+            else{
+                ausgabeTmp.value += koeffizienten.value[i] + 'x^' + (highestExponent.value - i);
+            }
+        }
+    }
+    // Ausgabe
+    ausgabe.value = ` ${ausgabeTmp.value}`;
 }
 
 
 // Verarbeitet den Input, führt obige Funktionen aus
 const eingabeVerarbeiten = () => {
     zwischenstand.value = eingabeFunktion.value;
+    polynomfunktion.value = eingabeFunktion.value;
     nullstelle.value = eingabeNullstelle.value;
     inputGueltigOderNicht();
     polynomfunktionAuslesen();
@@ -242,8 +273,9 @@ const eingabeVerarbeiten = () => {
 
     <div class="anzeige">
         <div v-if="funktionGueltig & nullstelleGueltig">
+            <p>Eingegebene Polynomfunktion: {{ polynomfunktion }}</p>
+            <p>Eingegebene Nullstelle: {{ nullstelle }}</p>
             <p>Ergebnis der Polynomdivision: {{ ausgabe }} </p>
-            <p>Nullstelle: {{ nullstelle }}</p>
         </div>
         <div v-else>
             <div v-if="!funktionGueltig">
@@ -300,6 +332,7 @@ const eingabeVerarbeiten = () => {
     color: white;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     text-align: center;
+    font-size: 120%;
 }
 
 button {
