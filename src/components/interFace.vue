@@ -223,18 +223,22 @@ const hornerSchema = () => {
             if (koeffizienten.value[i] > 0) {
                 ausgabeTmp.value += ' +';
             }
-            else{
+            else {
                 ausgabeTmp.value += ' ';
             }
             if (highestExponent.value - i === 0) {
                 ausgabeTmp.value += koeffizienten.value[i];
             }
-            else if(highestExponent.value - i === 1) {
+            else if (highestExponent.value - i === 1) {
                 ausgabeTmp.value += koeffizienten.value[i] + 'x';
             }
-            else{
+            else {
                 ausgabeTmp.value += koeffizienten.value[i] + 'x^' + (highestExponent.value - i);
             }
+        }
+        // Kann für mehrfaches Horner-Schema bei Ableitungen zur Differenzierbarkeit genutzt werden verwendet werden!
+        if (ausgabeTmp.value === '') {
+            ausgabeTmp.value = '0';
         }
     }
     // Ausgabe
