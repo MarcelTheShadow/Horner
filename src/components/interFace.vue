@@ -209,40 +209,44 @@ const nullstelleVerifizieren = () => {
 // Auf Basis der sortierten Daten von arraysSortieren wird das Horner-Schema ausgeführt
 
 const hornerSchema = () => {
-    //Horner-Schema
     const tmp = ref(0);
     for (let i = 0; i < koeffizienten.value.length; i++) {
         koeffizienten.value[i] = koeffizienten.value[i] + tmp.value;
         tmp.value = koeffizienten.value[i] * parseInt(nullstelle.value);
     }
-    // Umwandlung zu lesebarer Funktion
-    const ausgabeTmp = ref('');
-    const highestExponent = ref(koeffizienten.value.length - 2);
-    for (let i = 0; i < koeffizienten.value.length; i++) {
-        if (koeffizienten.value[i] != 0) {
-            if (koeffizienten.value[i] > 0) {
-                ausgabeTmp.value += ' +';
-            }
-            else {
-                ausgabeTmp.value += ' ';
-            }
-            if (highestExponent.value - i === 0) {
-                ausgabeTmp.value += koeffizienten.value[i];
-            }
-            else if (highestExponent.value - i === 1) {
-                ausgabeTmp.value += koeffizienten.value[i] + 'x';
-            }
-            else {
-                ausgabeTmp.value += koeffizienten.value[i] + 'x^' + (highestExponent.value - i);
-            }
+    koeffizienten.value = koeffizienten.value.slice(0, koeffizienten.value.length-1);
+}
+
+// Umwandlung des Koeffizienten-Arrays zu lesebarer Funktion
+
+const ergebnisZuString = () => {
+const ausgabeTmp = ref('');
+const highestExponent = ref(koeffizienten.value.length - 1);
+for (let i = 0; i < koeffizienten.value.length; i++) {
+    if (koeffizienten.value[i] != 0) {
+        if (koeffizienten.value[i] > 0) {
+            ausgabeTmp.value += ' +';
         }
-        // Kann für mehrfaches Horner-Schema bei Ableitungen zur Differenzierbarkeit genutzt werden verwendet werden!
-        if (ausgabeTmp.value === '') {
-            ausgabeTmp.value = '0';
+        else {
+            ausgabeTmp.value += ' ';
+        }
+        if (highestExponent.value - i === 0) {
+            ausgabeTmp.value += koeffizienten.value[i];
+        }
+        else if (highestExponent.value - i === 1) {
+            ausgabeTmp.value += koeffizienten.value[i] + 'x';
+        }
+        else {
+            ausgabeTmp.value += koeffizienten.value[i] + 'x^' + (highestExponent.value - i);
         }
     }
-    // Ausgabe
-    ausgabe.value = ` ${ausgabeTmp.value}`;
+    // Kann für mehrfaches Horner-Schema bei Ableitungen zur Differenzierbarkeit genutzt werden verwendet werden!
+    if (ausgabeTmp.value === '') {
+        ausgabeTmp.value = '0';
+    }
+}
+// Ausgabe
+ausgabe.value = ` ${ausgabeTmp.value}`;
 }
 
 
@@ -257,6 +261,8 @@ const eingabeVerarbeiten = () => {
     arraysSortieren();
     nullstelleVerifizieren();
     hornerSchema();
+    hornerSchema();
+    ergebnisZuString();
 }
 </script>
 
