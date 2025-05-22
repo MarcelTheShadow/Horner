@@ -27,6 +27,9 @@ const vorzeichen = ref([]);
 const koeffizienten = ref([]);
 const exponenten = ref([]);
 
+// Array nach Verarbeitung
+const koeffizientenVollAufbereitet = ref([]);
+
 // Ausgabe auf der Webseite
 const ausgabe = ref('');
 
@@ -190,13 +193,14 @@ const arraysSortieren = () => {
     // Kehre Array um, da das Horner-Schema beim höchsten Exponenten beginnt
     sortierteKoeffizienten.value.reverse();
 
-    koeffizienten.value = sortierteKoeffizienten.value;
+    koeffizientenVollAufbereitet.value = [];
+    koeffizientenVollAufbereitet.value = sortierteKoeffizienten.value;
 }
 
 const nullstelleVerifizieren = () => {
     const sum = ref(0);
-    for (let i = 0; i < koeffizienten.value.length; i++) {
-        sum.value += koeffizienten.value[i] * (Math.pow(parseInt(nullstelle.value), koeffizienten.value.length - i - 1));
+    for (let i = 0; i < koeffizientenVollAufbereitet.value.length; i++) {
+        sum.value += koeffizientenVollAufbereitet.value[i] * (Math.pow(parseInt(nullstelle.value), koeffizientenVollAufbereitet.value.length - i - 1));
     }
     if (sum.value === 0) {
         nullstelleGueltig.value = true;
@@ -210,34 +214,34 @@ const nullstelleVerifizieren = () => {
 
 const hornerSchema = () => {
     const tmp = ref(0);
-    for (let i = 0; i < koeffizienten.value.length; i++) {
-        koeffizienten.value[i] = koeffizienten.value[i] + tmp.value;
-        tmp.value = koeffizienten.value[i] * parseInt(nullstelle.value);
+    for (let i = 0; i < koeffizientenVollAufbereitet.value.length; i++) {
+        koeffizientenVollAufbereitet.value[i] = koeffizientenVollAufbereitet.value[i] + tmp.value;
+        tmp.value = koeffizientenVollAufbereitet.value[i] * parseInt(nullstelle.value);
     }
-    koeffizienten.value = koeffizienten.value.slice(0, koeffizienten.value.length-1);
+    koeffizientenVollAufbereitet.value = koeffizientenVollAufbereitet.value.slice(0, koeffizientenVollAufbereitet.value.length-1);
 }
 
 // Umwandlung des Koeffizienten-Arrays zu lesebarer Funktion
 
 const ergebnisZuString = () => {
 const ausgabeTmp = ref('');
-const highestExponent = ref(koeffizienten.value.length - 1);
-for (let i = 0; i < koeffizienten.value.length; i++) {
-    if (koeffizienten.value[i] != 0) {
-        if (koeffizienten.value[i] > 0) {
+const highestExponent = ref(koeffizientenVollAufbereitet.value.length - 1);
+for (let i = 0; i < koeffizientenVollAufbereitet.value.length; i++) {
+    if (koeffizientenVollAufbereitet.value[i] != 0) {
+        if (koeffizientenVollAufbereitet.value[i] > 0) {
             ausgabeTmp.value += ' +';
         }
         else {
             ausgabeTmp.value += ' ';
         }
         if (highestExponent.value - i === 0) {
-            ausgabeTmp.value += koeffizienten.value[i];
+            ausgabeTmp.value += koeffizientenVollAufbereitet.value[i];
         }
         else if (highestExponent.value - i === 1) {
-            ausgabeTmp.value += koeffizienten.value[i] + 'x';
+            ausgabeTmp.value += koeffizientenVollAufbereitet.value[i] + 'x';
         }
         else {
-            ausgabeTmp.value += koeffizienten.value[i] + 'x^' + (highestExponent.value - i);
+            ausgabeTmp.value += koeffizientenVollAufbereitet.value[i] + 'x^' + (highestExponent.value - i);
         }
     }
     // Kann für mehrfaches Horner-Schema bei Ableitungen zur Differenzierbarkeit genutzt werden verwendet werden!
@@ -246,7 +250,14 @@ for (let i = 0; i < koeffizienten.value.length; i++) {
     }
 }
 // Ausgabe
-ausgabe.value = ` ${ausgabeTmp.value}`;
+ausgabe.value = `${ausgabeTmp.value}`;
+}
+
+// Anstatt Polynomdivison für Auslesen des Funktionswertes (der Ableitung)
+
+const funktionswertZuString = () => {
+    //TODO Fakultät
+    ausgabe.value = `${koeffizientenVollAufbereitet.value[koeffizientenVollAufbereitet.value.length-1]}`;
 }
 
 
@@ -262,7 +273,8 @@ const eingabeVerarbeiten = () => {
     nullstelleVerifizieren();
     hornerSchema();
     hornerSchema();
-    ergebnisZuString();
+    //ergebnisZuString();
+    funktionswertZuString();
 }
 </script>
 
