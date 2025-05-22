@@ -34,7 +34,7 @@ const koeffizientenVollAufbereitet = ref([]);
 const ausgabe = ref('');
 
 
-// Funktion, die den Wert des Inputs aktualisiert und überprüft, ob es sich um eine gültige Polynomfunktion handelt
+// Funktion, die den Wert des Inputs aktualisiert und überprüft, ob es sich um eine gültige Polynomfunktion und eine gültige Nullstelle handelt
 
 const inputGueltigOderNicht = () => {
     if (checkeRegEx()) {
@@ -52,6 +52,16 @@ const inputGueltigOderNicht = () => {
     } else {
         funktionGueltig.value = false;
     }
+
+
+    //TODO FIX INPUT MANAGEMENT OF NULLSTELLE
+    // -> '0#ß' valid input? NO!
+    if (/\d+/g.test(nullstelle.value)) {
+        nullstelleGueltig.value = true;
+    } else {
+        nullstelleGueltig.value = false;
+    }
+
 }
 
 // Überprüft, ob der Input eine gültige Polynomfunktion ist
@@ -72,11 +82,11 @@ const polynomfunktionAuslesen = () => {
     // Entfernt alle Leerzeichen aus dem Input
     let i = 0;
     while (i < zwischenstand.value.length) {
-        i++;
         if (zwischenstand.value[i] === ' ') {
             zwischenstand.value = zwischenstand.value.slice(0, i) + zwischenstand.value.slice(i + 1);
             i--;
         }
+        i++;
     }
     // Fügt dem Input ein '+' vor, wenn der erste Buchstabe kein '+' oder '-' ist, damit erster Term auch erkannt wird
     if (zwischenstand.value[0] != '+' && zwischenstand.value[0] != '-') {
@@ -272,9 +282,9 @@ const eingabeVerarbeiten = () => {
     arraysSortieren();
     nullstelleVerifizieren();
     hornerSchema();
-    hornerSchema();
-    //ergebnisZuString();
-    funktionswertZuString();
+    //hornerSchema();
+    ergebnisZuString();
+    //funktionswertZuString();
 }
 </script>
 
