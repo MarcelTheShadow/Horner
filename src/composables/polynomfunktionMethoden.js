@@ -35,6 +35,7 @@ export const ausgabe = ref('');
 
 // Funktion, die den Wert des Inputs aktualisiert und überprüft, ob es sich um eine gültige Polynomfunktion und eine gültige Nullstelle handelt
 
+//TODO mach das richtig in einer Methode mit regex check für funktion, check von plus minus (oder alternativ anpassen der RegEx) und regex check für nullstelle
  const inputGueltigOderNicht = () => {
     if (checkeRegEx()) {
         funktionGueltig.value = true;
@@ -52,9 +53,10 @@ export const ausgabe = ref('');
         funktionGueltig.value = false;
     }
 
+    //TODO fix implementation, method seems to work
     // Nullstelle sollte eine natürliche Zahl sein, keine weiteren Zeichen erlaubt
 
-    if(/^\d+$/.test(eingabeNullstelle.value)){
+    if(/^-?\d+$/.test(eingabeNullstelle.value)){
         nullstelleGueltig.value = true;
     } else {
         nullstelleGueltig.value = false;

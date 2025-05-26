@@ -18,24 +18,24 @@ import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funkti
     </div>
 
     <div class="anzeige">
-        <div v-if="funktionGueltig & nullstelleGueltig">
+        <div v-if="(funktionGueltig && nullstelleGueltig)">
             <p>Eingegebene Polynomfunktion: {{ polynomfunktion }}</p>
             <p>Eingegebene Nullstelle: {{ nullstelle }}</p>
             <p>Ergebnis der Polynomdivision: {{ ausgabe }} </p>
         </div>
-        <div v-else>
-            <div v-if="!funktionGueltig">
-                <p>Die Funktion ist ungültig!</p>
-                <p>Für die Eingabe ist zu beachten:</p>
+        <div v-else-if="!funktionGueltig">
+            <p>Die Funktion ist ungültig!</p>
+            <p>Für die Eingabe ist zu beachten:</p>
+            <ul>
                 <li>Arbeite für die Polynomfunktion mit dem Format a*x^n +- b*x^m +- c*x^k...</li> <br>
                 <li>Die Koeffizienten a,b,c... , die Exponenten n,m,k... sowie die Nullstelle müssen natürliche Zahlen
                     sein
                 </li>
-            </div>
-            <div else>
-                <p>Die Nullstelle ist ungültig! Wenn man die angegebene Stelle in die Polynomfunktion eingibt, muss 0
-                    als Ergebnis rausbekommen!</p>
-            </div>
+            </ul>
+        </div>
+        <div v-else-if="!nullstelleGueltig">
+            <p>Die Nullstelle ist ungültig! Wenn man die angegebene Stelle in die Polynomfunktion eingibt, muss 0
+                als Ergebnis rausbekommen!</p>
         </div>
     </div>
 </template>
