@@ -53,10 +53,9 @@ const inputGueltigOderNicht = () => {
         funktionGueltig.value = false;
     }
 
+    // Nullstelle sollte eine natürliche Zahl sein, keine weiteren Zeichen erlaubt
 
-    //TODO FIX INPUT MANAGEMENT OF NULLSTELLE
-    // -> '0#ß' valid input? NO!
-    if (/\d+/g.test(nullstelle.value)) {
+    if(/^\d+$/.test(eingabeNullstelle.value)){
         nullstelleGueltig.value = true;
     } else {
         nullstelleGueltig.value = false;
@@ -254,11 +253,13 @@ for (let i = 0; i < koeffizientenVollAufbereitet.value.length; i++) {
             ausgabeTmp.value += koeffizientenVollAufbereitet.value[i] + 'x^' + (highestExponent.value - i);
         }
     }
-    // Kann für mehrfaches Horner-Schema bei Ableitungen zur Differenzierbarkeit genutzt werden verwendet werden!
+}
+
+// Kann für mehrfaches Horner-Schema bei Ableitungen zur Differenzierbarkeit genutzt werden verwendet werden!
     if (ausgabeTmp.value === '') {
         ausgabeTmp.value = '0';
     }
-}
+
 // Ausgabe
 ausgabe.value = `${ausgabeTmp.value}`;
 }
