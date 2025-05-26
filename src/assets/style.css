@@ -1,0 +1,48 @@
+.Ueberschrift {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding-top: 3%;
+    font-size: 300%;
+    font-weight: 600;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.eingabeAlles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 40%;
+    row-gap: 10%;
+}
+
+.inputs {
+    display: flex;
+    justify-content: center;
+    align-items: row;
+    flex-direction: row;
+    height: 20%;
+    gap: 5%;
+}
+
+.anzeige {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-align: center;
+    font-size: 120%;
+}
+
+button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15%;
+    width: 15%;
+    width: fit-content
+}
