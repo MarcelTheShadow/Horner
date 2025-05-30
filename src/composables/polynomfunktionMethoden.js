@@ -53,7 +53,6 @@ export const ausgabe = ref('');
         funktionGueltig.value = false;
     }
 
-    //TODO fix implementation, method seems to work
     // Nullstelle sollte eine natürliche Zahl sein, keine weiteren Zeichen erlaubt
 
     if(/^-?\d+$/.test(eingabeNullstelle.value)){
@@ -212,10 +211,7 @@ export const ausgabe = ref('');
     for (let i = 0; i < koeffizientenVollAufbereitet.value.length; i++) {
         sum.value += koeffizientenVollAufbereitet.value[i] * (Math.pow(parseInt(nullstelle.value), koeffizientenVollAufbereitet.value.length - i - 1));
     }
-    if (sum.value === 0) {
-        nullstelleGueltig.value = true;
-    }
-    else {
+    if (sum.value != 0) {
         nullstelleGueltig.value = false;
     }
 }
