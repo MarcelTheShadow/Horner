@@ -35,41 +35,34 @@ export const ausgabe = ref('');
 
 // Funktion, die den Wert des Inputs aktualisiert und überprüft, ob es sich um eine gültige Polynomfunktion und eine gültige Nullstelle handelt
 
-//TODO mach das richtig in einer Methode mit regex check für funktion, check von plus minus (oder alternativ anpassen der RegEx) und regex check für nullstelle
  const inputGueltigOderNicht = () => {
-    if (checkeRegEx()) {
+        // Standardmäßig ist die Funktion gültig, prüfe mittels RegEx und weiterer Logik, ob sie es tatsächlich ist 
         funktionGueltig.value = true;
+
+        // Regulärer Ausdruck einer Polynomfunktion mit viel Flexibilität
+        if((/^\s*[+-]?\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?(\s*[+-]\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*)*$/.test(zwischenstand.value)) === false) {
+            funktionGueltig.value = false;   
+        }
+        // Überprüft, ob der Input nur aus '+' und '-' besteht
         if (zwischenstand.value.match(/^[+-\s]*$/)) {
             funktionGueltig.value = false;
         }
         const inputVerarbeitet = zwischenstand.value.replace(/\s/g, '');
+        // Überprüft, ob der Input mit einem '+' oder '-' endet
         if (inputVerarbeitet[inputVerarbeitet.length - 1] === '+' || inputVerarbeitet[inputVerarbeitet.length - 1] === '-') {
             funktionGueltig.value = false;
         }
-        if (inputVerarbeitet.match(/\+\+|--|\+-|-\+/g)) {
-            funktionGueltig.value = false;
-        }
-    } else {
-        funktionGueltig.value = false;
-    }
-
-    // Nullstelle sollte eine natürliche Zahl sein, keine weiteren Zeichen erlaubt
-
-    if(/^-?\d+$/.test(eingabeNullstelle.value)){
+        // Nullstelle sollte eine natürliche Zahl sein, keine weiteren Zeichen erlaubt
+        if(/^-?\d+$/.test(eingabeNullstelle.value)){
         nullstelleGueltig.value = true;
-    } else {
-        nullstelleGueltig.value = false;
+        } else {
+            nullstelleGueltig.value = false;
+        }
     }
 
-}
+    
 
-// Überprüft, ob der Input eine gültige Polynomfunktion ist
-
- const checkeRegEx = () => {
-    // Regulärer Ausdruck einer Polynomfunktion
-    const POLYNOM_REGEX = /^\s*[+-]?\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?(\s*[+-]\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*)*$/;
-    return POLYNOM_REGEX.test(zwischenstand.value);
-}
+    
 
 // Liest einzelne Terme und Werte aus RegEx aus und wandelt sie in Format um, das für das Auslesen der Vorzeichen, Koeffizienten und Exponenten geeignet ist
 
