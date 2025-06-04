@@ -135,7 +135,7 @@ export const ausgabe = ref('');
         }
     }
 
-    const einzelnerTerm = /[+-]\d*\*x\^\d+/g;
+    const einzelnerTerm = /[+-]\d+\*x\^\d+/g;
 
     for (const match of zwischenstand.value.matchAll(einzelnerTerm)) {
         if (match) {
