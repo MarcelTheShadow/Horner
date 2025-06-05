@@ -16,7 +16,7 @@ import router from '../router/index.js';
 </template>
 
 <style scoped>
-@import '../assets/style.css';
+@import '../assets/styleForAll.css';
 
 .routerButtons {
     display: flex;

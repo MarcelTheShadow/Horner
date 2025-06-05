@@ -1,19 +1,19 @@
 <script setup>
-import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funktionGueltig, nullstelleGueltig, ausgabe, eingabeVerarbeiten, } from '../composables/polynomfunktionMethoden.js';
+import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funktionGueltig, nullstelleGueltig, ausgabe, eingabeVerarbeitenPolynomdivision} from '../composables/polynomfunktionMethoden.js';
 </script>
 
 <template>
     <div class="Ueberschrift">
-        Horner-Rechner
+        Horner-Rechner - Polynomdivision
     </div>
     <div class="inputUserTextAndButton">
         <div class="inputUserTextOnly">
-            <input type="text" v-model="eingabeFunktion" @keyup.enter="eingabeVerarbeiten()"
+            <input type="text" v-model="eingabeFunktion" @keyup.enter="eingabeVerarbeitenPolynomdivision()"
                 placeholder="Polynomfunktion" style="width: 20vw;" />
-            <input type="text" v-model="eingabeNullstelle" @keyup.enter="eingabeVerarbeiten()" placeholder="Nullstelle"
-                style="width: 10vw;">
+            <input type="text" v-model="eingabeNullstelle" @keyup.enter="eingabeVerarbeitenPolynomdivision()"
+                placeholder="Nullstelle" style="width: 10vw;">
         </div>
-        <button @click="eingabeVerarbeiten()">Führe Polynomdivision aus</button>
+        <button @click="eingabeVerarbeitenPolynomdivision()">Führe Polynomdivision aus</button>
     </div>
 
     <div class="text">
@@ -40,23 +40,6 @@ import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funkti
 </template>
 
 <style scoped>
-@import '../assets/style.css';
-
-.inputUserTextAndButton {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 40%;
-    row-gap: 10%;
-}
-
-.inputUserTextOnly {
-    display: flex;
-    justify-content: center;
-    align-items: row;
-    flex-direction: row;
-    height: 20%;
-    gap: 5%;
-}
+@import '../assets/styleForAll.css';
+@import '../assets/styleForTextInputs.css';
 </style>

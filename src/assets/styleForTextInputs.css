@@ -1,0 +1,17 @@
+.inputUserTextAndButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 40%;
+    row-gap: 10%;
+}
+
+.inputUserTextOnly {
+    display: flex;
+    justify-content: center;
+    align-items: row;
+    flex-direction: row;
+    height: 20%;
+    gap: 5%;
+}

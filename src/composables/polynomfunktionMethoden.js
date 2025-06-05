@@ -183,6 +183,7 @@ const polynomfunktionZuArrays = () => {
     // Koeffizienten und Exponenten extrahieren
     let i = 0;
     for (let match of zwischenstand.value.matchAll(/\d+/g)) {
+        // Da jeder Term aus Koeffizient und Exponent besteht, wird abwechselnd der Koeffizient und der Exponent in die jeweiligen Arrays eingefügt
         if (i % 2 === 0) {
             koeffizienten.value.push(parseInt(match[0]));
         } else {
@@ -204,14 +205,15 @@ const arraysSortieren = () => {
     }
 
     // In Array sollen alle Koeffizienten entsprechend der Höhe ihrer Exponenten gespeichert werden
-    let sortierteKoeffizienten = ref(new Array(highestExponent.value));
+    let sortierteKoeffizienten = ref(new Array(highestExponent.valueOf));
 
     // Initialisiert das Array mit 0
     for (let i = 0; i <= highestExponent; i++) {
         sortierteKoeffizienten.value[i] = 0;
     }
 
-    //Füge Koeffizienten termweise aus dem Array von polynomfunktionZuArrays in das Array sortedKoeffizienten ein
+    // Füge Koeffizienten termweise aus dem Array von polynomfunktionZuArrays in das Array sortedKoeffizienten ein
+    // Gleiche Exponenten werden addiert/subtrahiert, je nach Vorzeichen, jetzt gibt es nur noch ein Array mit den Koeffizienten, die nach Exponenten sortiert sind
     for (let i = 0; i < exponenten.value.length; i++) {
         let index = exponenten.value[i];
         if (vorzeichen.value[i] === "+") {
@@ -227,6 +229,8 @@ const arraysSortieren = () => {
     koeffizientenVollAufbereitet.value = [];
     koeffizientenVollAufbereitet.value = sortierteKoeffizienten.value;
 };
+
+// Überprüft, ob die eingegebene Nullstelle tatsächlich eine Nullstelle der Polynomfunktion ist
 
 const nullstelleVerifizieren = () => {
     const sum = ref(0);
@@ -253,16 +257,22 @@ const hornerSchema = () => {
         tmp.value =
             koeffizientenVollAufbereitet.value[i] * parseInt(nullstelle.value);
     }
+};
+
+// Entferne den letzten Eintrag, die Wertung der Exponenten ist durch die Verringerung der Länge des Arrays gegeben
+
+const entferneFunktionswert = () => {
     koeffizientenVollAufbereitet.value =
         koeffizientenVollAufbereitet.value.slice(
             0,
             koeffizientenVollAufbereitet.value.length - 1
         );
-};
+}
 
-// Umwandlung des Koeffizienten-Arrays zu lesebarer Funktion
+// Umwandlung des Koeffizienten-Arrays zu lesbarer Funktion
 
 const ergebnisZuString = () => {
+
     const ausgabeTmp = ref("");
     const highestExponent = ref(koeffizientenVollAufbereitet.value.length - 1);
     for (let i = 0; i < koeffizientenVollAufbereitet.value.length; i++) {
@@ -285,12 +295,10 @@ const ergebnisZuString = () => {
         }
     }
 
-    // Kann für mehrfaches Horner-Schema bei Ableitungen zur Differenzierbarkeit genutzt werden verwendet werden!
     if (ausgabeTmp.value === "") {
         ausgabeTmp.value = "0";
     }
 
-    // Ausgabe
     ausgabe.value = `${ausgabeTmp.value}`;
 };
 
@@ -305,8 +313,8 @@ const funktionswertZuString = () => {
     }`;
 };
 
-// Verarbeitet den Input, führt obige Funktionen aus
-export const eingabeVerarbeiten = () => {
+// Verarbeitet den Input, Funktion für Polynomdivision
+export const eingabeVerarbeitenPolynomdivision = () => {
     zwischenstand.value = eingabeFunktion.value;
     polynomfunktion.value = eingabeFunktion.value;
     nullstelle.value = eingabeNullstelle.value;
@@ -316,7 +324,24 @@ export const eingabeVerarbeiten = () => {
     arraysSortieren();
     nullstelleVerifizieren();
     hornerSchema();
-    //hornerSchema();
+    entferneFunktionswert();
     ergebnisZuString();
-    //funktionswertZuString();
+};
+
+// Verarbeitet den Input, Funktion für Funktionswertberechnung
+
+export const eingabeVerarbeitenFunktionswertberechnung = () => {
+    zwischenstand.value = eingabeFunktion.value;
+    polynomfunktion.value = eingabeFunktion.value;
+    nullstelle.value = eingabeNullstelle.value;
+    inputGueltigOderNicht();
+    polynomfunktionAuslesen();
+    polynomfunktionZuArrays();
+    arraysSortieren();
+    for(let i = 0; i < 5; i++) {
+        hornerSchema();
+        entferneFunktionswert();
+    }
+    hornerSchema();
+    funktionswertZuString();
 };
