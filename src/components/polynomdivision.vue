@@ -6,9 +6,8 @@ import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funkti
     <div class="Ueberschrift">
         Horner-Rechner
     </div>
-
-    <div class="eingabeAlles">
-        <div class="inputs">
+    <div class="inputUserTextAndButton">
+        <div class="inputUserTextOnly">
             <input type="text" v-model="eingabeFunktion" @keyup.enter="eingabeVerarbeiten()"
                 placeholder="Polynomfunktion" style="width: 20vw;" />
             <input type="text" v-model="eingabeNullstelle" @keyup.enter="eingabeVerarbeiten()" placeholder="Nullstelle"
@@ -17,7 +16,7 @@ import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funkti
         <button @click="eingabeVerarbeiten()">Führe Polynomdivision aus</button>
     </div>
 
-    <div class="anzeige">
+    <div class="output">
         <div v-if="(funktionGueltig && nullstelleGueltig)">
             <p>Eingegebene Polynomfunktion: {{ polynomfunktion }}</p>
             <p>Eingegebene Nullstelle: {{ nullstelle }}</p>
@@ -39,7 +38,3 @@ import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funkti
         </div>
     </div>
 </template>
-
-<style>
-@import '../assets/style.css';
-</style>

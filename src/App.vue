@@ -1,9 +1,8 @@
 <script setup>
-import interFace from './components/interFace.vue'
 </script>
 <template>
   <div class="App">
-    <interFace />
+    <router-view />
   </div>
 </template>
 
