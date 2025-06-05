@@ -16,7 +16,7 @@ import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funkti
         <button @click="eingabeVerarbeiten()">Führe Polynomdivision aus</button>
     </div>
 
-    <div class="output">
+    <div class="text">
         <div v-if="(funktionGueltig && nullstelleGueltig)">
             <p>Eingegebene Polynomfunktion: {{ polynomfunktion }}</p>
             <p>Eingegebene Nullstelle: {{ nullstelle }}</p>
@@ -38,3 +38,25 @@ import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funkti
         </div>
     </div>
 </template>
+
+<style scoped>
+@import '../assets/style.css';
+
+.inputUserTextAndButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 40%;
+    row-gap: 10%;
+}
+
+.inputUserTextOnly {
+    display: flex;
+    justify-content: center;
+    align-items: row;
+    flex-direction: row;
+    height: 20%;
+    gap: 5%;
+}
+</style>
