@@ -1,5 +1,5 @@
 <script setup>
-import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funktionGueltig, nullstelleGueltig, ausgabe, eingabeVerarbeitenPolynomdivision} from '../composables/polynomfunktionMethoden.js';
+import { eingabeFunktionPolynomdivision, eingabeNullstellePolynomdivision, polynomfunktionPolynomdivision, nullstellePolynomdivision, funktionGueltigIntern, stelleGueltigIntern, ausgabePolynomdivision, eingabeVerarbeitenPolynomdivision} from '../composables/polynomfunktionMethoden.js';
 </script>
 
 <template>
@@ -8,21 +8,21 @@ import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funkti
     </div>
     <div class="inputUserTextAndButton">
         <div class="inputUserTextOnly">
-            <input type="text" v-model="eingabeFunktion" @keyup.enter="eingabeVerarbeitenPolynomdivision()"
+            <input type="text" v-model="eingabeFunktionPolynomdivision" @keyup.enter="eingabeVerarbeitenPolynomdivision()"
                 placeholder="Polynomfunktion" style="width: 20vw;" />
-            <input type="text" v-model="eingabeNullstelle" @keyup.enter="eingabeVerarbeitenPolynomdivision()"
+            <input type="text" v-model="eingabeNullstellePolynomdivision" @keyup.enter="eingabeVerarbeitenPolynomdivision()"
                 placeholder="Nullstelle" style="width: 10vw;">
         </div>
         <button @click="eingabeVerarbeitenPolynomdivision()">Führe Polynomdivision aus</button>
     </div>
 
     <div class="text">
-        <div v-if="(funktionGueltig && nullstelleGueltig)">
-            <p>Eingegebene Polynomfunktion: {{ polynomfunktion }}</p>
-            <p>Eingegebene Nullstelle: {{ nullstelle }}</p>
-            <p>Ergebnis der Polynomdivision: {{ ausgabe }} </p>
+        <div v-if="(funktionGueltigIntern && stelleGueltigIntern)">
+            <p>Eingegebene Polynomfunktion: {{ polynomfunktionPolynomdivision }}</p>
+            <p>Eingegebene Nullstelle: {{ nullstellePolynomdivision }}</p>
+            <p>Ergebnis der Polynomdivision: {{ ausgabePolynomdivision }} </p>
         </div>
-        <div v-else-if="!funktionGueltig">
+        <div v-else-if="!funktionGueltigIntern">
             <p>Die Funktion ist ungültig!</p>
             <p>Für die Eingabe ist zu beachten:</p>
             <ul>
@@ -32,7 +32,7 @@ import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funkti
                 </li>
             </ul>
         </div>
-        <div v-else-if="!nullstelleGueltig">
+        <div v-else-if="!stelleGueltigIntern">
             <p>Die Nullstelle ist ungültig! Wenn man die angegebene Stelle in die Polynomfunktion eingibt, muss 0
                 als Ergebnis rausbekommen!</p>
         </div>

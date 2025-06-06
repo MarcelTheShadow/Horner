@@ -1,5 +1,5 @@
 <script setup>
-import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funktionGueltig, nullstelleGueltig, ausgabe, eingabeVerarbeitenFunktionswertberechnung } from '../composables/polynomfunktionMethoden.js';
+import { eingabeFunktionFunktionswertberechnung, eingabeStelleFunktionswertberechnung, polynomfunktionFunktionswertberechnung, stelleFunktionswertberechnung, funktionGueltigIntern, stelleGueltigIntern, ausgabeFunktionswertberechnung, eingabeVerarbeitenFunktionswertberechnung } from '../composables/polynomfunktionMethoden.js';
 </script>
 
 <template>
@@ -8,14 +8,19 @@ import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funkti
     </div>
     <div class="inputUserTextAndButton">
         <div class="inputUserTextOnly">
-            <input type="text" v-model="eingabeFunktion" @keyup.enter="eingabeVerarbeitenFunktionswertberechnung()"
+            <input type="text" v-model="eingabeFunktionFunktionswertberechnung" @keyup.enter="eingabeVerarbeitenFunktionswertberechnung()"
                 placeholder="Polynomfunktion" style="width: 20vw;" />
-            <input type="text" v-model="eingabeNullstelle" @keyup.enter="eingabeVerarbeitenFunktionswertberechnung()"
+            <input type="text" v-model="eingabeStelleFunktionswertberechnung" @keyup.enter="eingabeVerarbeitenFunktionswertberechnung()"
                 placeholder="Stelle von x" style="width: 10vw;">
             <input type="text" v-model="eingabeAnzahlAbleitungen" @keyup.enter="eingabeVerarbeitenFunktionswertberechnung()"
                 placeholder="Höhe der Ableitung" style="width: 10vw;">
         </div>
         <button @click="eingabeVerarbeitenFunktionswertberechnung()">Führe Funktionswertberechnung aus</button>
+    </div>
+    <div class="text">
+          <p>Eingegebene Polynomfunktion: {{ polynomfunktionFunktionswertberechnung }}</p>
+            <p>Eingegebene Nullstelle: {{ stelleFunktionswertberechnung }}</p>
+            <p>Ergebnis der Polynomdivision: {{ ausgabeFunktionswertberechnung }} </p>
     </div>
 </template>
 
