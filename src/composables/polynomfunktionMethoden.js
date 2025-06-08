@@ -1,31 +1,49 @@
 import { ref } from "vue";
 
+
+//// POLYNOMDIVISION
+
+
 // Direkter Wert der Polynomfunktion für Polynomdivision aus Input über v-model
 export const eingabeFunktionPolynomdivision = ref("");
 
-// Direkter Wert der Polynomfunktion für Funktionswertberechnung aus Input über v-model
-export const eingabeFunktionFunktionswertberechnung = ref("");
-
 // Direkter Wert der Nullstelle für Polynomdivision aus Input über v-model
 export const eingabeNullstellePolynomdivision = ref("");
+
+// Polynomfunktion zum Zeitpunkt des Drückens des Buttons für Polynomdivision
+export const polynomfunktionPolynomdivision = ref("");
+
+// Nullstelle zum Zeitpunkt des Drückens des Buttons
+export const nullstellePolynomdivision = ref("");
+
+// Ausgabe auf der Webseite für Polynomdivision
+export const ausgabePolynomdivision = ref("");
+
+
+//// FUNKTIONSWERTBERECHNUNG
+
+
+// Direkter Wert der Polynomfunktion für Funktionswertberechnung aus Input über v-model
+export const eingabeFunktionFunktionswertberechnung = ref("");
 
 // Direkter Wert der Stelle für Funktionswertberechnung aus Input über v-model
 export const eingabeStelleFunktionswertberechnung = ref("");
 
 // Direkter Wert der Höhe der Ableitung für die Funktionswertberechnung aus Input über v-model
-export const eingabeAnzahlAbleitungen = ref("");
-
-// Polynomfunktion zum Zeitpunkt des Drückens des Buttons für Polynomdivision
-export const polynomfunktionPolynomdivision = ref("");
+export const eingabeAnzahlAbleitungenFunktionswertberechnung = ref("");
 
 // Polynomfunktion zum Zeitpunkt des Drückens des Buttons für Funktionswertberechnung
 export const polynomfunktionFunktionswertberechnung = ref("");
 
-// Nullstelle zum Zeitpunkt des Drückens des Buttons
-export const nullstellePolynomdivision = ref("");
-
 // Stelle zum Zeitpunkt des Drückens des Buttons bei Funktionswertberechnung
 export const stelleFunktionswertberechnung = ref("");
+
+// Ausgabe auf der Webseite für Funktionswertberechnung
+export const ausgabeFunktionswertberechnung = ref("");
+
+
+//// INTERNE VARIABLEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
+
 
 // Höhe der Ableitung für die Funktionswertberechnung zum Zeitpunkt des Drückens des Buttons
 const anzahlAbleitungenIntern = ref("");
@@ -40,7 +58,7 @@ export const funktionGueltigIntern = ref(false);
 export const stelleGueltigIntern = ref(false);
 
 // Zwischenstand von eingegebeneFunktion, um den Input zu verarbeiten
-const zwischenstandIntern = ref("");
+const zwischenstandPolynomfunktionIntern = ref("");
 
 // Arrays für Vorzeichen, Koeffizienten und Exponenten beim Verarbeiten der Polynomfunktion
 const vorzeichenIntern = ref([]);
@@ -50,11 +68,9 @@ const exponentenIntern = ref([]);
 // Array nach Verarbeitung
 const koeffizientenVollAufbereitetIntern = ref([]);
 
-// Ausgabe auf der Webseite für Polynomdivision
-export const ausgabePolynomdivision = ref("");
 
-// Ausgabe auf der Webseite für Funktionswertberechnung
-export const ausgabeFunktionswertberechnung = ref("");
+// FUNKTIONEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
+
 
 // Funktion, die den Wert des Inputs aktualisiert und überprüft, ob es sich um eine gültige Polynomfunktion und eine gültige Nullstelle handelt
 
@@ -65,16 +81,16 @@ const polynomfunktionGueltigOderNicht = () => {
     // Regulärer Ausdruck einer Polynomfunktion mit viel Flexibilität
     if (
         /^\s*[+-]?\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?(\s*[+-]\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*)*$/.test(
-            zwischenstandIntern.value
+            zwischenstandPolynomfunktionIntern.value
         ) === false
     ) {
         funktionGueltigIntern.value = false;
     }
     // Überprüft, ob der Input nur aus '+' und '-' besteht
-    if (zwischenstandIntern.value.match(/^[+-\s]*$/)) {
+    if (zwischenstandPolynomfunktionIntern.value.match(/^[+-\s]*$/)) {
         funktionGueltigIntern.value = false;
     }
-    const inputVerarbeitet = zwischenstandIntern.value.replace(/\s/g, "");
+    const inputVerarbeitet = zwischenstandPolynomfunktionIntern.value.replace(/\s/g, "");
     // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet
     if (
         inputVerarbeitet[inputVerarbeitet.length - 1] === "+" ||
@@ -113,50 +129,50 @@ const polynomfunktionAuslesen = () => {
 
     // Entfernt alle Leerzeichen aus dem Input
     let i = 0;
-    while (i < zwischenstandIntern.value.length) {
-        if (zwischenstandIntern.value[i] === " ") {
-            zwischenstandIntern.value =
-                zwischenstandIntern.value.slice(0, i) +
-                zwischenstandIntern.value.slice(i + 1);
+    while (i < zwischenstandPolynomfunktionIntern.value.length) {
+        if (zwischenstandPolynomfunktionIntern.value[i] === " ") {
+            zwischenstandPolynomfunktionIntern.value =
+                zwischenstandPolynomfunktionIntern.value.slice(0, i) +
+                zwischenstandPolynomfunktionIntern.value.slice(i + 1);
             i--;
         }
         i++;
     }
     // Fügt dem Input ein '+' vor, wenn der erste Buchstabe kein '+' oder '-' ist, damit erster Term auch erkannt wird
     if (
-        zwischenstandIntern.value[0] != "+" &&
-        zwischenstandIntern.value[0] != "-"
+        zwischenstandPolynomfunktionIntern.value[0] != "+" &&
+        zwischenstandPolynomfunktionIntern.value[0] != "-"
     ) {
-        zwischenstandIntern.value = "+" + zwischenstandIntern.value;
+        zwischenstandPolynomfunktionIntern.value = "+" + zwischenstandPolynomfunktionIntern.value;
     }
     // Fügt dem Input ein '*' oder '1*' vor dem 'x' hinzu, wenn es nicht schon da ist
     i = 0;
     let nachVorzeichen = false;
-    while (i < zwischenstandIntern.value.length) {
+    while (i < zwischenstandPolynomfunktionIntern.value.length) {
         if (
-            zwischenstandIntern.value[i] === "+" ||
-            zwischenstandIntern.value[i] === "-"
+            zwischenstandPolynomfunktionIntern.value[i] === "+" ||
+            zwischenstandPolynomfunktionIntern.value[i] === "-"
         ) {
             nachVorzeichen = true;
         }
         if (
             nachVorzeichen &&
-            zwischenstandIntern.value[i] === "x" &&
-            zwischenstandIntern.value[i - 1] != "*"
+            zwischenstandPolynomfunktionIntern.value[i] === "x" &&
+            zwischenstandPolynomfunktionIntern.value[i - 1] != "*"
         ) {
             if (
-                zwischenstandIntern.value[i - 1] === "+" ||
-                zwischenstandIntern.value[i - 1] === "-"
+                zwischenstandPolynomfunktionIntern.value[i - 1] === "+" ||
+                zwischenstandPolynomfunktionIntern.value[i - 1] === "-"
             ) {
-                zwischenstandIntern.value =
-                    zwischenstandIntern.value.slice(0, i) +
+                zwischenstandPolynomfunktionIntern.value =
+                    zwischenstandPolynomfunktionIntern.value.slice(0, i) +
                     "1*" +
-                    zwischenstandIntern.value.slice(i);
+                    zwischenstandPolynomfunktionIntern.value.slice(i);
             } else {
-                zwischenstandIntern.value =
-                    zwischenstandIntern.value.slice(0, i) +
+                zwischenstandPolynomfunktionIntern.value =
+                    zwischenstandPolynomfunktionIntern.value.slice(0, i) +
                     "*" +
-                    zwischenstandIntern.value.slice(i);
+                    zwischenstandPolynomfunktionIntern.value.slice(i);
             }
             nachVorzeichen = false;
         }
@@ -164,15 +180,15 @@ const polynomfunktionAuslesen = () => {
     }
     // Fügt dem Input ein '^1' hinzu, wenn es nicht schon da ist
     i = 0;
-    while (i < zwischenstandIntern.value.length) {
+    while (i < zwischenstandPolynomfunktionIntern.value.length) {
         if (
-            zwischenstandIntern.value[i] === "x" &&
-            zwischenstandIntern.value[i + 1] != "^"
+            zwischenstandPolynomfunktionIntern.value[i] === "x" &&
+            zwischenstandPolynomfunktionIntern.value[i + 1] != "^"
         ) {
-            zwischenstandIntern.value =
-                zwischenstandIntern.value.slice(0, i + 1) +
+            zwischenstandPolynomfunktionIntern.value =
+                zwischenstandPolynomfunktionIntern.value.slice(0, i + 1) +
                 "^1" +
-                zwischenstandIntern.value.slice(i + 1);
+                zwischenstandPolynomfunktionIntern.value.slice(i + 1);
         }
         i++;
     }
@@ -180,35 +196,35 @@ const polynomfunktionAuslesen = () => {
     // Falls es sich um eine Konstante bzw. x^0 handelt, wird 'x^0' hinzugefügt
     i = 1;
     let xIstVorhanden = false;
-    while (i < zwischenstandIntern.value.length) {
+    while (i < zwischenstandPolynomfunktionIntern.value.length) {
         xIstVorhanden = false;
         while (
-            zwischenstandIntern.value[i] != "+" &&
-            zwischenstandIntern.value[i] != "-" &&
-            i < zwischenstandIntern.value.length
+            zwischenstandPolynomfunktionIntern.value[i] != "+" &&
+            zwischenstandPolynomfunktionIntern.value[i] != "-" &&
+            i < zwischenstandPolynomfunktionIntern.value.length
         ) {
-            if (zwischenstandIntern.value[i] === "x") {
+            if (zwischenstandPolynomfunktionIntern.value[i] === "x") {
                 xIstVorhanden = true;
             }
             i++;
         }
         if (!xIstVorhanden) {
-            zwischenstandIntern.value =
-                zwischenstandIntern.value.slice(0, i) +
+            zwischenstandPolynomfunktionIntern.value =
+                zwischenstandPolynomfunktionIntern.value.slice(0, i) +
                 "*x^0" +
-                zwischenstandIntern.value.slice(i);
+                zwischenstandPolynomfunktionIntern.value.slice(i);
             i += 5;
         }
     }
 
     const einzelnerTerm = /[+-]\d+\*x\^\d+/g;
 
-    for (const match of zwischenstandIntern.value.matchAll(einzelnerTerm)) {
+    for (const match of zwischenstandPolynomfunktionIntern.value.matchAll(einzelnerTerm)) {
         if (match) {
             terme.value += match + ",";
         }
     }
-    zwischenstandIntern.value = terme.value;
+    zwischenstandPolynomfunktionIntern.value = terme.value;
 };
 
 // Konvertiert die Polynomfunktion in Arrays für Vorzeichen, Koeffizienten und Exponenten
@@ -220,13 +236,13 @@ const polynomfunktionZuArrays = () => {
     exponentenIntern.value = [];
 
     // Vorzeichen extrahieren
-    for (let match of zwischenstandIntern.value.matchAll(/[+-]/g)) {
+    for (let match of zwischenstandPolynomfunktionIntern.value.matchAll(/[+-]/g)) {
         vorzeichenIntern.value.push(match[0]);
     }
 
     // Koeffizienten und Exponenten extrahieren
     let i = 0;
-    for (let match of zwischenstandIntern.value.matchAll(/\d+/g)) {
+    for (let match of zwischenstandPolynomfunktionIntern.value.matchAll(/\d+/g)) {
         // Da jeder Term aus Koeffizient und Exponent besteht, wird abwechselnd der Koeffizient und der Exponent in die jeweiligen Arrays eingefügt
         if (i % 2 === 0) {
             koeffizientenIntern.value.push(parseInt(match[0]));
@@ -372,9 +388,13 @@ const funktionswertZuString = () => {
     ausgabeFunktionswertberechnung.value = `${ausgabeTmp.value}`;
 };
 
-// Verarbeitet den Input, Funktion für Polynomdivision
+
+// MAIN-FUNKTIONEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
+
+
+// Polynomdivision
 export const eingabeVerarbeitenPolynomdivision = () => {
-    zwischenstandIntern.value = eingabeFunktionPolynomdivision.value;
+    zwischenstandPolynomfunktionIntern.value = eingabeFunktionPolynomdivision.value;
     polynomfunktionPolynomdivision.value = eingabeFunktionPolynomdivision.value;
     stelleIntern.value = eingabeNullstellePolynomdivision.value;
     nullstellePolynomdivision.value = eingabeNullstellePolynomdivision.value;
@@ -389,16 +409,15 @@ export const eingabeVerarbeitenPolynomdivision = () => {
     ergebnisZuString();
 };
 
-// Verarbeitet den Input, Funktion für Funktionswertberechnung
-
+// Funktionswertberechnung
 export const eingabeVerarbeitenFunktionswertberechnung = () => {
-    zwischenstandIntern.value = eingabeFunktionFunktionswertberechnung.value;
+    zwischenstandPolynomfunktionIntern.value = eingabeFunktionFunktionswertberechnung.value;
     polynomfunktionFunktionswertberechnung.value =
         eingabeFunktionFunktionswertberechnung.value;
     stelleIntern.value = eingabeStelleFunktionswertberechnung.value;
     stelleFunktionswertberechnung.value =
         eingabeStelleFunktionswertberechnung.value;
-    anzahlAbleitungenIntern.value = eingabeAnzahlAbleitungen.value;
+    anzahlAbleitungenIntern.value = eingabeAnzahlAbleitungenFunktionswertberechnung.value;
     polynomfunktionGueltigOderNicht();
     stelleGueltigOderNicht();
     polynomfunktionAuslesen();
