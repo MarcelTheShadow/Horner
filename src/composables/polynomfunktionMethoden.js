@@ -12,6 +12,9 @@ export const eingabeNullstellePolynomdivision = ref("");
 // Direkter Wert der Stelle für Funktionswertberechnung aus Input über v-model
 export const eingabeStelleFunktionswertberechnung = ref("");
 
+// Direkter Wert der Höhe der Ableitung für die Funktionswertberechnung aus Input über v-model
+export const eingabeAnzahlAbleitungen = ref("");
+
 // Polynomfunktion zum Zeitpunkt des Drückens des Buttons für Polynomdivision
 export const polynomfunktionPolynomdivision = ref("");
 
@@ -23,6 +26,12 @@ export const nullstellePolynomdivision = ref("");
 
 // Stelle zum Zeitpunkt des Drückens des Buttons bei Funktionswertberechnung
 export const stelleFunktionswertberechnung = ref("");
+
+// Höhe der Ableitung für die Funktionswertberechnung zum Zeitpunkt des Drückens des Buttons
+const anzahlAbleitungenIntern = ref("");
+
+// Interne (Null)stelle zur Berechnung
+const stelleIntern = ref("");
 
 // Ist Input eine gültige Polynomfunktion?
 export const funktionGueltigIntern = ref(false);
@@ -83,7 +92,7 @@ const nullstelleGueltigOderNicht = () => {
     } else {
         stelleGueltigIntern.value = false;
     }
-}
+};
 
 // Stelle für Funktionswertberechnung wird überprüft, sollte eine natürliche Zahl sein, keine weiteren Zeichen erlaubt
 
@@ -93,7 +102,7 @@ const stelleGueltigOderNicht = () => {
     } else {
         stelleGueltigIntern.value = false;
     }
-}
+};
 
 // Liest einzelne Terme und Werte aus RegEx aus und wandelt sie in Format um, das für das Auslesen der Vorzeichen, Koeffizienten und Exponenten geeignet ist
 
@@ -114,14 +123,20 @@ const polynomfunktionAuslesen = () => {
         i++;
     }
     // Fügt dem Input ein '+' vor, wenn der erste Buchstabe kein '+' oder '-' ist, damit erster Term auch erkannt wird
-    if (zwischenstandIntern.value[0] != "+" && zwischenstandIntern.value[0] != "-") {
+    if (
+        zwischenstandIntern.value[0] != "+" &&
+        zwischenstandIntern.value[0] != "-"
+    ) {
         zwischenstandIntern.value = "+" + zwischenstandIntern.value;
     }
     // Fügt dem Input ein '*' oder '1*' vor dem 'x' hinzu, wenn es nicht schon da ist
     i = 0;
     let nachVorzeichen = false;
     while (i < zwischenstandIntern.value.length) {
-        if (zwischenstandIntern.value[i] === "+" || zwischenstandIntern.value[i] === "-") {
+        if (
+            zwischenstandIntern.value[i] === "+" ||
+            zwischenstandIntern.value[i] === "-"
+        ) {
             nachVorzeichen = true;
         }
         if (
@@ -280,11 +295,12 @@ const nullstelleVerifizieren = () => {
 
 const hornerSchema = () => {
     const tmp = ref(0);
-    for (let i = 0; i < koeffizientenVollAufbereitet.value.length; i++) {
-        koeffizientenVollAufbereitet.value[i] =
-            koeffizientenVollAufbereitet.value[i] + tmp.value;
+    for (let i = 0; i < koeffizientenVollAufbereitetIntern.value.length; i++) {
+        koeffizientenVollAufbereitetIntern.value[i] =
+            koeffizientenVollAufbereitetIntern.value[i] + tmp.value;
         tmp.value =
-            koeffizientenVollAufbereitet.value[i] * parseInt(nullstelle.value);
+            koeffizientenVollAufbereitetIntern.value[i] *
+            parseInt(stelleIntern.value);
     }
 };
 
@@ -296,14 +312,15 @@ const entferneFunktionswert = () => {
             0,
             koeffizientenVollAufbereitetIntern.value.length - 1
         );
-}
+};
 
 // Umwandlung des Koeffizienten-Arrays zu lesbarer Funktion
 
 const ergebnisZuString = () => {
-
     const ausgabeTmp = ref("");
-    const highestExponent = ref(koeffizientenVollAufbereitetIntern.value.length - 1);
+    const highestExponent = ref(
+        koeffizientenVollAufbereitetIntern.value.length - 1
+    );
     for (let i = 0; i < koeffizientenVollAufbereitetIntern.value.length; i++) {
         if (koeffizientenVollAufbereitetIntern.value[i] != 0) {
             if (koeffizientenVollAufbereitetIntern.value[i] > 0) {
@@ -314,7 +331,8 @@ const ergebnisZuString = () => {
             if (highestExponent.value - i === 0) {
                 ausgabeTmp.value += koeffizientenVollAufbereitetIntern.value[i];
             } else if (highestExponent.value - i === 1) {
-                ausgabeTmp.value += koeffizientenVollAufbereitetIntern.value[i] + "x";
+                ausgabeTmp.value +=
+                    koeffizientenVollAufbereitetIntern.value[i] + "x";
             } else {
                 ausgabeTmp.value +=
                     koeffizientenVollAufbereitetIntern.value[i] +
@@ -331,21 +349,34 @@ const ergebnisZuString = () => {
     ausgabePolynomdivision.value = `${ausgabeTmp.value}`;
 };
 
+// Entsprechend der Höhe der Ableitung wird die Funktion hornerSchema() und entferneFunktionswert() so oft aufgerufen, wie es Ableitungen gibt
+
+const iterationenHornerSchema = () => {
+    for (let i = 0; i < anzahlAbleitungenIntern.value; i++) {
+        hornerSchema();
+        entferneFunktionswert();
+    }
+}
+
 // Anstatt Polynomdivison für Auslesen des Funktionswertes (der Ableitung)
 
 const funktionswertZuString = () => {
-    //TODO Fakultät
-    ausgabeFunktionswertberechnung.value = `${
+    let ausgabeTmp = ref(
         koeffizientenVollAufbereitetIntern.value[
             koeffizientenVollAufbereitetIntern.value.length - 1
         ]
-    }`;
+    );
+    for (let i = 1; i <= anzahlAbleitungenIntern.value; i++) {
+        ausgabeTmp.value = ausgabeTmp.value * i;
+    }
+    ausgabeFunktionswertberechnung.value = `${ausgabeTmp.value}`;
 };
 
 // Verarbeitet den Input, Funktion für Polynomdivision
 export const eingabeVerarbeitenPolynomdivision = () => {
     zwischenstandIntern.value = eingabeFunktionPolynomdivision.value;
     polynomfunktionPolynomdivision.value = eingabeFunktionPolynomdivision.value;
+    stelleIntern.value = eingabeNullstellePolynomdivision.value;
     nullstellePolynomdivision.value = eingabeNullstellePolynomdivision.value;
     polynomfunktionGueltigOderNicht();
     nullstelleGueltigOderNicht();
@@ -362,17 +393,19 @@ export const eingabeVerarbeitenPolynomdivision = () => {
 
 export const eingabeVerarbeitenFunktionswertberechnung = () => {
     zwischenstandIntern.value = eingabeFunktionFunktionswertberechnung.value;
-    polynomfunktionFunktionswertberechnung.value = eingabeFunktionFunktionswertberechnung.value;
-    stelleFunktionswertberechnung.value = eingabeStelleFunktionswertberechnung.value;
+    polynomfunktionFunktionswertberechnung.value =
+        eingabeFunktionFunktionswertberechnung.value;
+    stelleIntern.value = eingabeStelleFunktionswertberechnung.value;
+    stelleFunktionswertberechnung.value =
+        eingabeStelleFunktionswertberechnung.value;
+    anzahlAbleitungenIntern.value = eingabeAnzahlAbleitungen.value;
     polynomfunktionGueltigOderNicht();
     stelleGueltigOderNicht();
     polynomfunktionAuslesen();
     polynomfunktionZuArrays();
     arraysSortieren();
-    for(let i = 0; i < 1; i++) {
-        hornerSchema();
-        entferneFunktionswert();
-    }
+    iterationenHornerSchema();
     hornerSchema();
     funktionswertZuString();
 };
+

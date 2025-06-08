@@ -1,5 +1,5 @@
 <script setup>
-import { eingabeFunktionFunktionswertberechnung, eingabeStelleFunktionswertberechnung, polynomfunktionFunktionswertberechnung, stelleFunktionswertberechnung, funktionGueltigIntern, stelleGueltigIntern, ausgabeFunktionswertberechnung, eingabeVerarbeitenFunktionswertberechnung } from '../composables/polynomfunktionMethoden.js';
+import { eingabeFunktionFunktionswertberechnung, eingabeStelleFunktionswertberechnung, eingabeAnzahlAbleitungen, polynomfunktionFunktionswertberechnung, stelleFunktionswertberechnung, funktionGueltigIntern, stelleGueltigIntern, ausgabeFunktionswertberechnung, eingabeVerarbeitenFunktionswertberechnung } from '../composables/polynomfunktionMethoden.js';
 </script>
 
 <template>
