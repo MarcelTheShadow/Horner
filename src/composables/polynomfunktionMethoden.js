@@ -90,13 +90,19 @@ const polynomfunktionGueltigOderNicht = () => {
     if (zwischenstandPolynomfunktionIntern.value.match(/^[+-\s]*$/)) {
         funktionGueltigIntern.value = false;
     }
-    const inputVerarbeitet = zwischenstandPolynomfunktionIntern.value.replace(/\s/g, "");
+    const inputVerarbeitet = ref(zwischenstandPolynomfunktionIntern.value.replace(/\s/g, ""));
     // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet
     if (
         inputVerarbeitet[inputVerarbeitet.length - 1] === "+" ||
         inputVerarbeitet[inputVerarbeitet.length - 1] === "-"
     ) {
         funktionGueltigIntern.value = false;
+    }
+    for(const match of inputVerarbeitet.value.matchAll(/\*/g)){
+        // Überprüft, ob der Input der Polynomfunktion ein '*' vor einem '+' oder '-' hat
+        if (inputVerarbeitet.value[match.index - 1] === "+" || inputVerarbeitet.value[match.index - 1] === "-" || match.index - 1 < 0) {
+            funktionGueltigIntern.value = false;
+        }
     }
 };
 
@@ -217,9 +223,7 @@ const polynomfunktionAuslesen = () => {
         }
     }
 
-    const einzelnerTerm = /[+-]\d+\*x\^\d+/g;
-
-    for (const match of zwischenstandPolynomfunktionIntern.value.matchAll(einzelnerTerm)) {
+    for (const match of zwischenstandPolynomfunktionIntern.value.matchAll(/[+-]\d+\*x\^\d+/g)) {
         if (match) {
             terme.value += match + ",";
         }
@@ -236,13 +240,13 @@ const polynomfunktionZuArrays = () => {
     exponentenIntern.value = [];
 
     // Vorzeichen extrahieren
-    for (let match of zwischenstandPolynomfunktionIntern.value.matchAll(/[+-]/g)) {
+    for (const match of zwischenstandPolynomfunktionIntern.value.matchAll(/[+-]/g)) {
         vorzeichenIntern.value.push(match[0]);
     }
 
     // Koeffizienten und Exponenten extrahieren
     let i = 0;
-    for (let match of zwischenstandPolynomfunktionIntern.value.matchAll(/\d+/g)) {
+    for (const match of zwischenstandPolynomfunktionIntern.value.matchAll(/\d+/g)) {
         // Da jeder Term aus Koeffizient und Exponent besteht, wird abwechselnd der Koeffizient und der Exponent in die jeweiligen Arrays eingefügt
         if (i % 2 === 0) {
             koeffizientenIntern.value.push(parseInt(match[0]));
