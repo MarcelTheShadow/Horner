@@ -19,6 +19,12 @@ export const nullstellePolynomdivision = ref("");
 // Ausgabe auf der Webseite für Polynomdivision
 export const ausgabePolynomdivision = ref("");
 
+// Ist Input eine gültige Polynomfunktion?
+export const funktionGueltigPolynomdivision = ref(false);
+
+// Handelt es sich bei der eingegebenen Nullstelle tatsächlich um eine Nullstelle für die gegebene Funktion?
+export const stelleGueltigPolynomdivision = ref(false);
+
 
 //// FUNKTIONSWERTBERECHNUNG
 
@@ -41,6 +47,15 @@ export const stelleFunktionswertberechnung = ref("");
 // Ausgabe auf der Webseite für Funktionswertberechnung
 export const ausgabeFunktionswertberechnung = ref("");
 
+// Ist Input eine gültige Polynomfunktion?
+export const funktionGueltigFunktionswertberechnung = ref(false);
+
+// Handelt es sich bei der eingegebenen Nullstelle tatsächlich um eine Nullstelle für die gegebene Funktion?
+export const stelleGueltigFunktionswertberechnung = ref(false);
+
+// Handelt es sich bei der eingegebenen Ableitungshöhe tatsächlich um eine gültige Angabe?
+export const ableitungshoheGueltigFunktionswertberechnung = ref(false);
+
 
 //// INTERNE VARIABLEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
 
@@ -50,12 +65,6 @@ const anzahlAbleitungenIntern = ref("");
 
 // Interne (Null)stelle zur Berechnung
 const stelleIntern = ref("");
-
-// Ist Input eine gültige Polynomfunktion?
-export const funktionGueltigIntern = ref(false);
-
-// Handelt es sich bei der eingegebenen Nullstelle tatsächlich um eine Nullstelle für die gegebene Funktion?
-export const stelleGueltigIntern = ref(false);
 
 // Zwischenstand von eingegebeneFunktion, um den Input zu verarbeiten
 const zwischenstandPolynomfunktionIntern = ref("");
@@ -72,11 +81,11 @@ const koeffizientenVollAufbereitetIntern = ref([]);
 // FUNKTIONEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
 
 
-// Funktion, die den Wert des Inputs aktualisiert und überprüft, ob es sich um eine gültige Polynomfunktion und eine gültige Nullstelle handelt
+// Funktion, die bei der Polynomdivision den Wert des Inputs aktualisiert und überprüft, ob es sich um eine gültige Polynomfunktion handelt
 
-const polynomfunktionGueltigOderNicht = () => {
+const polynomfunktionGueltigOderNichtPolynomdivision = () => {
     // Standardmäßig ist die Funktion gültig, prüfe mittels RegEx und weiterer Logik, ob sie es tatsächlich ist
-    funktionGueltigIntern.value = true;
+    funktionGueltigPolynomdivision.value = true;
 
     // Regulärer Ausdruck einer Polynomfunktion mit viel Flexibilität
     if (
@@ -84,11 +93,11 @@ const polynomfunktionGueltigOderNicht = () => {
             zwischenstandPolynomfunktionIntern.value
         ) === false
     ) {
-        funktionGueltigIntern.value = false;
+        funktionGueltigPolynomdivision.value = false;
     }
     // Überprüft, ob der Input nur aus '+' und '-' besteht
     if (zwischenstandPolynomfunktionIntern.value.match(/^[+-\s]*$/)) {
-        funktionGueltigIntern.value = false;
+        funktionGueltigPolynomdivision.value = false;
     }
     const inputVerarbeitet = ref(zwischenstandPolynomfunktionIntern.value.replace(/\s/g, ""));
     // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet
@@ -96,33 +105,77 @@ const polynomfunktionGueltigOderNicht = () => {
         inputVerarbeitet[inputVerarbeitet.length - 1] === "+" ||
         inputVerarbeitet[inputVerarbeitet.length - 1] === "-"
     ) {
-        funktionGueltigIntern.value = false;
+        funktionGueltigPolynomdivision.value = false;
     }
     for(const match of inputVerarbeitet.value.matchAll(/\*/g)){
         // Überprüft, ob der Input der Polynomfunktion ein '*' vor einem '+' oder '-' hat
         if (inputVerarbeitet.value[match.index - 1] === "+" || inputVerarbeitet.value[match.index - 1] === "-" || match.index - 1 < 0) {
-            funktionGueltigIntern.value = false;
+            funktionGueltigPolynomdivision.value = false;
+        }
+    }
+};
+
+// Funktion, die bei der Funktionswertberechnung den Wert des Inputs aktualisiert und überprüft, ob es sich um eine gültige Polynomfunktion handelt
+
+const polynomfunktionGueltigOderNichtFunktionswertberechnung = () => {
+    // Standardmäßig ist die Funktion gültig, prüfe mittels RegEx und weiterer Logik, ob sie es tatsächlich ist
+    funktionGueltigFunktionswertberechnung.value = true;
+
+    // Regulärer Ausdruck einer Polynomfunktion mit viel Flexibilität
+    if (
+        /^\s*[+-]?\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?(\s*[+-]\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*)*$/.test(
+            zwischenstandPolynomfunktionIntern.value
+        ) === false
+    ) {
+        funktionGueltigFunktionswertberechnung.value = false;
+    }
+    // Überprüft, ob der Input nur aus '+' und '-' besteht
+    if (zwischenstandPolynomfunktionIntern.value.match(/^[+-\s]*$/)) {
+        funktionGueltigFunktionswertberechnung.value = false;
+    }
+    const inputVerarbeitet = ref(zwischenstandPolynomfunktionIntern.value.replace(/\s/g, ""));
+    // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet
+    if (
+        inputVerarbeitet[inputVerarbeitet.length - 1] === "+" ||
+        inputVerarbeitet[inputVerarbeitet.length - 1] === "-"
+    ) {
+        funktionGueltigFunktionswertberechnung.value = false;
+    }
+    for(const match of inputVerarbeitet.value.matchAll(/\*/g)){
+        // Überprüft, ob der Input der Polynomfunktion ein '*' vor einem '+' oder '-' hat
+        if (inputVerarbeitet.value[match.index - 1] === "+" || inputVerarbeitet.value[match.index - 1] === "-" || match.index - 1 < 0) {
+            funktionGueltigFunktionswertberechnung.value = false;
         }
     }
 };
 
 // Nullstelle für Polynomdivision wird überprüft, sollte eine natürliche Zahl sein, keine weiteren Zeichen erlaubt
 
-const nullstelleGueltigOderNicht = () => {
+const nullstelleGueltigOderNichtPolynomdivision = () => {
     if (/^-?\d+$/.test(eingabeNullstellePolynomdivision.value)) {
-        stelleGueltigIntern.value = true;
+        stelleGueltigPolynomdivision.value = true;
     } else {
-        stelleGueltigIntern.value = false;
+        stelleGueltigPolynomdivision.value = false;
     }
 };
 
 // Stelle für Funktionswertberechnung wird überprüft, sollte eine natürliche Zahl sein, keine weiteren Zeichen erlaubt
 
-const stelleGueltigOderNicht = () => {
+const stelleGueltigOderNichtFunktionswertberechnung = () => {
     if (/^-?\d+$/.test(eingabeStelleFunktionswertberechnung.value)) {
-        stelleGueltigIntern.value = true;
+        stelleGueltigFunktionswertberechnung.value = true;
     } else {
-        stelleGueltigIntern.value = false;
+        stelleGueltigFunktionswertberechnung.value = false;
+    }
+};
+
+// Stelle für Funktionswertberechnung wird überprüft, sollte eine natürliche Zahl sein, keine weiteren Zeichen erlaubt
+
+const ableitungshoeheGueltigOderNichtFunktionswertberechnung = () => {
+    if (/^-?\d+$/.test(anzahlAbleitungenIntern.value)) {
+        ableitungshoheGueltigFunktionswertberechnung.value = true;
+    } else {
+        ableitungshoheGueltigFunktionswertberechnung.value = false;
     }
 };
 
@@ -296,7 +349,7 @@ const arraysSortieren = () => {
 
 // Überprüft, ob die eingegebene Nullstelle tatsächlich eine Nullstelle der Polynomfunktion ist
 
-const nullstelleVerifizieren = () => {
+const nullstelleVerifizierenPolynomdivision = () => {
     const sum = ref(0);
     for (let i = 0; i < koeffizientenVollAufbereitetIntern.value.length; i++) {
         sum.value +=
@@ -307,7 +360,7 @@ const nullstelleVerifizieren = () => {
             );
     }
     if (sum.value != 0) {
-        stelleGueltigIntern.value = false;
+        stelleGueltigPolynomdivision.value = false;
     }
 };
 
@@ -402,12 +455,12 @@ export const eingabeVerarbeitenPolynomdivision = () => {
     polynomfunktionPolynomdivision.value = eingabeFunktionPolynomdivision.value;
     stelleIntern.value = eingabeNullstellePolynomdivision.value;
     nullstellePolynomdivision.value = eingabeNullstellePolynomdivision.value;
-    polynomfunktionGueltigOderNicht();
-    nullstelleGueltigOderNicht();
+    polynomfunktionGueltigOderNichtPolynomdivision();
+    nullstelleGueltigOderNichtPolynomdivision();
     polynomfunktionAuslesen();
     polynomfunktionZuArrays();
     arraysSortieren();
-    nullstelleVerifizieren();
+    nullstelleVerifizierenPolynomdivision();
     hornerSchema();
     entferneFunktionswert();
     ergebnisZuString();
@@ -422,8 +475,9 @@ export const eingabeVerarbeitenFunktionswertberechnung = () => {
     stelleFunktionswertberechnung.value =
         eingabeStelleFunktionswertberechnung.value;
     anzahlAbleitungenIntern.value = eingabeAnzahlAbleitungenFunktionswertberechnung.value;
-    polynomfunktionGueltigOderNicht();
-    stelleGueltigOderNicht();
+    polynomfunktionGueltigOderNichtFunktionswertberechnung();
+    stelleGueltigOderNichtFunktionswertberechnung();
+    ableitungshoeheGueltigOderNichtFunktionswertberechnung();
     polynomfunktionAuslesen();
     polynomfunktionZuArrays();
     arraysSortieren();
