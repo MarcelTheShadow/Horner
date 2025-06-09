@@ -77,9 +77,7 @@ const exponentenIntern = ref([]);
 // Array nach Verarbeitung
 const koeffizientenVollAufbereitetIntern = ref([]);
 
-
 // FUNKTIONEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
-
 
 // Funktion, die bei der Polynomdivision den Wert des Inputs aktualisiert und überprüft, ob es sich um eine gültige Polynomfunktion handelt
 
@@ -89,28 +87,35 @@ const polynomfunktionGueltigOderNichtPolynomdivision = () => {
 
     // Regulärer Ausdruck einer Polynomfunktion mit viel Flexibilität
     if (
-        /^\s*[+-]?\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?(\s*[+-]\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*)*$/.test(
+        /^\s*[+-]?\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*(\s*[+-]\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*)*$/.test(
             zwischenstandPolynomfunktionIntern.value
         ) === false
     ) {
         funktionGueltigPolynomdivision.value = false;
-    }
-    // Überprüft, ob der Input nur aus '+' und '-' besteht
-    if (zwischenstandPolynomfunktionIntern.value.match(/^[+-\s]*$/)) {
-        funktionGueltigPolynomdivision.value = false;
-    }
-    const inputVerarbeitet = ref(zwischenstandPolynomfunktionIntern.value.replace(/\s/g, ""));
-    // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet
-    if (
-        inputVerarbeitet[inputVerarbeitet.length - 1] === "+" ||
-        inputVerarbeitet[inputVerarbeitet.length - 1] === "-"
-    ) {
-        funktionGueltigPolynomdivision.value = false;
-    }
-    for(const match of inputVerarbeitet.value.matchAll(/\*/g)){
-        // Überprüft, ob der Input der Polynomfunktion ein '*' vor einem '+' oder '-' hat
-        if (inputVerarbeitet.value[match.index - 1] === "+" || inputVerarbeitet.value[match.index - 1] === "-" || match.index - 1 < 0) {
+    } else {
+        // Überprüft, ob der Input nur aus '+' und '-' besteht
+        if (zwischenstandPolynomfunktionIntern.value.match(/^[+-\s]*$/)) {
             funktionGueltigPolynomdivision.value = false;
+        }
+        const inputVerarbeitet = ref(
+            zwischenstandPolynomfunktionIntern.value.replace(/\s/g, "")
+        );
+        // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet
+        if (
+            inputVerarbeitet[inputVerarbeitet.length - 1] === "+" ||
+            inputVerarbeitet[inputVerarbeitet.length - 1] === "-"
+        ) {
+            funktionGueltigPolynomdivision.value = false;
+        }
+        for (const match of inputVerarbeitet.value.matchAll(/\*/g)) {
+            // Überprüft, ob der Input der Polynomfunktion ein '*' vor einem '+' oder '-' hat
+            if (
+                inputVerarbeitet.value[match.index - 1] === "+" ||
+                inputVerarbeitet.value[match.index - 1] === "-" ||
+                match.index - 1 < 0
+            ) {
+                funktionGueltigPolynomdivision.value = false;
+            }
         }
     }
 };
@@ -133,7 +138,9 @@ const polynomfunktionGueltigOderNichtFunktionswertberechnung = () => {
     if (zwischenstandPolynomfunktionIntern.value.match(/^[+-\s]*$/)) {
         funktionGueltigFunktionswertberechnung.value = false;
     }
-    const inputVerarbeitet = ref(zwischenstandPolynomfunktionIntern.value.replace(/\s/g, ""));
+    const inputVerarbeitet = ref(
+        zwischenstandPolynomfunktionIntern.value.replace(/\s/g, "")
+    );
     // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet
     if (
         inputVerarbeitet[inputVerarbeitet.length - 1] === "+" ||
@@ -141,9 +148,13 @@ const polynomfunktionGueltigOderNichtFunktionswertberechnung = () => {
     ) {
         funktionGueltigFunktionswertberechnung.value = false;
     }
-    for(const match of inputVerarbeitet.value.matchAll(/\*/g)){
+    for (const match of inputVerarbeitet.value.matchAll(/\*/g)) {
         // Überprüft, ob der Input der Polynomfunktion ein '*' vor einem '+' oder '-' hat
-        if (inputVerarbeitet.value[match.index - 1] === "+" || inputVerarbeitet.value[match.index - 1] === "-" || match.index - 1 < 0) {
+        if (
+            inputVerarbeitet.value[match.index - 1] === "+" ||
+            inputVerarbeitet.value[match.index - 1] === "-" ||
+            match.index - 1 < 0
+        ) {
             funktionGueltigFunktionswertberechnung.value = false;
         }
     }
@@ -202,7 +213,8 @@ const polynomfunktionAuslesen = () => {
         zwischenstandPolynomfunktionIntern.value[0] != "+" &&
         zwischenstandPolynomfunktionIntern.value[0] != "-"
     ) {
-        zwischenstandPolynomfunktionIntern.value = "+" + zwischenstandPolynomfunktionIntern.value;
+        zwischenstandPolynomfunktionIntern.value =
+            "+" + zwischenstandPolynomfunktionIntern.value;
     }
     // Fügt dem Input ein '*' oder '1*' vor dem 'x' hinzu, wenn es nicht schon da ist
     i = 0;
@@ -276,7 +288,9 @@ const polynomfunktionAuslesen = () => {
         }
     }
 
-    for (const match of zwischenstandPolynomfunktionIntern.value.matchAll(/[+-]\d+\*x\^\d+/g)) {
+    for (const match of zwischenstandPolynomfunktionIntern.value.matchAll(
+        /[+-]\d+\*x\^\d+/g
+    )) {
         if (match) {
             terme.value += match + ",";
         }
@@ -293,13 +307,17 @@ const polynomfunktionZuArrays = () => {
     exponentenIntern.value = [];
 
     // Vorzeichen extrahieren
-    for (const match of zwischenstandPolynomfunktionIntern.value.matchAll(/[+-]/g)) {
+    for (const match of zwischenstandPolynomfunktionIntern.value.matchAll(
+        /[+-]/g
+    )) {
         vorzeichenIntern.value.push(match[0]);
     }
 
     // Koeffizienten und Exponenten extrahieren
     let i = 0;
-    for (const match of zwischenstandPolynomfunktionIntern.value.matchAll(/\d+/g)) {
+    for (const match of zwischenstandPolynomfunktionIntern.value.matchAll(
+        /\d+/g
+    )) {
         // Da jeder Term aus Koeffizient und Exponent besteht, wird abwechselnd der Koeffizient und der Exponent in die jeweiligen Arrays eingefügt
         if (i % 2 === 0) {
             koeffizientenIntern.value.push(parseInt(match[0]));
@@ -429,7 +447,7 @@ const iterationenHornerSchema = () => {
         hornerSchema();
         entferneFunktionswert();
     }
-}
+};
 
 // Anstatt Polynomdivison für Auslesen des Funktionswertes (der Ableitung)
 
@@ -451,7 +469,8 @@ const funktionswertZuString = () => {
 
 // Polynomdivision
 export const eingabeVerarbeitenPolynomdivision = () => {
-    zwischenstandPolynomfunktionIntern.value = eingabeFunktionPolynomdivision.value;
+    zwischenstandPolynomfunktionIntern.value =
+        eingabeFunktionPolynomdivision.value;
     polynomfunktionPolynomdivision.value = eingabeFunktionPolynomdivision.value;
     stelleIntern.value = eingabeNullstellePolynomdivision.value;
     nullstellePolynomdivision.value = eingabeNullstellePolynomdivision.value;
@@ -468,13 +487,15 @@ export const eingabeVerarbeitenPolynomdivision = () => {
 
 // Funktionswertberechnung
 export const eingabeVerarbeitenFunktionswertberechnung = () => {
-    zwischenstandPolynomfunktionIntern.value = eingabeFunktionFunktionswertberechnung.value;
+    zwischenstandPolynomfunktionIntern.value =
+        eingabeFunktionFunktionswertberechnung.value;
     polynomfunktionFunktionswertberechnung.value =
         eingabeFunktionFunktionswertberechnung.value;
     stelleIntern.value = eingabeStelleFunktionswertberechnung.value;
     stelleFunktionswertberechnung.value =
         eingabeStelleFunktionswertberechnung.value;
-    anzahlAbleitungenIntern.value = eingabeAnzahlAbleitungenFunktionswertberechnung.value;
+    anzahlAbleitungenIntern.value =
+        eingabeAnzahlAbleitungenFunktionswertberechnung.value;
     polynomfunktionGueltigOderNichtFunktionswertberechnung();
     stelleGueltigOderNichtFunktionswertberechnung();
     ableitungshoeheGueltigOderNichtFunktionswertberechnung();
@@ -485,4 +506,3 @@ export const eingabeVerarbeitenFunktionswertberechnung = () => {
     hornerSchema();
     funktionswertZuString();
 };
-
