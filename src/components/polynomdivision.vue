@@ -23,11 +23,11 @@ import { eingabeFunktionPolynomdivision, eingabeNullstellePolynomdivision, polyn
             <p>Ergebnis der Polynomdivision: {{ ausgabePolynomdivision }} </p>
         </div>
         <div v-else-if="!funktionGueltigPolynomdivision">
-            <p>Die Funktion ist ungültig!</p>
-            <p>Für die Eingabe ist zu beachten:</p>
-            <p>Arbeite für die Polynomfunktion mit dem Format a*x^n +- b*x^m +- c*x^k...</p>
-            <p>Die Koeffizienten a,b,c... müssen natürliche , die Exponenten n,m,k... sowie die eingegebene Nullstelle müssen ganze Zahlen
-                sein</p>
+            <p>Die eingegebene Funktion ist ungültig!</p>
+            <p>Es ist zu beachten:</p>
+            <p>Arbeite für die Polynomfunktion mit dem Format a*x^n + b*x^m + c*x^k...</p>
+            <p>Die Koeffizienten a,b,c... sowie die eingegebene Nullstelle müssen ganze Zahlen, die Exponenten n,m,k...
+                natürliche Zahlen sein</p>
         </div>
         <div v-else-if="!stelleGueltigPolynomdivision">
             <p>Die Nullstelle ist ungültig! Wenn man die angegebene Stelle in die Polynomfunktion eingibt, muss 0

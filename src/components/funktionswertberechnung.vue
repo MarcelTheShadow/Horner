@@ -27,10 +27,10 @@ import { eingabeFunktionFunktionswertberechnung, eingabeStelleFunktionswertberec
             <p>Ergebnis der Polynomdivision: {{ ausgabeFunktionswertberechnung }} </p>
         </div>
         <div v-else-if="!funktionGueltigFunktionswertberechnung">
-            <p>Die Funktion ist ungültig!</p>
-            <p>Für die Eingabe ist zu beachten:</p>
-            <p>Arbeite für die Polynomfunktion mit dem Format a*x^n +- b*x^m +- c*x^k...</p>
-            <p>Die Koeffizienten a,b,c... und die eingegebene Stelle müssen natürliche , die Exponenten n,m,k... sowie die angegebene Ordnung der Ableitung müssen natürliche Zahlen
+            <p>Die eingegebene Funktion ist ungültig!</p>
+            <p>Es ist zu beachten:</p>
+            <p>Arbeite für die Polynomfunktion mit dem Format a*x^n + b*x^m + c*x^k...</p>
+            <p>Die Koeffizienten a,b,c... und die eingegebene Stelle müssen ganze Zahlen, die Exponenten n,m,k... sowie die angegebene Ordnung der Ableitung natürliche Zahlen
                 sein</p>
         </div>
         <div v-else-if="!stelleGueltigFunktionswertberechnung">
