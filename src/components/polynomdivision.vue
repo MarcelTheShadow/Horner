@@ -6,8 +6,8 @@ import { eingabeFunktionPolynomdivision, eingabeNullstellePolynomdivision, polyn
     <div class="Ueberschrift">
         Horner-Rechner - Polynomdivision
     </div>
-    <div class="inputUserTextAndButton">
-        <div class="inputUserTextOnly">
+    <div class="eingabeBenutzerTextUndButton">
+        <div class="eingabeBenutzerNurText">
             <input type="text" v-model="eingabeFunktionPolynomdivision"
                 @keyup.enter="eingabeVerarbeitenPolynomdivision()" placeholder="Polynomfunktion" style="width: 20vw;" />
             <input type="text" v-model="eingabeNullstellePolynomdivision"
@@ -20,7 +20,7 @@ import { eingabeFunktionPolynomdivision, eingabeNullstellePolynomdivision, polyn
         <div v-if="(funktionGueltigPolynomdivision && stelleGueltigPolynomdivision)">
             <p>Eingegebene Polynomfunktion: {{ polynomfunktionPolynomdivision }}</p>
             <p>Eingegebene Nullstelle: {{ nullstellePolynomdivision }}</p>
-            <p>Ergebnis der Polynomdivision: {{ ausgabePolynomdivision }} </p>
+            <p >Ergebnis der Polynomdivision: <span class="wichtigeAusgabe"> {{ ausgabePolynomdivision }} </span></p>
         </div>
         <div v-else-if="!funktionGueltigPolynomdivision">
             <p>Die eingegebene Funktion ist ungültig!</p>

@@ -6,8 +6,8 @@ import { eingabeFunktionFunktionswertberechnung, eingabeStelleFunktionswertberec
     <div class="Ueberschrift">
         Horner-Rechner - Funktionswertberechnung
     </div>
-    <div class="inputUserTextAndButton">
-        <div class="inputUserTextOnly">
+    <div class="eingabeBenutzerTextUndButton">
+        <div class="eingabeBenutzerNurText">
             <input type="text" v-model="eingabeFunktionFunktionswertberechnung"
                 @keyup.enter="eingabeVerarbeitenFunktionswertberechnung()" placeholder="Polynomfunktion"
                 style="width: 20vw;" />
@@ -24,7 +24,7 @@ import { eingabeFunktionFunktionswertberechnung, eingabeStelleFunktionswertberec
         <div v-if="(funktionGueltigFunktionswertberechnung && stelleGueltigFunktionswertberechnung && ableitungshoheGueltigFunktionswertberechnung)">
             <p>Eingegebene Polynomfunktion: {{ polynomfunktionFunktionswertberechnung }}</p>
             <p>Eingegebene Nullstelle: {{ stelleFunktionswertberechnung }}</p>
-            <p>Ergebnis der Polynomdivision: {{ ausgabeFunktionswertberechnung }} </p>
+            <p>Ergebnis der Funktionswertberechnung: <span class="wichtigeAusgabe"> {{ ausgabeFunktionswertberechnung }} </span> </p>
         </div>
         <div v-else-if="!funktionGueltigFunktionswertberechnung">
             <p>Die eingegebene Funktion ist ungültig!</p>
