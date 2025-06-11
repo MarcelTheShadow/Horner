@@ -73,7 +73,7 @@ const koeffizientenVollAufbereitetIntern = ref([]);
 
 // FUNKTIONEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
 
-// Funktion, die bei der Polynomdivision den Wert des Inputs aktualisiert und überprüft, ob es sich um eine gültige Polynomfunktion handelt
+// Funktion, die bei der Polynomdivision überprüft, ob es sich um eine gültige Polynomfunktion handelt
 
 const polynomfunktionGueltigOderNichtPolynomdivision = () => {
     // Standardmäßig ist die Funktion gültig, prüfe mittels RegEx und weiterer Logik, ob sie es tatsächlich ist
@@ -88,6 +88,7 @@ const polynomfunktionGueltigOderNichtPolynomdivision = () => {
         funktionGueltigPolynomdivision.value = false;
     } else {
         // Überprüft, ob der Input nur aus '+' und '-' besteht
+        // Überprüft, ob der Input der Polynomfunktion aufeinanderfolgende '+' oder '-' hat
         if (
             zwischenstandPolynomfunktionIntern.value.match(/^[+-\s]*$/) ||
             zwischenstandPolynomfunktionIntern.value.match(/\+\+|--|\+-|-\+/)
@@ -99,13 +100,13 @@ const polynomfunktionGueltigOderNichtPolynomdivision = () => {
         );
         // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet
         if (
-            inputVerarbeitet.value[inputVerarbeitet.length - 1] === "+" ||
-            inputVerarbeitet.value[inputVerarbeitet.length - 1] === "-"
+            inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "+" ||
+            inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "-"
         ) {
             funktionGueltigPolynomdivision.value = false;
         }
+        // Überprüft, ob der Input der Polynomfunktion ein '*' vor einem '+' oder '-' hat
         for (const match of inputVerarbeitet.value.matchAll(/\*/g)) {
-            // Überprüft, ob der Input der Polynomfunktion ein '*' vor einem '+' oder '-' hat
             if (
                 inputVerarbeitet.value[match.index - 1] === "+" ||
                 inputVerarbeitet.value[match.index - 1] === "-" ||
@@ -117,7 +118,7 @@ const polynomfunktionGueltigOderNichtPolynomdivision = () => {
     }
 };
 
-// Funktion, die bei der Funktionswertberechnung den Wert des Inputs aktualisiert und überprüft, ob es sich um eine gültige Polynomfunktion handelt
+// Funktion, die bei der Funktionswertberechnung überprüft, ob es sich um eine gültige Polynomfunktion handelt
 
 const polynomfunktionGueltigOderNichtFunktionswertberechnung = () => {
     // Standardmäßig ist die Funktion gültig, prüfe mittels RegEx und weiterer Logik, ob sie es tatsächlich ist
@@ -132,6 +133,7 @@ const polynomfunktionGueltigOderNichtFunktionswertberechnung = () => {
         funktionGueltigFunktionswertberechnung.value = false;
     }
     // Überprüft, ob der Input nur aus '+' und '-' besteht
+    // Überprüft, ob der Input der Polynomfunktion aufeinanderfolgende '+' oder '-' hat
     if (
         zwischenstandPolynomfunktionIntern.value.match(/^[+-\s]*$/) ||
         zwischenstandPolynomfunktionIntern.value.match(/\+\+|--|\+-|-\+/)
@@ -143,13 +145,13 @@ const polynomfunktionGueltigOderNichtFunktionswertberechnung = () => {
     );
     // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet
     if (
-        inputVerarbeitet[inputVerarbeitet.length - 1] === "+" ||
-        inputVerarbeitet[inputVerarbeitet.length - 1] === "-"
+        inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "+" ||
+        inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "-"
     ) {
         funktionGueltigFunktionswertberechnung.value = false;
     }
+    // Überprüft, ob der Input der Polynomfunktion ein '*' vor einem '+' oder '-' hat
     for (const match of inputVerarbeitet.value.matchAll(/\*/g)) {
-        // Überprüft, ob der Input der Polynomfunktion ein '*' vor einem '+' oder '-' hat
         if (
             inputVerarbeitet.value[match.index - 1] === "+" ||
             inputVerarbeitet.value[match.index - 1] === "-" ||
@@ -160,7 +162,7 @@ const polynomfunktionGueltigOderNichtFunktionswertberechnung = () => {
     }
 };
 
-// Nullstelle für Polynomdivision wird überprüft, sollte eine natürliche Zahl sein, keine weiteren Zeichen erlaubt
+// Für Polynomdivision wird die Nullstelle überprüft. Sollte eine ganze Zahl sein, keine weiteren Zeichen sind erlaubt
 
 const nullstelleGueltigOderNichtPolynomdivision = () => {
     if (/^-?\d+$/.test(eingabeNullstellePolynomdivision.value)) {
@@ -170,7 +172,7 @@ const nullstelleGueltigOderNichtPolynomdivision = () => {
     }
 };
 
-// Stelle für Funktionswertberechnung wird überprüft, sollte eine natürliche Zahl sein, keine weiteren Zeichen erlaubt
+// Für Funktionswertberechnung wird die eingegebene Stelle überprüft. Sollte eine ganze Zahl sein, keine weiteren Zeichen sind erlaubt
 
 const stelleGueltigOderNichtFunktionswertberechnung = () => {
     if (/^-?\d+$/.test(eingabeStelleFunktionswertberechnung.value)) {
@@ -180,7 +182,7 @@ const stelleGueltigOderNichtFunktionswertberechnung = () => {
     }
 };
 
-// Stelle für Funktionswertberechnung wird überprüft, sollte eine natürliche Zahl sein, keine weiteren Zeichen erlaubt
+// Für Funktionswertberechnung wird die Ordnung der Ableitung überprüft. Sollte eine ganze Zahl sein, keine weiteren Zeichen sind erlaubt
 
 const ableitungshoeheGueltigOderNichtFunktionswertberechnung = () => {
     if (/^-?\d+$/.test(anzahlAbleitungenIntern.value)) {
