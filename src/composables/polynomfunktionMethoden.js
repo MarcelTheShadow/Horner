@@ -1,8 +1,6 @@
 import { ref } from "vue";
 
-
 //// POLYNOMDIVISION
-
 
 // Direkter Wert der Polynomfunktion für Polynomdivision aus Input über v-model
 export const eingabeFunktionPolynomdivision = ref("");
@@ -25,9 +23,7 @@ export const funktionGueltigPolynomdivision = ref(false);
 // Handelt es sich bei der eingegebenen Nullstelle tatsächlich um eine Nullstelle für die gegebene Funktion?
 export const stelleGueltigPolynomdivision = ref(false);
 
-
 //// FUNKTIONSWERTBERECHNUNG
-
 
 // Direkter Wert der Polynomfunktion für Funktionswertberechnung aus Input über v-model
 export const eingabeFunktionFunktionswertberechnung = ref("");
@@ -56,9 +52,7 @@ export const stelleGueltigFunktionswertberechnung = ref(false);
 // Handelt es sich bei der eingegebenen Ableitungshöhe tatsächlich um eine gültige Angabe?
 export const ableitungshoheGueltigFunktionswertberechnung = ref(false);
 
-
 //// INTERNE VARIABLEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
-
 
 // Höhe der Ableitung für die Funktionswertberechnung zum Zeitpunkt des Drückens des Buttons
 const anzahlAbleitungenIntern = ref("");
@@ -94,7 +88,10 @@ const polynomfunktionGueltigOderNichtPolynomdivision = () => {
         funktionGueltigPolynomdivision.value = false;
     } else {
         // Überprüft, ob der Input nur aus '+' und '-' besteht
-        if (zwischenstandPolynomfunktionIntern.value.match(/^[+-\s]*$/)) {
+        if (
+            zwischenstandPolynomfunktionIntern.value.match(/^[+-\s]*$/) ||
+            zwischenstandPolynomfunktionIntern.value.match(/\+\+|--|\+-|-\+/)
+        ) {
             funktionGueltigPolynomdivision.value = false;
         }
         const inputVerarbeitet = ref(
@@ -102,8 +99,8 @@ const polynomfunktionGueltigOderNichtPolynomdivision = () => {
         );
         // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet
         if (
-            inputVerarbeitet[inputVerarbeitet.length - 1] === "+" ||
-            inputVerarbeitet[inputVerarbeitet.length - 1] === "-"
+            inputVerarbeitet.value[inputVerarbeitet.length - 1] === "+" ||
+            inputVerarbeitet.value[inputVerarbeitet.length - 1] === "-"
         ) {
             funktionGueltigPolynomdivision.value = false;
         }
@@ -135,7 +132,10 @@ const polynomfunktionGueltigOderNichtFunktionswertberechnung = () => {
         funktionGueltigFunktionswertberechnung.value = false;
     }
     // Überprüft, ob der Input nur aus '+' und '-' besteht
-    if (zwischenstandPolynomfunktionIntern.value.match(/^[+-\s]*$/)) {
+    if (
+        zwischenstandPolynomfunktionIntern.value.match(/^[+-\s]*$/) ||
+        zwischenstandPolynomfunktionIntern.value.match(/\+\+|--|\+-|-\+/)
+    ) {
         funktionGueltigFunktionswertberechnung.value = false;
     }
     const inputVerarbeitet = ref(
@@ -463,9 +463,7 @@ const funktionswertZuString = () => {
     ausgabeFunktionswertberechnung.value = `${ausgabeTmp.value}`;
 };
 
-
 // MAIN-FUNKTIONEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
-
 
 // Polynomdivision
 export const eingabeVerarbeitenPolynomdivision = () => {
