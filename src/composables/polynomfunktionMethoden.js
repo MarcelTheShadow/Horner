@@ -87,21 +87,15 @@ const polynomfunktionGueltigOderNichtPolynomdivision = () => {
     ) {
         funktionGueltigPolynomdivision.value = false;
     } else {
-        // Überprüft, ob der Input nur aus '+' und '-' besteht
-        // Überprüft, ob der Input der Polynomfunktion aufeinanderfolgende '+' oder '-' hat
-        if (
-            zwischenstandPolynomfunktionIntern.value.match(/^[+-\s]*$/) ||
-            zwischenstandPolynomfunktionIntern.value.match(/\+\+|--|\+-|-\+/)
-        ) {
-            funktionGueltigPolynomdivision.value = false;
-        }
         const inputVerarbeitet = ref(
             zwischenstandPolynomfunktionIntern.value.replace(/\s/g, "")
         );
         // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet
+        // Überprüft, ob der Input der Polynomfunktion aufeinanderfolgende '+' oder '-' hat
         if (
             inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "+" ||
-            inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "-"
+            inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "-" ||
+            inputVerarbeitet.value.match(/\+\+|--|\+-|-\+/g)
         ) {
             funktionGueltigPolynomdivision.value = false;
         }
@@ -126,38 +120,33 @@ const polynomfunktionGueltigOderNichtFunktionswertberechnung = () => {
 
     // Regulärer Ausdruck einer Polynomfunktion mit viel Flexibilität
     if (
-        /^\s*[+-]?\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?(\s*[+-]\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*)*$/.test(
+        /^\s*[+-]?\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*(\s*[+-]\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*)*$/.test(
             zwischenstandPolynomfunktionIntern.value
         ) === false
     ) {
         funktionGueltigFunktionswertberechnung.value = false;
-    }
-    // Überprüft, ob der Input nur aus '+' und '-' besteht
-    // Überprüft, ob der Input der Polynomfunktion aufeinanderfolgende '+' oder '-' hat
-    if (
-        zwischenstandPolynomfunktionIntern.value.match(/^[+-\s]*$/) ||
-        zwischenstandPolynomfunktionIntern.value.match(/\+\+|--|\+-|-\+/)
-    ) {
-        funktionGueltigFunktionswertberechnung.value = false;
-    }
-    const inputVerarbeitet = ref(
-        zwischenstandPolynomfunktionIntern.value.replace(/\s/g, "")
-    );
-    // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet
-    if (
-        inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "+" ||
-        inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "-"
-    ) {
-        funktionGueltigFunktionswertberechnung.value = false;
-    }
-    // Überprüft, ob der Input der Polynomfunktion ein '*' vor einem '+' oder '-' hat
-    for (const match of inputVerarbeitet.value.matchAll(/\*/g)) {
+    } else {
+        const inputVerarbeitet = ref(
+            zwischenstandPolynomfunktionIntern.value.replace(/\s/g, "")
+        );
+        // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet
+        // Überprüft, ob der Input der Polynomfunktion aufeinanderfolgende '+' oder '-' hat
         if (
-            inputVerarbeitet.value[match.index - 1] === "+" ||
-            inputVerarbeitet.value[match.index - 1] === "-" ||
-            match.index - 1 < 0
+            inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "+" ||
+            inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "-" ||
+            inputVerarbeitet.value.match(/\+\+|--|\+-|-\+/g)
         ) {
             funktionGueltigFunktionswertberechnung.value = false;
+        }
+        // Überprüft, ob der Input der Polynomfunktion ein '*' vor einem '+' oder '-' hat
+        for (const match of inputVerarbeitet.value.matchAll(/\*/g)) {
+            if (
+                inputVerarbeitet.value[match.index - 1] === "+" ||
+                inputVerarbeitet.value[match.index - 1] === "-" ||
+                match.index - 1 < 0
+            ) {
+                funktionGueltigFunktionswertberechnung.value = false;
+            }
         }
     }
 };
