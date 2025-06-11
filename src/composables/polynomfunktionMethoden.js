@@ -165,7 +165,7 @@ const polynomfunktionGueltigOderNichtFunktionswertberechnung = () => {
 // Für Polynomdivision wird die Nullstelle überprüft. Sollte eine ganze Zahl sein, keine weiteren Zeichen sind erlaubt
 
 const nullstelleGueltigOderNichtPolynomdivision = () => {
-    if (/^-?\d+$/.test(eingabeNullstellePolynomdivision.value)) {
+    if (/^[+-]?\d+$/.test(eingabeNullstellePolynomdivision.value)) {
         stelleGueltigPolynomdivision.value = true;
     } else {
         stelleGueltigPolynomdivision.value = false;
@@ -175,7 +175,7 @@ const nullstelleGueltigOderNichtPolynomdivision = () => {
 // Für Funktionswertberechnung wird die eingegebene Stelle überprüft. Sollte eine ganze Zahl sein, keine weiteren Zeichen sind erlaubt
 
 const stelleGueltigOderNichtFunktionswertberechnung = () => {
-    if (/^-?\d+$/.test(eingabeStelleFunktionswertberechnung.value)) {
+    if (/^[+-]?\d+$/.test(eingabeStelleFunktionswertberechnung.value)) {
         stelleGueltigFunktionswertberechnung.value = true;
     } else {
         stelleGueltigFunktionswertberechnung.value = false;
@@ -185,7 +185,7 @@ const stelleGueltigOderNichtFunktionswertberechnung = () => {
 // Für Funktionswertberechnung wird die Ordnung der Ableitung überprüft. Sollte eine ganze Zahl sein, keine weiteren Zeichen sind erlaubt
 
 const ableitungshoeheGueltigOderNichtFunktionswertberechnung = () => {
-    if (/^-?\d+$/.test(anzahlAbleitungenIntern.value)) {
+    if (/^[+-]?\d+$/.test(anzahlAbleitungenIntern.value)) {
         ableitungshoheGueltigFunktionswertberechnung.value = true;
     } else {
         ableitungshoheGueltigFunktionswertberechnung.value = false;

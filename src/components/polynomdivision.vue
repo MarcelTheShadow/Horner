@@ -30,8 +30,7 @@ import { eingabeFunktionPolynomdivision, eingabeNullstellePolynomdivision, polyn
                 natürliche Zahlen sein</p>
         </div>
         <div v-else-if="!stelleGueltigPolynomdivision">
-            <p>Die Nullstelle ist ungültig! Wenn man die angegebene Stelle in die Polynomfunktion eingibt, muss 0
-                als Ergebnis rausbekommen!</p>
+            <p>Es muss eine ganze Zahl als Nullstelle der Polynomfunktion eingegeben werden!</p>
         </div>
     </div>
 </template>
