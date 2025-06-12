@@ -92,10 +92,12 @@ const polynomfunktionGueltigOderNichtPolynomdivision = () => {
         );
         // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet
         // Überprüft, ob der Input der Polynomfunktion aufeinanderfolgende '+' oder '-' hat
+        // Überprüft, ob der Input der Polynomfunktionen nur aus Leerzeichen besteht
         if (
             inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "+" ||
             inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "-" ||
-            inputVerarbeitet.value.match(/\+\+|--|\+-|-\+/g)
+            inputVerarbeitet.value.match(/\+\+|--|\+-|-\+/g) ||
+            inputVerarbeitet.value === ""
         ) {
             funktionGueltigPolynomdivision.value = false;
         }
@@ -131,10 +133,12 @@ const polynomfunktionGueltigOderNichtFunktionswertberechnung = () => {
         );
         // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet
         // Überprüft, ob der Input der Polynomfunktion aufeinanderfolgende '+' oder '-' hat
+        // Überprüft, ob der Input der Polynomfunktionen nur aus Leerzeichen besteht
         if (
             inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "+" ||
             inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "-" ||
-            inputVerarbeitet.value.match(/\+\+|--|\+-|-\+/g)
+            inputVerarbeitet.value.match(/\+\+|--|\+-|-\+/g) ||
+            inputVerarbeitet.value === ""
         ) {
             funktionGueltigFunktionswertberechnung.value = false;
         }
