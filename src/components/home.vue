@@ -1,3 +1,4 @@
+<!-- Router, um von der Homepage aus auf die beiden anderen Seiten zu gelangen -->
 <script setup>
 import router from '../router/index.js';
 </script>
@@ -7,14 +8,17 @@ import router from '../router/index.js';
         Willkommen zum Horner-Rechner!
     </div>
     <div class="text">
-        <p>Es stehen aktuell 2 Anwendungsmöglichkeiten zur Verfügung: </p>
+        <p>Es stehen 2 Anwendungsmöglichkeiten des Horner-Rechners zur Verfügung: </p>
     </div>
     <div class="routerButtons">
+        <!-- Buttons führen zu den zwei Vue-Seiten zur Anwendung des Horner-Schemas, Konfiguration in router/index.js --> 
         <button @click="router.push('/funktionswertberechnung')">Zur Funktionswertberechnung</button>
         <button @click="router.push('/polynomdivision')">Zur Polynomdivision</button>
     </div>
 </template>
 
+<!-- Import von benötigter CSS-Dateie für Style -->
+ <!-- Zusätzlich Style für routerButtons, der nur hier genutzt wird-->
 <style scoped>
 @import '../assets/styleForAll.css';
 
