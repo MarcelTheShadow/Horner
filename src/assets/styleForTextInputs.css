@@ -19,6 +19,6 @@
 .wichtigeAusgabe {
     font-weight: bold;
     background-color: blueviolet;
-    padding: 5px;;
-    border-radius: 8px;
+    padding: 0.75vh 0.75vw;
+    border-radius: 1vw;
 }
