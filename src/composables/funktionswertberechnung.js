@@ -112,12 +112,6 @@ export const ableitungOrdnungGueltigPruefen = () => {
 
 export const iterationenHornerSchema = () => {
     for (let i = 0; i < ordnungAbleitung.value; i++) {
-        // Wenn nur noch ein Koeffizient übrig ist, ist die Ordnung der Ableitung nicht gültig, da mindestens noch ein Koeffizient entfernt werden muss
-        // Die Ordnung der Ableitung wurde dann zu hoch gewählt und ist ungültig
-        if (koeffizientenAlsEinArrayIntern.value.length == 1) {
-            ableitungOrdnungGueltig.value = false;
-            return;
-        }
         hornerSchema();
         entferneFunktionswert();
     }
@@ -135,6 +129,9 @@ export const funktionswertZuString = () => {
     // Der ausgelesene Wert muss mit der Fakultät der Ordnung der Ableitung multipliziert werden, um den realen Funktionswert zu erhalten. Dies ist Teil der Logik des Horner-Schemas
     for (let i = 1; i <= ordnungAbleitung.value; i++) {
         ausgabeTmp.value = ausgabeTmp.value * i;
+    }
+    if(isNaN(ausgabeTmp.value)) {
+        ausgabeTmp.value = 0;
     }
     ausgabe.value = `${ausgabeTmp.value}`;
 };

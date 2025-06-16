@@ -46,7 +46,7 @@ import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funkti
         
         <!-- Fehlermeldung für ungültige Nullstelle-->
         <div v-else-if="!stelleGueltig">
-            <p>Es muss eine ganze Zahl als Nullstelle der Polynomfunktion eingegeben werden!</p>
+            <p>Es muss eine ganze Zahl als Nullstelle der Polynomfunktion eingegeben werden, die wirklich eine Nullstelle ist!</p>
         </div>
     </div>
 </template>
