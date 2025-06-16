@@ -1,10 +1,11 @@
 import { ref } from "vue";
+// Importiere die Basisfunktionen für die Polynomdivision
 import {
     zwischenstandPolynomfunktionIntern,
     stelleIntern,
-    koeffizientenAlsEinArrayIntern,
     polynomfunktionAuslesen,
-    polynomfunktionDirektZuArray,
+    koeffizientenAlsEinArrayIntern,
+    polynomfunktionZuArray,
     hornerSchema,
     entferneFunktionswert,
 } from "./basisMethoden.js";
@@ -41,6 +42,8 @@ const polynomfunktionGueltigPruefen = () => {
     funktionGueltig.value = true;
 
     // Regulärer Ausdruck einer Polynomfunktion mit viel Flexibilität, Polynomfunktion muss diesen erfüllen
+    // RegEx beginnt mit '^' und endet mit '$', um sicherzustellen, dass das GESAMTE Eingabefeld der Polynomfunktion genau dem Muster entspricht, nicht nur ein Teil davon
+    // test() liefert true, wenn der RegEx auf den Input passt, false wenn nicht
     if (
         /^\s*[+-]?\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*(\s*[+-]\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*)*$/.test(
             zwischenstandPolynomfunktionIntern.value
@@ -52,13 +55,13 @@ const polynomfunktionGueltigPruefen = () => {
         const inputVerarbeitet = ref(
             zwischenstandPolynomfunktionIntern.value.replace(/\s/g, "")
         );
-        // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet -> Ungültig!
-        // Überprüft, ob der Input der Polynomfunktion aufeinanderfolgende '+' oder '-' hat -> Ungültig!
-        // Überprüft, ob der Input der Polynomfunktionen nur aus Leerzeichen besteht -> Ungültig!
         if (
+            // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet -> Ungültig!
             inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "+" ||
             inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "-" ||
+            // Überprüft, ob der Input der Polynomfunktion aufeinanderfolgende '+' oder '-' hat -> Ungültig!
             inputVerarbeitet.value.match(/\+\+|--|\+-|-\+/g) ||
+            // Überprüft, ob der Input der Polynomfunktionen nur aus Leerzeichen besteht -> Ungültig!
             inputVerarbeitet.value === ""
         ) {
             funktionGueltig.value = false;
@@ -112,10 +115,13 @@ const ergebnisZuString = () => {
     const highestExponent = ref(
         koeffizientenAlsEinArrayIntern.value.length - 1
     );
-    // Iteriere von links nach rechts durch das Koeffizineten-Array, also vom höchsten zum niedrigsten Exponenten
+
+    // Iteriere von links nach rechts durch das Koeffizienten-Array, also vom höchsten zum niedrigsten Exponenten
     for (let i = 0; i < koeffizientenAlsEinArrayIntern.value.length; i++) {
-        // Wenn der Koeffizient an der Stelle != 0, füge ihn zur Ausgabe hinzu
+
+        // Nur wenn der Koeffizient an der Stelle != 0 ist, füge ihn zur Ausgabe hinzu
         if (koeffizientenAlsEinArrayIntern.value[i] != 0) {
+
             // Füge Vorzeichen hinzu, Leerzeichen zum Abtrennen der Terme
             if (koeffizientenAlsEinArrayIntern.value[i] > 0) {
                 ausgabeTmp.value += " +";
@@ -123,13 +129,16 @@ const ergebnisZuString = () => {
                 // Für negative Koeffizienten wird das Minuszeichen bereits im Koeffizienten berücksichtigt
                 ausgabeTmp.value += " ";
             }
+            
             // Für x^0 nur den Koeffizienten hinzufügen
             if (highestExponent.value - i === 0) {
                 ausgabeTmp.value += koeffizientenAlsEinArrayIntern.value[i];
+
             // Für x^1 nur den Koeffizienten und x hinzufügen
             } else if (highestExponent.value - i === 1) {
                 ausgabeTmp.value +=
                     koeffizientenAlsEinArrayIntern.value[i] + "x";
+
             // Für alle anderen Exponenten den Koeffizienten, x und den Exponenten hinzufügen
             } else {
                 ausgabeTmp.value +=
@@ -158,7 +167,7 @@ export const eingabeVerarbeiten = () => {
     polynomfunktionGueltigPruefen();
     nullstelleGueltigPruefen();
     polynomfunktionAuslesen();
-    polynomfunktionDirektZuArray();
+    polynomfunktionZuArray();
     nullstelleVerifizieren();
     hornerSchema();
     entferneFunktionswert();

@@ -1,10 +1,11 @@
 import { ref } from "vue";
+// Importiere die Basisfunktionen für die Polynomdivision
 import {
     zwischenstandPolynomfunktionIntern,
     stelleIntern,
     polynomfunktionAuslesen,
     koeffizientenAlsEinArrayIntern,
-    polynomfunktionDirektZuArray,
+    polynomfunktionZuArray,
     hornerSchema,
     entferneFunktionswert,
 } from "./basisMethoden.js";
@@ -50,6 +51,8 @@ const polynomfunktionGueltigPruefen = () => {
     funktionGueltig.value = true;
 
     // Regulärer Ausdruck einer Polynomfunktion mit viel Flexibilität, Polynomfunktion muss diesen erfüllen
+    // RegEx beginnt mit '^' und endet mit '$', um sicherzustellen, dass das GESAMTE Eingabefeld der Polynomfunktion genau dem Muster entspricht, nicht nur ein Teil davon
+    // test() liefert true, wenn der RegEx auf den Input passt, false wenn nicht
     if (
         /^\s*[+-]?\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*(\s*[+-]\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*)*$/.test(
             zwischenstandPolynomfunktionIntern.value
@@ -61,13 +64,13 @@ const polynomfunktionGueltigPruefen = () => {
         const inputVerarbeitet = ref(
             zwischenstandPolynomfunktionIntern.value.replace(/\s/g, "")
         );
-        // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet -> Ungültig!
-        // Überprüft, ob der Input der Polynomfunktion aufeinanderfolgende '+' oder '-' hat -> Ungültig!
         // Überprüft, ob der Input der Polynomfunktionen nur aus Leerzeichen besteht -> Ungültig!
         if (
             inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "+" ||
             inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "-" ||
+            // Überprüft, ob der Input der Polynomfunktion aufeinanderfolgende '+' oder '-' hat -> Ungültig!
             inputVerarbeitet.value.match(/\+\+|--|\+-|-\+/g) ||
+            // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet -> Ungültig!
             inputVerarbeitet.value === ""
         ) {
             funktionGueltig.value = false;
@@ -123,6 +126,7 @@ export const iterationenHornerSchema = () => {
 // Auslesen des Funktionswertes (der angegebenen Ableitung)
 
 export const funktionswertZuString = () => {
+    // Lese den letzten Wert im Horner-Schema aus, der den Funktionswert der angegebenen Ableitung enthält
     let ausgabeTmp = ref(
         koeffizientenAlsEinArrayIntern.value[
             koeffizientenAlsEinArrayIntern.value.length - 1
@@ -147,7 +151,7 @@ export const eingabeVerarbeiten = () => {
     stelleGueltiPruefen();
     ableitungOrdnungGueltigPruefen();
     polynomfunktionAuslesen();
-    polynomfunktionDirektZuArray();
+    polynomfunktionZuArray();
     iterationenHornerSchema();
     hornerSchema();
     funktionswertZuString();
