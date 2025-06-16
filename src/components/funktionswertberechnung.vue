@@ -1,6 +1,6 @@
 <!-- Import von benötigten Variablen; Delegation der Berechnung an die .js-Dateien -->
 <script setup>
-import { eingabeFunktion, eingabeStelle, eingabeAnzahlAbleitungen, polynomfunktion, stelle, funktionGueltig, stelleGueltig, ableitungshoheGueltig, ausgabe, eingabeVerarbeiten } from '../composables/funktionswertberechnung.js';
+import { eingabeFunktion, eingabeStelle, eingabeOrdnungAbleitung, polynomfunktion, stelle, ordnungAbleitung, funktionGueltig, stelleGueltig, ableitungOrdnungGueltig, ausgabe, eingabeVerarbeiten } from '../composables/funktionswertberechnung.js';
 </script>
 
 <template>
@@ -19,7 +19,7 @@ import { eingabeFunktion, eingabeStelle, eingabeAnzahlAbleitungen, polynomfunkti
                 @keyup.enter="eingabeVerarbeiten()" placeholder="Stelle von x"
                 style="width: 10vw;">
             <!-- Eingabe der Ordnung der Ableitung, durch Enter Berechnung -->
-            <input type="text" v-model="eingabeAnzahlAbleitungen"
+            <input type="text" v-model="eingabeOrdnungAbleitung"
                 @keyup.enter="eingabeVerarbeiten()" placeholder="Ordnung der Ableitung"
                 style="width: 15vw;">
         </div>
@@ -31,7 +31,7 @@ import { eingabeFunktion, eingabeStelle, eingabeAnzahlAbleitungen, polynomfunkti
     <div class="text">
         <!-- Ausgabe der Ergebnisse, wenn die Eingaben gültig sind -->
         <div
-            v-if="(funktionGueltig && stelleGueltig && ableitungshoheGueltig)">
+            v-if="(funktionGueltig && stelleGueltig && ableitungOrdnungGueltig)">
             <p>Eingegebene Polynomfunktion: <span class="AusgabeEingabe"> {{ polynomfunktion }} </span></p>
             <p>Eingegebene Nullstelle: <span class="AusgabeEingabe"> {{ stelle }} </span></p>
             <p>Ergebnis der Funktionswertberechnung: <span class="Ausgabewerte"> {{ ausgabe }}
@@ -52,7 +52,7 @@ import { eingabeFunktion, eingabeStelle, eingabeAnzahlAbleitungen, polynomfunkti
             <p>Es muss eine ganze Zahl als Stelle eingegeben werden!</p>
         </div>
         <!-- Fehlermeldung für ungültige Ordnung der Ableitung-->
-        <div v-else-if="!ableitungshoheGueltig">
+        <div v-else-if="!ableitungOrdnungGueltig">
             <p>Es muss eine natürliche Zahl als Ordnung der Ableitung angegeben werden!</p>
         </div>
     </div>

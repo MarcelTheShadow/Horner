@@ -2,14 +2,13 @@ import { ref } from "vue";
 import {
     zwischenstandPolynomfunktionIntern,
     stelleIntern,
-    anzahlAbleitungenIntern,
     polynomfunktionAuslesen,
     polynomfunktionZuArrays,
     arraysSortieren,
     koeffizientenVollAufbereitetIntern,
     hornerSchema,
     entferneFunktionswert,
-} from "../composables/polynomfunktionMethoden.js";
+} from "./basisMethoden.js";
 
 /// VARIABLEN
 
@@ -20,13 +19,16 @@ export const eingabeFunktion = ref("");
 export const eingabeStelle = ref("");
 
 // Direkter Wert der Höhe der Ableitung aus Input über v-model
-export const eingabeAnzahlAbleitungen = ref("");
+export const eingabeOrdnungAbleitung = ref("");
 
 // Polynomfunktion zum Zeitpunkt des Drückens des Buttons
 export const polynomfunktion = ref("");
 
 // Stelle zum Zeitpunkt des Drückens des Buttons
 export const stelle = ref("");
+
+// Ordnung Ableitung zum Zeitpunkt des Drückens des Buttons
+export const ordnungAbleitung = ref("");
 
 // Ausgabe auf der Webseit
 export const ausgabe = ref("");
@@ -38,7 +40,7 @@ export const funktionGueltig = ref(false);
 export const stelleGueltig = ref(false);
 
 // Handelt es sich bei der eingegebenen Ableitungshöhe um eine ganze Zahl und gibt es eine Ableitung dieser Ordnung?
-export const ableitungshoheGueltig = ref(false);
+export const ableitungOrdnungGueltig = ref(false);
 
 /// FUNKTIONEN
 
@@ -96,22 +98,22 @@ export const stelleGueltiPruefen = () => {
 
 // Ordnung der Ableitung überprüfen. Sollte eine ganze Zahl sein, keine weiteren Zeichen sind erlaubt
 
-export const ableitungshoeheGueltigPruefen = () => {
-    if (/^[+-]?\d+$/.test(anzahlAbleitungenIntern.value)) {
-        ableitungshoheGueltig.value = true;
+export const ableitungOrdnungGueltigPruefen = () => {
+    if (/^[+-]?\d+$/.test(ordnungAbleitung.value)) {
+        ableitungOrdnungGueltig.value = true;
     } else {
-        ableitungshoheGueltig.value = false;
+        ableitungOrdnungGueltig.value = false;
     }
 };
 
-// Entsprechend der Höhe der Ableitung wird die Funktion hornerSchema() und entferneFunktionswert() so oft aufgerufen, wie es Ableitungen gibt
+// Entsprechend der Ordnung der Ableitung wird die Funktion hornerSchema() und entferneFunktionswert() so oft aufgerufen, wie es Ableitungen gibt
 
 export const iterationenHornerSchema = () => {
-    for (let i = 0; i < anzahlAbleitungenIntern.value; i++) {
-        // Wenn nur noch ein Koeffizient übrig ist, ist die Ableitungshöhe nicht gültig, da mindestens noch ein Koeffizient entfernt werden muss
+    for (let i = 0; i < ordnungAbleitung.value; i++) {
+        // Wenn nur noch ein Koeffizient übrig ist, ist die Ordnung der Ableitung nicht gültig, da mindestens noch ein Koeffizient entfernt werden muss
         // Die Ordnung der Ableitung wurde dann zu hoch gewählt und ist ungültig
         if (koeffizientenVollAufbereitetIntern.value.length == 1) {
-            ableitungshoheGueltig.value = false;
+            ableitungOrdnungGueltig.value = false;
             return;
         }
         hornerSchema();
@@ -128,7 +130,7 @@ export const funktionswertZuString = () => {
         ]
     );
     // Der ausgelesene Wert muss mit der Fakultät der Ordnung der Ableitung multipliziert werden, um den realen Funktionswert zu erhalten. Dies ist Teil der Logik des Horner-Schemas
-    for (let i = 1; i <= anzahlAbleitungenIntern.value; i++) {
+    for (let i = 1; i <= ordnungAbleitung.value; i++) {
         ausgabeTmp.value = ausgabeTmp.value * i;
     }
     ausgabe.value = `${ausgabeTmp.value}`;
@@ -141,10 +143,10 @@ export const eingabeVerarbeiten = () => {
     polynomfunktion.value = eingabeFunktion.value;
     stelleIntern.value = eingabeStelle.value;
     stelle.value = eingabeStelle.value;
-    anzahlAbleitungenIntern.value = eingabeAnzahlAbleitungen.value;
+    ordnungAbleitung.value = eingabeOrdnungAbleitung.value;
     polynomfunktionGueltigPruefen();
     stelleGueltiPruefen();
-    ableitungshoeheGueltigPruefen();
+    ableitungOrdnungGueltigPruefen();
     polynomfunktionAuslesen();
     polynomfunktionZuArrays();
     arraysSortieren();

@@ -1,9 +1,6 @@
 import { ref } from "vue";
 
-//// INTERNE VARIABLEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
-
-// Höhe der Ableitung für die Funktionswertberechnung zum Zeitpunkt des Drückens des Buttons
-export const anzahlAbleitungenIntern = ref("");
+/// INTERNE VARIABLEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
 
 // Interne (Null)stelle zur Berechnung
 export const stelleIntern = ref("");
@@ -19,7 +16,7 @@ export const exponentenIntern = ref([]);
 // Array nach Verarbeitung
 export const koeffizientenVollAufbereitetIntern = ref([]);
 
-// FUNKTIONEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
+/// BASISFUNKTIONEN POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
 
 // Liest einzelne Terme und Werte aus RegEx aus und wandelt sie in Format um, das für das Auslesen der Vorzeichen, Koeffizienten und Exponenten geeignet ist
 

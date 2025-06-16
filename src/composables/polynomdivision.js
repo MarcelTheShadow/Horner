@@ -8,7 +8,7 @@ import {
     koeffizientenVollAufbereitetIntern,
     hornerSchema,
     entferneFunktionswert,
-} from "../composables/polynomfunktionMethoden.js";
+} from "./basisMethoden.js";
 
 /// VARIABLEN
 
