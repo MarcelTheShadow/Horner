@@ -1,0 +1,39 @@
+/* Gesamte Inputsektion, umfasst also eingabeTextfelder */
+
+.eingabeSektion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 40%;
+    row-gap: 10%;
+}
+
+/* Inputfelder für Polynomfunktion, (Null-)Stelle, Ordnung der Ableitung */
+
+.eingabeTextfelder {
+    display: flex;
+    justify-content: center;
+    align-items: row;
+    flex-direction: row;
+    height: 20%;
+    gap: 5%;
+}
+
+/* Realer Output des Horner-Rechners */
+
+.Ausgabewerte {
+    font-weight: bold;
+    background-color: blueviolet;
+    padding: 0.75vh 0.75vw;
+    border-radius: 1vw;
+}
+
+/* Output/Widerspiegeln der Eingabewerte */
+
+.AusgabeEingabe {
+    font-weight: bold;
+    background-color: rgb(29, 145, 154);
+    padding: 0.75vh 0.75vw;
+    border-radius: 1vw;
+}

@@ -1,3 +1,5 @@
+/* Überschriften beim Horner-Rechner */
+
 .Ueberschrift {
     display: flex;
     justify-content: center;
@@ -8,6 +10,8 @@
     font-weight: 600;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
+/* Reine Textabschnitte */
 
 .text {
     display: flex;

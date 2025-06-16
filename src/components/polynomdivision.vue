@@ -8,13 +8,13 @@ import { eingabeFunktionPolynomdivision, eingabeNullstellePolynomdivision, polyn
         Horner-Rechner - Polynomdivision
     </div>
     <!-- Eingabe -->
-    <div class="eingabeBenutzerTextUndButton">
-        <div class="eingabeBenutzerNurText">
+    <div class="eingabeSektion">
+        <div class="eingabeTextfelder">
             <!-- Eingabe der Polynomfunktion, durch Enter Berechnung -->
             <input type="text" v-model="eingabeFunktionPolynomdivision"
                 @keyup.enter="eingabeVerarbeitenPolynomdivision()" placeholder="Polynomfunktion" style="width: 20vw;" />
             <!-- Eingabe der Nullstelle, durch Enter Berechnung -->
-                <input type="text" v-model="eingabeNullstellePolynomdivision"
+            <input type="text" v-model="eingabeNullstellePolynomdivision"
                 @keyup.enter="eingabeVerarbeitenPolynomdivision()" placeholder="Nullstelle" style="width: 10vw;">
         </div>
         <!-- Durch Drücken Berechnung-->
@@ -25,9 +25,9 @@ import { eingabeFunktionPolynomdivision, eingabeNullstellePolynomdivision, polyn
     <div class="text">
         <!-- Ausgabe der Ergebnisse, wenn die Eingaben gültig sind -->
         <div v-if="(funktionGueltigPolynomdivision && stelleGueltigPolynomdivision)">
-            <p>Eingegebene Polynomfunktion: {{ polynomfunktionPolynomdivision }}</p>
-            <p>Eingegebene Nullstelle: {{ nullstellePolynomdivision }}</p>
-            <p >Ergebnis der Polynomdivision: <span class="wichtigeAusgabe"> {{ ausgabePolynomdivision }} </span></p>
+            <p>Eingegebene Polynomfunktion: <span class="AusgabeEingabe"> {{ polynomfunktionPolynomdivision }} </span></p>
+            <p>Eingegebene Nullstelle: <span class="AusgabeEingabe"> {{ nullstellePolynomdivision }} </span></p>
+            <p>Ergebnis der Polynomdivision: <span class="Ausgabewerte"> {{ ausgabePolynomdivision }} </span></p>
         </div>
         <!-- Ausgabe der Fehlermeldungen, wenn die Eingaben ungültig sind -->
         <!-- Fehlermeldung bei ungültiger Polynomfunktion gibt allgemein an, wie welche Daten eingegeben werden müssen, nicht nur Polynomfunktion-->
@@ -48,5 +48,5 @@ import { eingabeFunktionPolynomdivision, eingabeNullstellePolynomdivision, polyn
 <!-- Import von benötigten CSS-Dateien für Style -->
 <style scoped>
 @import '../assets/styleForAll.css';
-@import '../assets/styleForTextInputs.css';
+@import '../assets/styleForUseCases.css';
 </style>

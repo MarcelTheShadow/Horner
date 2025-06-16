@@ -8,8 +8,8 @@ import { eingabeFunktionFunktionswertberechnung, eingabeStelleFunktionswertberec
         Horner-Rechner - Funktionswertberechnung
     </div>
     <!-- Eingabe -->
-    <div class="eingabeBenutzerTextUndButton">
-        <div class="eingabeBenutzerNurText">
+    <div class="eingabeSektion">
+        <div class="eingabeTextfelder">
             <!-- Eingabe der Polynomfunktion, durch Enter Berechnung -->
             <input type="text" v-model="eingabeFunktionFunktionswertberechnung"
                 @keyup.enter="eingabeVerarbeitenFunktionswertberechnung()" placeholder="Polynomfunktion"
@@ -32,10 +32,10 @@ import { eingabeFunktionFunktionswertberechnung, eingabeStelleFunktionswertberec
         <!-- Ausgabe der Ergebnisse, wenn die Eingaben gültig sind -->
         <div
             v-if="(funktionGueltigFunktionswertberechnung && stelleGueltigFunktionswertberechnung && ableitungshoheGueltigFunktionswertberechnung)">
-            <p>Eingegebene Polynomfunktion: {{ polynomfunktionFunktionswertberechnung }}</p>
-            <p>Eingegebene Nullstelle: {{ stelleFunktionswertberechnung }}</p>
-            <p>Ergebnis der Funktionswertberechnung: <span class="wichtigeAusgabe"> {{ ausgabeFunktionswertberechnung }}
-                </span> </p>
+            <p>Eingegebene Polynomfunktion: <span class="AusgabeEingabe"> {{ polynomfunktionFunktionswertberechnung }} </span></p>
+            <p>Eingegebene Nullstelle: <span class="AusgabeEingabe"> {{ stelleFunktionswertberechnung }} </span></p>
+            <p>Ergebnis der Funktionswertberechnung: <span class="Ausgabewerte"> {{ ausgabeFunktionswertberechnung }}
+                </span></p>
         </div>
         <!-- Ausgabe der Fehlermeldungen, wenn die Eingaben ungültig sind -->
         <!-- Fehlermeldung bei ungültiger Polynomfunktion gibt allgemein an, wie welche Daten eingegeben werden müssen, nicht nur Polynomfunktion-->
@@ -61,5 +61,5 @@ import { eingabeFunktionFunktionswertberechnung, eingabeStelleFunktionswertberec
 <!-- Import von benötigten CSS-Dateien für Style -->
 <style scoped>
 @import '../assets/styleForAll.css';
-@import '../assets/styleForTextInputs.css';
+@import '../assets/styleForUseCases.css';
 </style>
