@@ -10,14 +10,17 @@ import { eingabeFunktion, eingabeStelle, eingabeOrdnungAbleitung, polynomfunktio
     <!-- Eingabe -->
     <div class="eingabeSektion">
         <div class="eingabeTextfelder">
+            
             <!-- Eingabe der Polynomfunktion, durch Enter Berechnung -->
             <input type="text" v-model="eingabeFunktion"
                 @keyup.enter="eingabeVerarbeiten()" placeholder="Polynomfunktion"
                 style="width: 20vw;" />
+
             <!-- Eingabe der Stelle zur Funktionswertberechnung, durch Enter Berechnung -->
             <input type="text" v-model="eingabeStelle"
                 @keyup.enter="eingabeVerarbeiten()" placeholder="Stelle von x"
                 style="width: 10vw;">
+
             <!-- Eingabe der Ordnung der Ableitung, durch Enter Berechnung -->
             <input type="text" v-model="eingabeOrdnungAbleitung"
                 @keyup.enter="eingabeVerarbeiten()" placeholder="Ordnung der Ableitung"
@@ -29,6 +32,7 @@ import { eingabeFunktion, eingabeStelle, eingabeOrdnungAbleitung, polynomfunktio
 
     <!-- Ausgabe -->
     <div class="text">
+
         <!-- Ausgabe der Ergebnisse, wenn die Eingaben gültig sind -->
         <div
             v-if="(funktionGueltig && stelleGueltig && ableitungOrdnungGueltig)">
@@ -37,7 +41,9 @@ import { eingabeFunktion, eingabeStelle, eingabeOrdnungAbleitung, polynomfunktio
             <p>Ergebnis der Funktionswertberechnung: <span class="Ausgabewerte"> {{ ausgabe }}
                 </span></p>
         </div>
+
         <!-- Ausgabe der Fehlermeldungen, wenn die Eingaben ungültig sind -->
+
         <!-- Fehlermeldung bei ungültiger Polynomfunktion gibt allgemein an, wie welche Daten eingegeben werden müssen, nicht nur Polynomfunktion-->
         <div v-else-if="!funktionGueltig">
             <p>Die eingegebene Funktion ist ungültig!</p>
@@ -46,11 +52,13 @@ import { eingabeFunktion, eingabeStelle, eingabeOrdnungAbleitung, polynomfunktio
             <p>Die Koeffizienten a,b,c... und die eingegebene Stelle müssen ganze Zahlen, die Exponenten n,m,k... sowie
                 die angegebene Ordnung der Ableitung natürliche Zahlen
                 sein</p>
+
         <!-- Fehlermeldung für ungültige Stelle-->
         </div>
         <div v-else-if="!stelleGueltig">
             <p>Es muss eine ganze Zahl als Stelle eingegeben werden!</p>
         </div>
+
         <!-- Fehlermeldung für ungültige Ordnung der Ableitung-->
         <div v-else-if="!ableitungOrdnungGueltig">
             <p>Es muss eine natürliche Zahl als Ordnung der Ableitung angegeben werden!</p>

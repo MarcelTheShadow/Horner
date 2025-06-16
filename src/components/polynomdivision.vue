@@ -10,8 +10,10 @@ import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funkti
     <!-- Eingabe -->
     <div class="eingabeSektion">
         <div class="eingabeTextfelder">
+
             <!-- Eingabe der Polynomfunktion, durch Enter Berechnung -->
             <input type="text" v-model="eingabeFunktion"
+
                 @keyup.enter="eingabeVerarbeiten()" placeholder="Polynomfunktion" style="width: 20vw;" />
             <!-- Eingabe der Nullstelle, durch Enter Berechnung -->
             <input type="text" v-model="eingabeNullstelle"
@@ -23,13 +25,16 @@ import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funkti
 
     <!-- Ausgabe -->
     <div class="text">
+
         <!-- Ausgabe der Ergebnisse, wenn die Eingaben gültig sind -->
         <div v-if="(funktionGueltig && stelleGueltig)">
             <p>Eingegebene Polynomfunktion: <span class="AusgabeEingabe"> {{ polynomfunktion }} </span></p>
             <p>Eingegebene Nullstelle: <span class="AusgabeEingabe"> {{ nullstelle }} </span></p>
             <p>Ergebnis der Polynomdivision: <span class="Ausgabewerte"> {{ ausgabe }} </span></p>
         </div>
+
         <!-- Ausgabe der Fehlermeldungen, wenn die Eingaben ungültig sind -->
+
         <!-- Fehlermeldung bei ungültiger Polynomfunktion gibt allgemein an, wie welche Daten eingegeben werden müssen, nicht nur Polynomfunktion-->
         <div v-else-if="!funktionGueltig">
             <p>Die eingegebene Funktion ist ungültig!</p>
@@ -38,6 +43,7 @@ import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funkti
             <p>Die Koeffizienten a,b,c... sowie die eingegebene Nullstelle müssen ganze Zahlen, die Exponenten n,m,k...
                 natürliche Zahlen sein</p>
         </div>
+        
         <!-- Fehlermeldung für ungültige Nullstelle-->
         <div v-else-if="!stelleGueltig">
             <p>Es muss eine ganze Zahl als Nullstelle der Polynomfunktion eingegeben werden!</p>
