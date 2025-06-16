@@ -5,7 +5,7 @@ import {
     polynomfunktionAuslesen,
     polynomfunktionZuArrays,
     arraysSortieren,
-    koeffizientenVollAufbereitetIntern,
+    koeffizientenAlsEinArrayIntern,
     hornerSchema,
     entferneFunktionswert,
 } from "./basisMethoden.js";
@@ -92,12 +92,12 @@ const nullstelleGueltigPruefen = () => {
 const nullstelleVerifizieren = () => {
     // Berechnung des Funktionswertes an der Nullstelle schrittweise für alle Exponenten
     const sum = ref(0);
-    for (let i = 0; i < koeffizientenVollAufbereitetIntern.value.length; i++) {
+    for (let i = 0; i < koeffizientenAlsEinArrayIntern.value.length; i++) {
         sum.value +=
-            koeffizientenVollAufbereitetIntern.value[i] *
+            koeffizientenAlsEinArrayIntern.value[i] *
             Math.pow(
                 parseInt(nullstelle.value),
-                koeffizientenVollAufbereitetIntern.value.length - i - 1
+                koeffizientenAlsEinArrayIntern.value.length - i - 1
             );
     }
     // Wenn der Funktionswert an der Nullstelle != 0, ist die Nullstelle ungültig
@@ -111,14 +111,14 @@ const nullstelleVerifizieren = () => {
 const ergebnisZuString = () => {
     const ausgabeTmp = ref("");
     const highestExponent = ref(
-        koeffizientenVollAufbereitetIntern.value.length - 1
+        koeffizientenAlsEinArrayIntern.value.length - 1
     );
     // Iteriere von links nach rechts durch das Koeffizineten-Array, also vom höchsten zum niedrigsten Exponenten
-    for (let i = 0; i < koeffizientenVollAufbereitetIntern.value.length; i++) {
+    for (let i = 0; i < koeffizientenAlsEinArrayIntern.value.length; i++) {
         // Wenn der Koeffizient an der Stelle != 0, füge ihn zur Ausgabe hinzu
-        if (koeffizientenVollAufbereitetIntern.value[i] != 0) {
+        if (koeffizientenAlsEinArrayIntern.value[i] != 0) {
             // Füge Vorzeichen hinzu, Leerzeichen zum Abtrennen der Terme
-            if (koeffizientenVollAufbereitetIntern.value[i] > 0) {
+            if (koeffizientenAlsEinArrayIntern.value[i] > 0) {
                 ausgabeTmp.value += " +";
             } else {
                 // Für negative Koeffizienten wird das Minuszeichen bereits im Koeffizienten berücksichtigt
@@ -126,15 +126,15 @@ const ergebnisZuString = () => {
             }
             // Für x^0 nur den Koeffizienten hinzufügen
             if (highestExponent.value - i === 0) {
-                ausgabeTmp.value += koeffizientenVollAufbereitetIntern.value[i];
+                ausgabeTmp.value += koeffizientenAlsEinArrayIntern.value[i];
             // Für x^1 nur den Koeffizienten und x hinzufügen
             } else if (highestExponent.value - i === 1) {
                 ausgabeTmp.value +=
-                    koeffizientenVollAufbereitetIntern.value[i] + "x";
+                    koeffizientenAlsEinArrayIntern.value[i] + "x";
             // Für alle anderen Exponenten den Koeffizienten, x und den Exponenten hinzufügen
             } else {
                 ausgabeTmp.value +=
-                    koeffizientenVollAufbereitetIntern.value[i] +
+                    koeffizientenAlsEinArrayIntern.value[i] +
                     "x^" +
                     (highestExponent.value - i);
             }

@@ -5,7 +5,7 @@ import {
     polynomfunktionAuslesen,
     polynomfunktionZuArrays,
     arraysSortieren,
-    koeffizientenVollAufbereitetIntern,
+    koeffizientenAlsEinArrayIntern,
     hornerSchema,
     entferneFunktionswert,
 } from "./basisMethoden.js";
@@ -112,7 +112,7 @@ export const iterationenHornerSchema = () => {
     for (let i = 0; i < ordnungAbleitung.value; i++) {
         // Wenn nur noch ein Koeffizient übrig ist, ist die Ordnung der Ableitung nicht gültig, da mindestens noch ein Koeffizient entfernt werden muss
         // Die Ordnung der Ableitung wurde dann zu hoch gewählt und ist ungültig
-        if (koeffizientenVollAufbereitetIntern.value.length == 1) {
+        if (koeffizientenAlsEinArrayIntern.value.length == 1) {
             ableitungOrdnungGueltig.value = false;
             return;
         }
@@ -125,8 +125,8 @@ export const iterationenHornerSchema = () => {
 
 export const funktionswertZuString = () => {
     let ausgabeTmp = ref(
-        koeffizientenVollAufbereitetIntern.value[
-            koeffizientenVollAufbereitetIntern.value.length - 1
+        koeffizientenAlsEinArrayIntern.value[
+            koeffizientenAlsEinArrayIntern.value.length - 1
         ]
     );
     // Der ausgelesene Wert muss mit der Fakultät der Ordnung der Ableitung multipliziert werden, um den realen Funktionswert zu erhalten. Dies ist Teil der Logik des Horner-Schemas
