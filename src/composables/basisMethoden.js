@@ -21,16 +21,15 @@ export const koeffizientenAlsEinArrayIntern = ref([]);
 // Liest einzelne Terme und Werte aus RegEx aus und wandelt sie in Format um, das für das Auslesen der Vorzeichen, Koeffizienten und Exponenten geeignet ist
 
 export const polynomfunktionAuslesen = () => {
-    
     /// Aktuelle RegEx: \s*[+-]?\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*(\s*[+-]\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*)*
-    
+
     // Entfernt alle Leerzeichen aus dem Input
     let i = 0;
     // Allgemein iterieren über while-Schleife anstatt for-Schleife, da die Länge des Inputs sich während der Iteration ändert
     while (i < zwischenstandPolynomfunktionIntern.value.length) {
         if (zwischenstandPolynomfunktionIntern.value[i] === " ") {
             zwischenstandPolynomfunktionIntern.value =
-            // Konkateniere alle Zeichen vor und nach dem Leerzeichen
+                // Konkateniere alle Zeichen vor und nach dem Leerzeichen
                 zwischenstandPolynomfunktionIntern.value.slice(0, i) +
                 zwischenstandPolynomfunktionIntern.value.slice(i + 1);
             // Da ein Zeichen entfernt wurde, muss der Index um 1 verringert werden, damit das nächste Zeichen nicht übersprungen wird
@@ -38,9 +37,9 @@ export const polynomfunktionAuslesen = () => {
         }
         i++;
     }
-    
+
     /// Aktuelle RegEx: [+-]?\d*(\*?x(\^\d+)?)?([+-]\d*(\*?x(\^\d+)?)?)*
-    
+
     // Fügt dem Input ein '+' vor, wenn der erste Buchstabe kein '+' oder '-' ist, damit der erste Term auch mit Vorzeichen erkannt wird
     if (
         zwischenstandPolynomfunktionIntern.value[0] != "+" &&
@@ -49,9 +48,9 @@ export const polynomfunktionAuslesen = () => {
         zwischenstandPolynomfunktionIntern.value =
             "+" + zwischenstandPolynomfunktionIntern.value;
     }
-    
+
     /// Aktuelle RegEx: ([+-]\d*(\*?x(\^\d+)?)?)*
-    
+
     // Fügt dem Input ein '*' oder '1*' vor dem 'x' hinzu, wenn es nicht schon da ist
     i = 0;
     // Nach jedem Vorzeichen wird geprüft, ob bei dem vorhandenen x ein '*' fehlt
@@ -78,7 +77,7 @@ export const polynomfunktionAuslesen = () => {
                     zwischenstandPolynomfunktionIntern.value.slice(0, i) +
                     "1*" +
                     zwischenstandPolynomfunktionIntern.value.slice(i);
-            // Wenn der Term '+ax' oder '-ax' ist, wird er zu '+a*x' bzw. '-a*x' abgewandelt
+                // Wenn der Term '+ax' oder '-ax' ist, wird er zu '+a*x' bzw. '-a*x' abgewandelt
             } else {
                 zwischenstandPolynomfunktionIntern.value =
                     zwischenstandPolynomfunktionIntern.value.slice(0, i) +
@@ -89,9 +88,9 @@ export const polynomfunktionAuslesen = () => {
         }
         i++;
     }
-    
+
     /// Aktuelle RegEx: ([+-]\d+(\*x(\^\d+)?)?)*
-    
+
     // Fügt dem Input ein '^1' hinzu, wenn es nicht schon da ist
     i = 0;
     while (i < zwischenstandPolynomfunktionIntern.value.length) {
@@ -141,85 +140,79 @@ export const polynomfunktionAuslesen = () => {
 
     /// Aktuelle RegEx: ([+-]\d+\*x\^\d+)*
 
-    // Hier sollen die einzelnen Terme gespeichert werden
-    const terme = ref([]);
-    terme.value = [];
+    const terme = [];
 
+    // Füge jedes Monom in das Array terme ein
     for (const match of zwischenstandPolynomfunktionIntern.value.matchAll(
         /[+-]\d+\*x\^\d+/g
     )) {
-        if (match) {
-            terme.value += match + ",";
-        }
+        // match[0] enthält den gefundenen Text, also das Monom
+        terme.push(match[0]);
     }
-    zwischenstandPolynomfunktionIntern.value = terme.value;
+    zwischenstandPolynomfunktionIntern.value = terme;
 };
 
-// Konvertiert die Polynomfunktion in Arrays für Vorzeichen, Koeffizienten und Exponenten
-
-export const polynomfunktionZuArrays = () => {
-    // Arrays für Vorzeichen, Koeffizienten und Exponenten
-    vorzeichenIntern.value = [];
-    koeffizientenIntern.value = [];
-    exponentenIntern.value = [];
-
-    // Vorzeichen extrahieren
-    for (const match of zwischenstandPolynomfunktionIntern.value.matchAll(
-        /[+-]/g
-    )) {
-        vorzeichenIntern.value.push(match[0]);
-    }
-
-    // Koeffizienten und Exponenten extrahieren
-    let i = 0;
-    for (const match of zwischenstandPolynomfunktionIntern.value.matchAll(
-        /\d+/g
-    )) {
-        // Da jeder Term aus Koeffizient und Exponent besteht, wird abwechselnd der Koeffizient und der Exponent in die jeweiligen Arrays eingefügt
-        if (i % 2 === 0) {
-            koeffizientenIntern.value.push(parseInt(match[0]));
-        } else {
-            exponentenIntern.value.push(parseInt(match[0]));
-        }
-        i++;
-    }
-};
-
-// Sortiert die Arrays für Vorzeichen, Koeffizienten und Exponenten nach den Exponenten
-
-export const arraysSortieren = () => {
-    // Höchster Exponent in gesamter Polynomfunktion
-    let highestExponent = 0;
-    for (let i = 0; i < exponentenIntern.value.length; i++) {
-        if (exponentenIntern.value[i] > highestExponent) {
-            highestExponent = exponentenIntern.value[i];
+export const polynomfunktionDirektZuArray = () => {
+    let hoechsterExponent = 0;
+    // Bestimme den höchsten Exponenten in der Polynomfunktion
+    // Gehe durch jedes Monom und finde jeweils den Exponenten zum Vergleich mit dem bisherig höchsten Exponenten
+    for (let i = 0; i < zwischenstandPolynomfunktionIntern.value.length; i++) {
+        let exponentBetrachet = false;
+        let monom = zwischenstandPolynomfunktionIntern.value[i];
+        for (const match of monom.match(/\d+/g)) {
+            // Der zweite gefundene Wert ist immer der Exponent, da ein Monom die Form [+-]\d+\*x\^\d+ hat
+            if (exponentBetrachet) {
+                if (parseInt(match) > hoechsterExponent) {
+                    hoechsterExponent = parseInt(match);
+                }
+            } else {
+                // Koeffizient wird ignoriert und setzt exponent auf true
+                exponentBetrachet = true;
+            }
         }
     }
 
     // In Array sollen alle Koeffizienten entsprechend der Höhe ihrer Exponenten gespeichert werden
-    let sortierteKoeffizienten = ref(new Array(highestExponent.valueOf));
+    // Ganz links höchster Exponent, ganz rechts Exponent 0
+    let sortierteKoeffizienten = ref(new Array(hoechsterExponent + 1));
 
     // Initialisiert das Array mit 0
-    for (let i = 0; i <= highestExponent; i++) {
+    for (let i = 0; i <= hoechsterExponent; i++) {
         sortierteKoeffizienten.value[i] = 0;
     }
 
-    // Füge Koeffizienten termweise aus dem Array von polynomfunktionZuArrays in das Array sortedKoeffizienten ein
-    // Gleiche Exponenten werden addiert/subtrahiert, je nach Vorzeichen, jetzt gibt es nur noch ein Array mit den Koeffizienten, die nach Exponenten sortiert sind
-    for (let i = 0; i < exponentenIntern.value.length; i++) {
-        let index = exponentenIntern.value[i];
-        if (vorzeichenIntern.value[i] === "+") {
-            sortierteKoeffizienten.value[index] += koeffizientenIntern.value[i];
-        } else {
-            sortierteKoeffizienten.value[index] -= koeffizientenIntern.value[i];
+    // Initialisiere Vorzeichen, Koeffizient, Exponent
+    let minusBeiKoeffizient = false;
+    let koeffizient = 0;
+    let exponent = 0;
+
+    // Suche für jedes Monom das Vorzeichen, den Koeffizienten und den Exponenten
+    for (let i = 0; i < zwischenstandPolynomfunktionIntern.value.length; i++) {
+        let monom = zwischenstandPolynomfunktionIntern.value[i];
+        let first = true;
+        let minusBeiKoeffizient = false;
+
+        for (const match of monom.matchAll(/\d+/g)) {
+            // Der erste gefundene Wert ist der Koeffizient
+            if (first) {
+                koeffizient = parseInt(match);
+                first = false;
+                if(match.index > 0 && monom[match.index - 1] === "-") {
+                    // Wenn der Koeffizient negativ ist, wird minusBeiKoeffizient auf true gesetzt
+                    minusBeiKoeffizient = true;
+                }
+            } else {
+                exponent = parseInt(match);
+            }
         }
+
+        // Füge den Koeffizienten an der Stelle des Exponenten im Array sortierteKoeffizienten ein
+        if (minusBeiKoeffizient) {
+            koeffizient = -koeffizient;
+        }
+        sortierteKoeffizienten.value[sortierteKoeffizienten.value.length - exponent - 1] += koeffizient;
     }
-
-    // Kehre Array um, da das Horner-Schema beim höchsten Exponenten beginnt
-    sortierteKoeffizienten.value.reverse();
-
-    koeffizientenAlsEinArrayIntern.value = [];
-    koeffizientenAlsEinArrayIntern.value = sortierteKoeffizienten.value;
+     koeffizientenAlsEinArrayIntern.value = sortierteKoeffizienten.value;
 };
 
 // Auf Basis der sortierten Daten von arraysSortieren wird das Horner-Schema ausgeführt

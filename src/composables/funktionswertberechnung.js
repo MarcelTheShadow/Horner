@@ -3,9 +3,8 @@ import {
     zwischenstandPolynomfunktionIntern,
     stelleIntern,
     polynomfunktionAuslesen,
-    polynomfunktionZuArrays,
-    arraysSortieren,
     koeffizientenAlsEinArrayIntern,
+    polynomfunktionDirektZuArray,
     hornerSchema,
     entferneFunktionswert,
 } from "./basisMethoden.js";
@@ -148,8 +147,7 @@ export const eingabeVerarbeiten = () => {
     stelleGueltiPruefen();
     ableitungOrdnungGueltigPruefen();
     polynomfunktionAuslesen();
-    polynomfunktionZuArrays();
-    arraysSortieren();
+    polynomfunktionDirektZuArray();
     iterationenHornerSchema();
     hornerSchema();
     funktionswertZuString();

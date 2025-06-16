@@ -2,10 +2,9 @@ import { ref } from "vue";
 import {
     zwischenstandPolynomfunktionIntern,
     stelleIntern,
-    polynomfunktionAuslesen,
-    polynomfunktionZuArrays,
-    arraysSortieren,
     koeffizientenAlsEinArrayIntern,
+    polynomfunktionAuslesen,
+    polynomfunktionDirektZuArray,
     hornerSchema,
     entferneFunktionswert,
 } from "./basisMethoden.js";
@@ -159,8 +158,7 @@ export const eingabeVerarbeiten = () => {
     polynomfunktionGueltigPruefen();
     nullstelleGueltigPruefen();
     polynomfunktionAuslesen();
-    polynomfunktionZuArrays();
-    arraysSortieren();
+    polynomfunktionDirektZuArray();
     nullstelleVerifizieren();
     hornerSchema();
     entferneFunktionswert();
