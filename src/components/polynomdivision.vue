@@ -1,6 +1,6 @@
-<!-- Import von benötigten Variablen; Delegation der Berechnung an die .js-Datei -->
+<!-- Import von benötigten Variablen; Delegation der Berechnung an die .js-Dateien -->
 <script setup>
-import { eingabeFunktionPolynomdivision, eingabeNullstellePolynomdivision, polynomfunktionPolynomdivision, nullstellePolynomdivision, funktionGueltigPolynomdivision, stelleGueltigPolynomdivision, ausgabePolynomdivision, eingabeVerarbeitenPolynomdivision } from '../composables/polynomfunktionMethoden.js';
+import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funktionGueltig, stelleGueltig, ausgabe, eingabeVerarbeiten } from '../composables/polynomdivision.js';
 </script>
 
 <template>
@@ -11,27 +11,27 @@ import { eingabeFunktionPolynomdivision, eingabeNullstellePolynomdivision, polyn
     <div class="eingabeSektion">
         <div class="eingabeTextfelder">
             <!-- Eingabe der Polynomfunktion, durch Enter Berechnung -->
-            <input type="text" v-model="eingabeFunktionPolynomdivision"
-                @keyup.enter="eingabeVerarbeitenPolynomdivision()" placeholder="Polynomfunktion" style="width: 20vw;" />
+            <input type="text" v-model="eingabeFunktion"
+                @keyup.enter="eingabeVerarbeiten()" placeholder="Polynomfunktion" style="width: 20vw;" />
             <!-- Eingabe der Nullstelle, durch Enter Berechnung -->
-            <input type="text" v-model="eingabeNullstellePolynomdivision"
-                @keyup.enter="eingabeVerarbeitenPolynomdivision()" placeholder="Nullstelle" style="width: 10vw;">
+            <input type="text" v-model="eingabeNullstelle"
+                @keyup.enter="eingabeVerarbeiten()" placeholder="Nullstelle" style="width: 10vw;">
         </div>
         <!-- Durch Drücken Berechnung-->
-        <button @click="eingabeVerarbeitenPolynomdivision()">Führe Polynomdivision aus</button>
+        <button @click="eingabeVerarbeiten()">Führe Polynomdivision aus</button>
     </div>
 
     <!-- Ausgabe -->
     <div class="text">
         <!-- Ausgabe der Ergebnisse, wenn die Eingaben gültig sind -->
-        <div v-if="(funktionGueltigPolynomdivision && stelleGueltigPolynomdivision)">
-            <p>Eingegebene Polynomfunktion: <span class="AusgabeEingabe"> {{ polynomfunktionPolynomdivision }} </span></p>
-            <p>Eingegebene Nullstelle: <span class="AusgabeEingabe"> {{ nullstellePolynomdivision }} </span></p>
-            <p>Ergebnis der Polynomdivision: <span class="Ausgabewerte"> {{ ausgabePolynomdivision }} </span></p>
+        <div v-if="(funktionGueltig && stelleGueltig)">
+            <p>Eingegebene Polynomfunktion: <span class="AusgabeEingabe"> {{ polynomfunktion }} </span></p>
+            <p>Eingegebene Nullstelle: <span class="AusgabeEingabe"> {{ nullstelle }} </span></p>
+            <p>Ergebnis der Polynomdivision: <span class="Ausgabewerte"> {{ ausgabe }} </span></p>
         </div>
         <!-- Ausgabe der Fehlermeldungen, wenn die Eingaben ungültig sind -->
         <!-- Fehlermeldung bei ungültiger Polynomfunktion gibt allgemein an, wie welche Daten eingegeben werden müssen, nicht nur Polynomfunktion-->
-        <div v-else-if="!funktionGueltigPolynomdivision">
+        <div v-else-if="!funktionGueltig">
             <p>Die eingegebene Funktion ist ungültig!</p>
             <p>Es ist zu beachten:</p>
             <p>Arbeite für die Polynomfunktion mit dem Format a*x^n + b*x^m + c*x^k...</p>
@@ -39,7 +39,7 @@ import { eingabeFunktionPolynomdivision, eingabeNullstellePolynomdivision, polyn
                 natürliche Zahlen sein</p>
         </div>
         <!-- Fehlermeldung für ungültige Nullstelle-->
-        <div v-else-if="!stelleGueltigPolynomdivision">
+        <div v-else-if="!stelleGueltig">
             <p>Es muss eine ganze Zahl als Nullstelle der Polynomfunktion eingegeben werden!</p>
         </div>
     </div>

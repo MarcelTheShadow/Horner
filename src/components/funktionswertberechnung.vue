@@ -1,4 +1,4 @@
-<!-- Import von benötigten Variablen; Delegation der Berechnung an die .js-Datei -->
+<!-- Import von benötigten Variablen; Delegation der Berechnung an die .js-Dateien -->
 <script setup>
 import { eingabeFunktionFunktionswertberechnung, eingabeStelleFunktionswertberechnung, eingabeAnzahlAbleitungenFunktionswertberechnung, polynomfunktionFunktionswertberechnung, stelleFunktionswertberechnung, funktionGueltigFunktionswertberechnung, stelleGueltigFunktionswertberechnung, ableitungshoheGueltigFunktionswertberechnung, ausgabeFunktionswertberechnung, eingabeVerarbeitenFunktionswertberechnung } from '../composables/polynomfunktionMethoden.js';
 </script>

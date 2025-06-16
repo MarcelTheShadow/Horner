@@ -1,28 +1,5 @@
 import { ref } from "vue";
 
-//// POLYNOMDIVISION
-
-// Direkter Wert der Polynomfunktion für Polynomdivision aus Input über v-model
-export const eingabeFunktionPolynomdivision = ref("");
-
-// Direkter Wert der Nullstelle für Polynomdivision aus Input über v-model
-export const eingabeNullstellePolynomdivision = ref("");
-
-// Polynomfunktion zum Zeitpunkt des Drückens des Buttons für Polynomdivision
-export const polynomfunktionPolynomdivision = ref("");
-
-// Nullstelle zum Zeitpunkt des Drückens des Buttons
-export const nullstellePolynomdivision = ref("");
-
-// Ausgabe auf der Webseite für Polynomdivision
-export const ausgabePolynomdivision = ref("");
-
-// Ist Input eine gültige Polynomfunktion?
-export const funktionGueltigPolynomdivision = ref(false);
-
-// Handelt es sich bei der eingegebenen Nullstelle tatsächlich um eine Nullstelle für die gegebene Funktion?
-export const stelleGueltigPolynomdivision = ref(false);
-
 //// FUNKTIONSWERTBERECHNUNG
 
 // Direkter Wert der Polynomfunktion für Funktionswertberechnung aus Input über v-model
@@ -55,68 +32,27 @@ export const ableitungshoheGueltigFunktionswertberechnung = ref(false);
 //// INTERNE VARIABLEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
 
 // Höhe der Ableitung für die Funktionswertberechnung zum Zeitpunkt des Drückens des Buttons
-const anzahlAbleitungenIntern = ref("");
+export const anzahlAbleitungenIntern = ref("");
 
 // Interne (Null)stelle zur Berechnung
-const stelleIntern = ref("");
+export const stelleIntern = ref("");
 
 // Zwischenstand von eingegebeneFunktion, um den Input zu verarbeiten
-const zwischenstandPolynomfunktionIntern = ref("");
+export const zwischenstandPolynomfunktionIntern = ref("");
 
 // Arrays für Vorzeichen, Koeffizienten und Exponenten beim Verarbeiten der Polynomfunktion
-const vorzeichenIntern = ref([]);
-const koeffizientenIntern = ref([]);
-const exponentenIntern = ref([]);
+export const vorzeichenIntern = ref([]);
+export const koeffizientenIntern = ref([]);
+export const exponentenIntern = ref([]);
 
 // Array nach Verarbeitung
-const koeffizientenVollAufbereitetIntern = ref([]);
+export const koeffizientenVollAufbereitetIntern = ref([]);
 
 // FUNKTIONEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
 
-// Funktion, die bei der Polynomdivision überprüft, ob es sich um eine gültige Polynomfunktion handelt
-
-const polynomfunktionGueltigOderNichtPolynomdivision = () => {
-    // Standardmäßig ist die Funktion gültig, prüfe mittels RegEx und weiterer Logik, ob sie es tatsächlich ist
-    funktionGueltigPolynomdivision.value = true;
-
-    // Regulärer Ausdruck einer Polynomfunktion mit viel Flexibilität
-    if (
-        /^\s*[+-]?\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*(\s*[+-]\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*)*$/.test(
-            zwischenstandPolynomfunktionIntern.value
-        ) === false
-    ) {
-        funktionGueltigPolynomdivision.value = false;
-    } else {
-        const inputVerarbeitet = ref(
-            zwischenstandPolynomfunktionIntern.value.replace(/\s/g, "")
-        );
-        // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet
-        // Überprüft, ob der Input der Polynomfunktion aufeinanderfolgende '+' oder '-' hat
-        // Überprüft, ob der Input der Polynomfunktionen nur aus Leerzeichen besteht
-        if (
-            inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "+" ||
-            inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "-" ||
-            inputVerarbeitet.value.match(/\+\+|--|\+-|-\+/g) ||
-            inputVerarbeitet.value === ""
-        ) {
-            funktionGueltigPolynomdivision.value = false;
-        }
-        // Überprüft, ob der Input der Polynomfunktion ein '*' vor einem '+' oder '-' hat
-        for (const match of inputVerarbeitet.value.matchAll(/\*/g)) {
-            if (
-                inputVerarbeitet.value[match.index - 1] === "+" ||
-                inputVerarbeitet.value[match.index - 1] === "-" ||
-                match.index - 1 < 0
-            ) {
-                funktionGueltigPolynomdivision.value = false;
-            }
-        }
-    }
-};
-
 // Funktion, die bei der Funktionswertberechnung überprüft, ob es sich um eine gültige Polynomfunktion handelt
 
-const polynomfunktionGueltigOderNichtFunktionswertberechnung = () => {
+export const polynomfunktionGueltigOderNichtFunktionswertberechnung = () => {
     // Standardmäßig ist die Funktion gültig, prüfe mittels RegEx und weiterer Logik, ob sie es tatsächlich ist
     funktionGueltigFunktionswertberechnung.value = true;
 
@@ -155,19 +91,9 @@ const polynomfunktionGueltigOderNichtFunktionswertberechnung = () => {
     }
 };
 
-// Für Polynomdivision wird die Nullstelle überprüft. Sollte eine ganze Zahl sein, keine weiteren Zeichen sind erlaubt
-
-const nullstelleGueltigOderNichtPolynomdivision = () => {
-    if (/^[+-]?\d+$/.test(eingabeNullstellePolynomdivision.value)) {
-        stelleGueltigPolynomdivision.value = true;
-    } else {
-        stelleGueltigPolynomdivision.value = false;
-    }
-};
-
 // Für Funktionswertberechnung wird die eingegebene Stelle überprüft. Sollte eine ganze Zahl sein, keine weiteren Zeichen sind erlaubt
 
-const stelleGueltigOderNichtFunktionswertberechnung = () => {
+export const stelleGueltigOderNichtFunktionswertberechnung = () => {
     if (/^[+-]?\d+$/.test(eingabeStelleFunktionswertberechnung.value)) {
         stelleGueltigFunktionswertberechnung.value = true;
     } else {
@@ -177,7 +103,7 @@ const stelleGueltigOderNichtFunktionswertberechnung = () => {
 
 // Für Funktionswertberechnung wird die Ordnung der Ableitung überprüft. Sollte eine ganze Zahl sein, keine weiteren Zeichen sind erlaubt
 
-const ableitungshoeheGueltigOderNichtFunktionswertberechnung = () => {
+export const ableitungshoeheGueltigOderNichtFunktionswertberechnung = () => {
     if (/^[+-]?\d+$/.test(anzahlAbleitungenIntern.value)) {
         ableitungshoheGueltigFunktionswertberechnung.value = true;
     } else {
@@ -187,7 +113,7 @@ const ableitungshoeheGueltigOderNichtFunktionswertberechnung = () => {
 
 // Liest einzelne Terme und Werte aus RegEx aus und wandelt sie in Format um, das für das Auslesen der Vorzeichen, Koeffizienten und Exponenten geeignet ist
 
-const polynomfunktionAuslesen = () => {
+export const polynomfunktionAuslesen = () => {
     // Hier sollen die einzelnen Terme gespeichert werden
     const terme = ref([]);
     terme.value = [];
@@ -295,7 +221,7 @@ const polynomfunktionAuslesen = () => {
 
 // Konvertiert die Polynomfunktion in Arrays für Vorzeichen, Koeffizienten und Exponenten
 
-const polynomfunktionZuArrays = () => {
+export const polynomfunktionZuArrays = () => {
     // Arrays für Vorzeichen, Koeffizienten und Exponenten
     vorzeichenIntern.value = [];
     koeffizientenIntern.value = [];
@@ -325,7 +251,7 @@ const polynomfunktionZuArrays = () => {
 
 // Sortiert die Arrays für Vorzeichen, Koeffizienten und Exponenten nach den Exponenten
 
-const arraysSortieren = () => {
+export const arraysSortieren = () => {
     // Höchster Exponent in gesamter Polynomfunktion
     let highestExponent = 0;
     for (let i = 0; i < exponentenIntern.value.length; i++) {
@@ -360,26 +286,9 @@ const arraysSortieren = () => {
     koeffizientenVollAufbereitetIntern.value = sortierteKoeffizienten.value;
 };
 
-// Überprüft, ob die eingegebene Nullstelle tatsächlich eine Nullstelle der Polynomfunktion ist
-
-const nullstelleVerifizierenPolynomdivision = () => {
-    const sum = ref(0);
-    for (let i = 0; i < koeffizientenVollAufbereitetIntern.value.length; i++) {
-        sum.value +=
-            koeffizientenVollAufbereitetIntern.value[i] *
-            Math.pow(
-                parseInt(nullstellePolynomdivision.value),
-                koeffizientenVollAufbereitetIntern.value.length - i - 1
-            );
-    }
-    if (sum.value != 0) {
-        stelleGueltigPolynomdivision.value = false;
-    }
-};
-
 // Auf Basis der sortierten Daten von arraysSortieren wird das Horner-Schema ausgeführt
 
-const hornerSchema = () => {
+export const hornerSchema = () => {
     const tmp = ref(0);
     for (let i = 0; i < koeffizientenVollAufbereitetIntern.value.length; i++) {
         koeffizientenVollAufbereitetIntern.value[i] =
@@ -392,7 +301,7 @@ const hornerSchema = () => {
 
 // Entferne den letzten Eintrag, die Wertung der Exponenten ist durch die Verringerung der Länge des Arrays gegeben
 
-const entferneFunktionswert = () => {
+export const entferneFunktionswert = () => {
     koeffizientenVollAufbereitetIntern.value =
         koeffizientenVollAufbereitetIntern.value.slice(
             0,
@@ -400,44 +309,9 @@ const entferneFunktionswert = () => {
         );
 };
 
-// Umwandlung des Koeffizienten-Arrays zu lesbarer Funktion
-
-const ergebnisZuString = () => {
-    const ausgabeTmp = ref("");
-    const highestExponent = ref(
-        koeffizientenVollAufbereitetIntern.value.length - 1
-    );
-    for (let i = 0; i < koeffizientenVollAufbereitetIntern.value.length; i++) {
-        if (koeffizientenVollAufbereitetIntern.value[i] != 0) {
-            if (koeffizientenVollAufbereitetIntern.value[i] > 0) {
-                ausgabeTmp.value += " +";
-            } else {
-                ausgabeTmp.value += " ";
-            }
-            if (highestExponent.value - i === 0) {
-                ausgabeTmp.value += koeffizientenVollAufbereitetIntern.value[i];
-            } else if (highestExponent.value - i === 1) {
-                ausgabeTmp.value +=
-                    koeffizientenVollAufbereitetIntern.value[i] + "x";
-            } else {
-                ausgabeTmp.value +=
-                    koeffizientenVollAufbereitetIntern.value[i] +
-                    "x^" +
-                    (highestExponent.value - i);
-            }
-        }
-    }
-
-    if (ausgabeTmp.value === "") {
-        ausgabeTmp.value = "0";
-    }
-
-    ausgabePolynomdivision.value = `${ausgabeTmp.value}`;
-};
-
 // Entsprechend der Höhe der Ableitung wird die Funktion hornerSchema() und entferneFunktionswert() so oft aufgerufen, wie es Ableitungen gibt
 
-const iterationenHornerSchema = () => {
+export const iterationenHornerSchema = () => {
     for (let i = 0; i < anzahlAbleitungenIntern.value; i++) {
         hornerSchema();
         entferneFunktionswert();
@@ -446,7 +320,7 @@ const iterationenHornerSchema = () => {
 
 // Anstatt Polynomdivison für Auslesen des Funktionswertes (der Ableitung)
 
-const funktionswertZuString = () => {
+export const funktionswertZuString = () => {
     let ausgabeTmp = ref(
         koeffizientenVollAufbereitetIntern.value[
             koeffizientenVollAufbereitetIntern.value.length - 1
@@ -459,24 +333,6 @@ const funktionswertZuString = () => {
 };
 
 // MAIN-FUNKTIONEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
-
-// Polynomdivision
-export const eingabeVerarbeitenPolynomdivision = () => {
-    zwischenstandPolynomfunktionIntern.value =
-        eingabeFunktionPolynomdivision.value;
-    polynomfunktionPolynomdivision.value = eingabeFunktionPolynomdivision.value;
-    stelleIntern.value = eingabeNullstellePolynomdivision.value;
-    nullstellePolynomdivision.value = eingabeNullstellePolynomdivision.value;
-    polynomfunktionGueltigOderNichtPolynomdivision();
-    nullstelleGueltigOderNichtPolynomdivision();
-    polynomfunktionAuslesen();
-    polynomfunktionZuArrays();
-    arraysSortieren();
-    nullstelleVerifizierenPolynomdivision();
-    hornerSchema();
-    entferneFunktionswert();
-    ergebnisZuString();
-};
 
 // Funktionswertberechnung
 export const eingabeVerarbeitenFunktionswertberechnung = () => {
