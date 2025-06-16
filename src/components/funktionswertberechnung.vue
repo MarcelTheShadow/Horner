@@ -1,6 +1,6 @@
 <!-- Import von benötigten Variablen; Delegation der Berechnung an die .js-Dateien -->
 <script setup>
-import { eingabeFunktionFunktionswertberechnung, eingabeStelleFunktionswertberechnung, eingabeAnzahlAbleitungenFunktionswertberechnung, polynomfunktionFunktionswertberechnung, stelleFunktionswertberechnung, funktionGueltigFunktionswertberechnung, stelleGueltigFunktionswertberechnung, ableitungshoheGueltigFunktionswertberechnung, ausgabeFunktionswertberechnung, eingabeVerarbeitenFunktionswertberechnung } from '../composables/polynomfunktionMethoden.js';
+import { eingabeFunktion, eingabeStelle, eingabeAnzahlAbleitungen, polynomfunktion, stelle, funktionGueltig, stelleGueltig, ableitungshoheGueltig, ausgabe, eingabeVerarbeiten } from '../composables/funktionswertberechnung.js';
 </script>
 
 <template>
@@ -11,35 +11,35 @@ import { eingabeFunktionFunktionswertberechnung, eingabeStelleFunktionswertberec
     <div class="eingabeSektion">
         <div class="eingabeTextfelder">
             <!-- Eingabe der Polynomfunktion, durch Enter Berechnung -->
-            <input type="text" v-model="eingabeFunktionFunktionswertberechnung"
-                @keyup.enter="eingabeVerarbeitenFunktionswertberechnung()" placeholder="Polynomfunktion"
+            <input type="text" v-model="eingabeFunktion"
+                @keyup.enter="eingabeVerarbeiten()" placeholder="Polynomfunktion"
                 style="width: 20vw;" />
             <!-- Eingabe der Stelle zur Funktionswertberechnung, durch Enter Berechnung -->
-            <input type="text" v-model="eingabeStelleFunktionswertberechnung"
-                @keyup.enter="eingabeVerarbeitenFunktionswertberechnung()" placeholder="Stelle von x"
+            <input type="text" v-model="eingabeStelle"
+                @keyup.enter="eingabeVerarbeiten()" placeholder="Stelle von x"
                 style="width: 10vw;">
             <!-- Eingabe der Ordnung der Ableitung, durch Enter Berechnung -->
-            <input type="text" v-model="eingabeAnzahlAbleitungenFunktionswertberechnung"
-                @keyup.enter="eingabeVerarbeitenFunktionswertberechnung()" placeholder="Ordnung der Ableitung"
+            <input type="text" v-model="eingabeAnzahlAbleitungen"
+                @keyup.enter="eingabeVerarbeiten()" placeholder="Ordnung der Ableitung"
                 style="width: 15vw;">
         </div>
         <!-- Durch Drücken Berechnung-->
-        <button @click="eingabeVerarbeitenFunktionswertberechnung()">Führe Funktionswertberechnung aus</button>
+        <button @click="eingabeVerarbeiten()">Führe Funktionswertberechnung aus</button>
     </div>
 
     <!-- Ausgabe -->
     <div class="text">
         <!-- Ausgabe der Ergebnisse, wenn die Eingaben gültig sind -->
         <div
-            v-if="(funktionGueltigFunktionswertberechnung && stelleGueltigFunktionswertberechnung && ableitungshoheGueltigFunktionswertberechnung)">
-            <p>Eingegebene Polynomfunktion: <span class="AusgabeEingabe"> {{ polynomfunktionFunktionswertberechnung }} </span></p>
-            <p>Eingegebene Nullstelle: <span class="AusgabeEingabe"> {{ stelleFunktionswertberechnung }} </span></p>
-            <p>Ergebnis der Funktionswertberechnung: <span class="Ausgabewerte"> {{ ausgabeFunktionswertberechnung }}
+            v-if="(funktionGueltig && stelleGueltig && ableitungshoheGueltig)">
+            <p>Eingegebene Polynomfunktion: <span class="AusgabeEingabe"> {{ polynomfunktion }} </span></p>
+            <p>Eingegebene Nullstelle: <span class="AusgabeEingabe"> {{ stelle }} </span></p>
+            <p>Ergebnis der Funktionswertberechnung: <span class="Ausgabewerte"> {{ ausgabe }}
                 </span></p>
         </div>
         <!-- Ausgabe der Fehlermeldungen, wenn die Eingaben ungültig sind -->
         <!-- Fehlermeldung bei ungültiger Polynomfunktion gibt allgemein an, wie welche Daten eingegeben werden müssen, nicht nur Polynomfunktion-->
-        <div v-else-if="!funktionGueltigFunktionswertberechnung">
+        <div v-else-if="!funktionGueltig">
             <p>Die eingegebene Funktion ist ungültig!</p>
             <p>Es ist zu beachten:</p>
             <p>Arbeite für die Polynomfunktion mit dem Format a*x^n + b*x^m + c*x^k...</p>
@@ -48,11 +48,11 @@ import { eingabeFunktionFunktionswertberechnung, eingabeStelleFunktionswertberec
                 sein</p>
         <!-- Fehlermeldung für ungültige Stelle-->
         </div>
-        <div v-else-if="!stelleGueltigFunktionswertberechnung">
+        <div v-else-if="!stelleGueltig">
             <p>Es muss eine ganze Zahl als Stelle eingegeben werden!</p>
         </div>
         <!-- Fehlermeldung für ungültige Ordnung der Ableitung-->
-        <div v-else-if="!ableitungshoheGueltigFunktionswertberechnung">
+        <div v-else-if="!ableitungshoheGueltig">
             <p>Es muss eine natürliche Zahl als Ordnung der Ableitung angegeben werden!</p>
         </div>
     </div>

@@ -1,34 +1,5 @@
 import { ref } from "vue";
 
-//// FUNKTIONSWERTBERECHNUNG
-
-// Direkter Wert der Polynomfunktion für Funktionswertberechnung aus Input über v-model
-export const eingabeFunktionFunktionswertberechnung = ref("");
-
-// Direkter Wert der Stelle für Funktionswertberechnung aus Input über v-model
-export const eingabeStelleFunktionswertberechnung = ref("");
-
-// Direkter Wert der Höhe der Ableitung für die Funktionswertberechnung aus Input über v-model
-export const eingabeAnzahlAbleitungenFunktionswertberechnung = ref("");
-
-// Polynomfunktion zum Zeitpunkt des Drückens des Buttons für Funktionswertberechnung
-export const polynomfunktionFunktionswertberechnung = ref("");
-
-// Stelle zum Zeitpunkt des Drückens des Buttons bei Funktionswertberechnung
-export const stelleFunktionswertberechnung = ref("");
-
-// Ausgabe auf der Webseite für Funktionswertberechnung
-export const ausgabeFunktionswertberechnung = ref("");
-
-// Ist Input eine gültige Polynomfunktion?
-export const funktionGueltigFunktionswertberechnung = ref(false);
-
-// Handelt es sich bei der eingegebenen Nullstelle tatsächlich um eine Nullstelle für die gegebene Funktion?
-export const stelleGueltigFunktionswertberechnung = ref(false);
-
-// Handelt es sich bei der eingegebenen Ableitungshöhe tatsächlich um eine gültige Angabe?
-export const ableitungshoheGueltigFunktionswertberechnung = ref(false);
-
 //// INTERNE VARIABLEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
 
 // Höhe der Ableitung für die Funktionswertberechnung zum Zeitpunkt des Drückens des Buttons
@@ -49,67 +20,6 @@ export const exponentenIntern = ref([]);
 export const koeffizientenVollAufbereitetIntern = ref([]);
 
 // FUNKTIONEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
-
-// Funktion, die bei der Funktionswertberechnung überprüft, ob es sich um eine gültige Polynomfunktion handelt
-
-export const polynomfunktionGueltigOderNichtFunktionswertberechnung = () => {
-    // Standardmäßig ist die Funktion gültig, prüfe mittels RegEx und weiterer Logik, ob sie es tatsächlich ist
-    funktionGueltigFunktionswertberechnung.value = true;
-
-    // Regulärer Ausdruck einer Polynomfunktion mit viel Flexibilität
-    if (
-        /^\s*[+-]?\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*(\s*[+-]\s*\d*\s*(\*?\s*x(\s*\^\s*\d+)?)?\s*)*$/.test(
-            zwischenstandPolynomfunktionIntern.value
-        ) === false
-    ) {
-        funktionGueltigFunktionswertberechnung.value = false;
-    } else {
-        const inputVerarbeitet = ref(
-            zwischenstandPolynomfunktionIntern.value.replace(/\s/g, "")
-        );
-        // Überprüft, ob der Input der Polynomfunktion mit einem '+' oder '-' endet
-        // Überprüft, ob der Input der Polynomfunktion aufeinanderfolgende '+' oder '-' hat
-        // Überprüft, ob der Input der Polynomfunktionen nur aus Leerzeichen besteht
-        if (
-            inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "+" ||
-            inputVerarbeitet.value[inputVerarbeitet.value.length - 1] === "-" ||
-            inputVerarbeitet.value.match(/\+\+|--|\+-|-\+/g) ||
-            inputVerarbeitet.value === ""
-        ) {
-            funktionGueltigFunktionswertberechnung.value = false;
-        }
-        // Überprüft, ob der Input der Polynomfunktion ein '*' vor einem '+' oder '-' hat
-        for (const match of inputVerarbeitet.value.matchAll(/\*/g)) {
-            if (
-                inputVerarbeitet.value[match.index - 1] === "+" ||
-                inputVerarbeitet.value[match.index - 1] === "-" ||
-                match.index - 1 < 0
-            ) {
-                funktionGueltigFunktionswertberechnung.value = false;
-            }
-        }
-    }
-};
-
-// Für Funktionswertberechnung wird die eingegebene Stelle überprüft. Sollte eine ganze Zahl sein, keine weiteren Zeichen sind erlaubt
-
-export const stelleGueltigOderNichtFunktionswertberechnung = () => {
-    if (/^[+-]?\d+$/.test(eingabeStelleFunktionswertberechnung.value)) {
-        stelleGueltigFunktionswertberechnung.value = true;
-    } else {
-        stelleGueltigFunktionswertberechnung.value = false;
-    }
-};
-
-// Für Funktionswertberechnung wird die Ordnung der Ableitung überprüft. Sollte eine ganze Zahl sein, keine weiteren Zeichen sind erlaubt
-
-export const ableitungshoeheGueltigOderNichtFunktionswertberechnung = () => {
-    if (/^[+-]?\d+$/.test(anzahlAbleitungenIntern.value)) {
-        ableitungshoheGueltigFunktionswertberechnung.value = true;
-    } else {
-        ableitungshoheGueltigFunktionswertberechnung.value = false;
-    }
-};
 
 // Liest einzelne Terme und Werte aus RegEx aus und wandelt sie in Format um, das für das Auslesen der Vorzeichen, Koeffizienten und Exponenten geeignet ist
 
@@ -307,51 +217,4 @@ export const entferneFunktionswert = () => {
             0,
             koeffizientenVollAufbereitetIntern.value.length - 1
         );
-};
-
-// Entsprechend der Höhe der Ableitung wird die Funktion hornerSchema() und entferneFunktionswert() so oft aufgerufen, wie es Ableitungen gibt
-
-export const iterationenHornerSchema = () => {
-    for (let i = 0; i < anzahlAbleitungenIntern.value; i++) {
-        hornerSchema();
-        entferneFunktionswert();
-    }
-};
-
-// Anstatt Polynomdivison für Auslesen des Funktionswertes (der Ableitung)
-
-export const funktionswertZuString = () => {
-    let ausgabeTmp = ref(
-        koeffizientenVollAufbereitetIntern.value[
-            koeffizientenVollAufbereitetIntern.value.length - 1
-        ]
-    );
-    for (let i = 1; i <= anzahlAbleitungenIntern.value; i++) {
-        ausgabeTmp.value = ausgabeTmp.value * i;
-    }
-    ausgabeFunktionswertberechnung.value = `${ausgabeTmp.value}`;
-};
-
-// MAIN-FUNKTIONEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG
-
-// Funktionswertberechnung
-export const eingabeVerarbeitenFunktionswertberechnung = () => {
-    zwischenstandPolynomfunktionIntern.value =
-        eingabeFunktionFunktionswertberechnung.value;
-    polynomfunktionFunktionswertberechnung.value =
-        eingabeFunktionFunktionswertberechnung.value;
-    stelleIntern.value = eingabeStelleFunktionswertberechnung.value;
-    stelleFunktionswertberechnung.value =
-        eingabeStelleFunktionswertberechnung.value;
-    anzahlAbleitungenIntern.value =
-        eingabeAnzahlAbleitungenFunktionswertberechnung.value;
-    polynomfunktionGueltigOderNichtFunktionswertberechnung();
-    stelleGueltigOderNichtFunktionswertberechnung();
-    ableitungshoeheGueltigOderNichtFunktionswertberechnung();
-    polynomfunktionAuslesen();
-    polynomfunktionZuArrays();
-    arraysSortieren();
-    iterationenHornerSchema();
-    hornerSchema();
-    funktionswertZuString();
 };
