@@ -129,17 +129,27 @@ const ergebnisZuString = () => {
                 // Für negative Koeffizienten wird das Minuszeichen bereits im Koeffizienten berücksichtigt
                 ausgabeTmp.value += " ";
             }
-            
+
+            // Wenn der Koeffizient 1 bzw. -1 ist und ein x folgt, soll dieser aufgrund der Lesbarkeit später nicht angezeigt werden
+
+            if (koeffizientenAlsEinArrayIntern.value[i] === 1 && highestExponent.value - i !== 0) {
+                koeffizientenAlsEinArrayIntern.value[i] = "";
+            }
+
+            if (koeffizientenAlsEinArrayIntern.value[i] === -1 && highestExponent.value - i !== 0) {
+                koeffizientenAlsEinArrayIntern.value[i] = "-";
+            }
+
             // Für x^0 nur den Koeffizienten hinzufügen
             if (highestExponent.value - i === 0) {
                 ausgabeTmp.value += koeffizientenAlsEinArrayIntern.value[i];
 
-            // Für x^1 nur den Koeffizienten und x hinzufügen
+                // Für x^1 nur den Koeffizienten und x hinzufügen
             } else if (highestExponent.value - i === 1) {
                 ausgabeTmp.value +=
                     koeffizientenAlsEinArrayIntern.value[i] + "x";
 
-            // Für alle anderen Exponenten den Koeffizienten, x und den Exponenten hinzufügen
+                // Für alle anderen Exponenten den Koeffizienten, x und den Exponenten hinzufügen
             } else {
                 ausgabeTmp.value +=
                     koeffizientenAlsEinArrayIntern.value[i] +
