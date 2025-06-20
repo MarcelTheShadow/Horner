@@ -27,7 +27,7 @@ export const polynomfunktion = ref("");
 // Stelle zum Zeitpunkt des Drückens des Buttons
 export const stelle = ref("");
 
-// Ordnung Ableitung zum Zeitpunkt des Drückens des Buttons
+// Ordnung der Ableitung zum Zeitpunkt des Drückens des Buttons
 export const ordnungAbleitung = ref("");
 
 // Ausgabe auf der Webseit
@@ -101,7 +101,7 @@ export const stelleGueltiPruefen = () => {
 // Ordnung der Ableitung überprüfen. Sollte eine ganze Zahl sein, keine weiteren Zeichen sind erlaubt
 
 export const ableitungOrdnungGueltigPruefen = () => {
-    if (/^[+-]?\d+$/.test(ordnungAbleitung.value)) {
+    if (/^[+]?\d+$/.test(ordnungAbleitung.value)) {
         ableitungOrdnungGueltig.value = true;
     } else {
         ableitungOrdnungGueltig.value = false;

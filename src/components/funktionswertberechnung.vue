@@ -38,6 +38,7 @@ import { eingabeFunktion, eingabeStelle, eingabeOrdnungAbleitung, polynomfunktio
             v-if="(funktionGueltig && stelleGueltig && ableitungOrdnungGueltig)">
             <p>Eingegebene Polynomfunktion: <span class="AusgabeEingabe"> {{ polynomfunktion }} </span></p>
             <p>Eingegebene Nullstelle: <span class="AusgabeEingabe"> {{ stelle }} </span></p>
+            <p>Eingebene Ordnung der Ableitung: <span class="AusgabeEingabe">{{ ordnungAbleitung }}</span></p>
             <p>Ergebnis der Funktionswertberechnung: <span class="Ausgabewerte"> {{ ausgabe }}
                 </span></p>
         </div>
