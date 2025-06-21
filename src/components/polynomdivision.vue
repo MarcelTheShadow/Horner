@@ -1,3 +1,9 @@
+<!-- 
+    Seite zur Anwendung der Polynomdivision. Es werden eine Polynomfunktion und eine Nullstelle eingegeben 
+    und das zugehörige reduzierte Polynom wird mit den gespiegelten Eingaben ausgegeben. 
+    Bei Fehlern erscheint eine Nachricht, welche Eingabe falsch gesetzt wurde
+ -->
+
 <!-- Import von benötigten Variablen; Delegation der Berechnung an die .js-Dateien -->
 <script setup>
 import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funktionGueltig, stelleGueltig, ausgabe, eingabeVerarbeiten } from '../composables/polynomdivision.js';
@@ -12,12 +18,11 @@ import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funkti
         <div class="eingabeTextfelder">
 
             <!-- Eingabe der Polynomfunktion, durch Enter Berechnung -->
-            <input type="text" v-model="eingabeFunktion"
-
-                @keyup.enter="eingabeVerarbeiten()" placeholder="Polynomfunktion" style="width: 20vw;" />
+            <input type="text" v-model="eingabeFunktion" @keyup.enter="eingabeVerarbeiten()"
+                placeholder="Polynomfunktion" style="width: 20vw;" />
             <!-- Eingabe der Nullstelle, durch Enter Berechnung -->
-            <input type="text" v-model="eingabeNullstelle"
-                @keyup.enter="eingabeVerarbeiten()" placeholder="Nullstelle" style="width: 10vw;">
+            <input type="text" v-model="eingabeNullstelle" @keyup.enter="eingabeVerarbeiten()" placeholder="Nullstelle"
+                style="width: 10vw;">
         </div>
         <!-- Durch Drücken Berechnung-->
         <button @click="eingabeVerarbeiten()">Führe Polynomdivision aus</button>
@@ -43,10 +48,11 @@ import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funkti
             <p>Die Koeffizienten a,b,c... sowie die eingegebene Nullstelle müssen ganze Zahlen, die Exponenten n,m,k...
                 natürliche Zahlen sein</p>
         </div>
-        
+
         <!-- Fehlermeldung für ungültige Nullstelle-->
         <div v-else-if="!stelleGueltig">
-            <p>Es muss eine ganze Zahl als Nullstelle der Polynomfunktion eingegeben werden, die wirklich eine Nullstelle ist!</p>
+            <p>Es muss eine ganze Zahl als Nullstelle der Polynomfunktion eingegeben werden, die wirklich eine
+                Nullstelle ist!</p>
         </div>
     </div>
 </template>

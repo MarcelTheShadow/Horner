@@ -1,3 +1,10 @@
+<!--
+    Seite zur Anwendung der Funktionswertberechnung. Es werden eine Polynomfunktion, 
+    eine Nullstelle und eine Ordnung der Ableitung eingegeben 
+    und der zugehörige Funktionswert wird mit den gespiegelten Eingaben ausgegeben. 
+    Bei Fehlern erscheint eine Nachricht, welche Eingabe falsch gesetzt wurde
+-->
+
 <!-- Import von benötigten Variablen; Delegation der Berechnung an die .js-Dateien -->
 <script setup>
 import { eingabeFunktion, eingabeStelle, eingabeOrdnungAbleitung, polynomfunktion, stelle, ordnungAbleitung, funktionGueltig, stelleGueltig, ableitungOrdnungGueltig, ausgabe, eingabeVerarbeiten } from '../composables/funktionswertberechnung.js';
@@ -10,21 +17,18 @@ import { eingabeFunktion, eingabeStelle, eingabeOrdnungAbleitung, polynomfunktio
     <!-- Eingabe -->
     <div class="eingabeSektion">
         <div class="eingabeTextfelder">
-            
+
             <!-- Eingabe der Polynomfunktion, durch Enter Berechnung -->
-            <input type="text" v-model="eingabeFunktion"
-                @keyup.enter="eingabeVerarbeiten()" placeholder="Polynomfunktion"
-                style="width: 20vw;" />
+            <input type="text" v-model="eingabeFunktion" @keyup.enter="eingabeVerarbeiten()"
+                placeholder="Polynomfunktion" style="width: 20vw;" />
 
             <!-- Eingabe der Stelle zur Funktionswertberechnung, durch Enter Berechnung -->
-            <input type="text" v-model="eingabeStelle"
-                @keyup.enter="eingabeVerarbeiten()" placeholder="Stelle von x"
+            <input type="text" v-model="eingabeStelle" @keyup.enter="eingabeVerarbeiten()" placeholder="Stelle von x"
                 style="width: 10vw;">
 
             <!-- Eingabe der Ordnung der Ableitung, durch Enter Berechnung -->
-            <input type="text" v-model="eingabeOrdnungAbleitung"
-                @keyup.enter="eingabeVerarbeiten()" placeholder="Ordnung der Ableitung"
-                style="width: 15vw;">
+            <input type="text" v-model="eingabeOrdnungAbleitung" @keyup.enter="eingabeVerarbeiten()"
+                placeholder="Ordnung der Ableitung" style="width: 15vw;">
         </div>
         <!-- Durch Drücken Berechnung-->
         <button @click="eingabeVerarbeiten()">Führe Funktionswertberechnung aus</button>
@@ -34,8 +38,7 @@ import { eingabeFunktion, eingabeStelle, eingabeOrdnungAbleitung, polynomfunktio
     <div class="text">
 
         <!-- Ausgabe der Ergebnisse, wenn die Eingaben gültig sind -->
-        <div
-            v-if="(funktionGueltig && stelleGueltig && ableitungOrdnungGueltig)">
+        <div v-if="(funktionGueltig && stelleGueltig && ableitungOrdnungGueltig)">
             <p>Eingegebene Polynomfunktion: <span class="AusgabeEingabe"> {{ polynomfunktion }} </span></p>
             <p>Eingegebene Nullstelle: <span class="AusgabeEingabe"> {{ stelle }} </span></p>
             <p>Eingebene Ordnung der Ableitung: <span class="AusgabeEingabe">{{ ordnungAbleitung }}</span></p>
@@ -54,7 +57,7 @@ import { eingabeFunktion, eingabeStelle, eingabeOrdnungAbleitung, polynomfunktio
                 die angegebene Ordnung der Ableitung natürliche Zahlen
                 sein</p>
 
-        <!-- Fehlermeldung für ungültige Stelle-->
+            <!-- Fehlermeldung für ungültige Stelle-->
         </div>
         <div v-else-if="!stelleGueltig">
             <p>Es muss eine ganze Zahl als Stelle eingegeben werden!</p>

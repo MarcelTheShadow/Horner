@@ -1,3 +1,5 @@
+// Konfiguration des Vue-Routers für die Anwendung
+
 import { createRouter, createWebHistory } from 'vue-router'
 import Polynomdivision from '../components/polynomdivision.vue'
 import Funktionswertberechnung from '../components/funktionswertberechnung.vue'

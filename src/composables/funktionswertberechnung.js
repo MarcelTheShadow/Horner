@@ -1,3 +1,5 @@
+/// Funktionen und Variablen ausschließlich für die Funktionswertberechnung
+
 import { ref } from "vue";
 // Importiere die Basisfunktionen für die Polynomdivision
 import {

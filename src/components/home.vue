@@ -1,3 +1,5 @@
+<!-- Homepage/Startseite, von der aus zur Polynomdivision oder zur Funktionswertberechnung navigiert werden kann-->
+
 <!-- Router, um von der Homepage aus auf die beiden anderen Seiten zu gelangen -->
 <script setup>
 import router from '../router/index.js';

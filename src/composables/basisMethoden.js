@@ -1,3 +1,5 @@
+/// Funktionen und Variablen für die Polynomdivision und Funktionswertberechnung
+
 import { ref } from "vue";
 
 /// INTERNE VARIABLEN FÜR POLYNOMDIVISION UND FUNKTIONSWERTBERECHNUNG

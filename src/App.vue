@@ -1,3 +1,5 @@
+<!-- In der App.vue sind durch router-view alle 3 Seiten enthalten, es ist eine SPA -->
+
 <script setup>
 </script>
 <template>
