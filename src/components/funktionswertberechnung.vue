@@ -61,11 +61,13 @@ import { eingabeFunktion, eingabeStelle, eingabeOrdnungAbleitung, polynomfunktio
         </div>
         <div v-else-if="!stelleGueltig">
             <p>Es muss eine ganze Zahl als Stelle eingegeben werden!</p>
+            <p>Zwischen dem Vorzeichen und der Zahl darf keine leere Stelle sein!</p>
         </div>
 
         <!-- Fehlermeldung für ungültige Ordnung der Ableitung-->
         <div v-else-if="!ableitungOrdnungGueltig">
             <p>Es muss eine natürliche Zahl als Ordnung der Ableitung angegeben werden!</p>
+            <p>Zwischen dem Vorzeichen und der Zahl darf keine leere Stelle sein!</p>
         </div>
     </div>
 </template>
