@@ -92,8 +92,8 @@ const polynomfunktionGueltigPruefen = () => {
 
 // Stelle überprüften. Sollte eine ganze Zahl sein, keine weiteren Zeichen sind erlaubt
 
-export const stelleGueltiPruefen = () => {
-    if (/^[+-]?\d+$/.test(stelle.value)) {
+export const stelleGueltigPruefen = () => {
+    if (/^\s*[+-]?\d+\s*$/.test(stelle.value)) {
         stelleGueltig.value = true;
     } else {
         stelleGueltig.value = false;
@@ -103,7 +103,7 @@ export const stelleGueltiPruefen = () => {
 // Ordnung der Ableitung überprüfen. Sollte eine ganze Zahl sein, keine weiteren Zeichen sind erlaubt
 
 export const ableitungOrdnungGueltigPruefen = () => {
-    if (/^[+]?\d+$/.test(ordnungAbleitung.value)) {
+    if (/^\s*[+]?\d+\s*$/.test(ordnungAbleitung.value)) {
         ableitungOrdnungGueltig.value = true;
     } else {
         ableitungOrdnungGueltig.value = false;
@@ -148,7 +148,7 @@ export const eingabeVerarbeiten = () => {
     stelle.value = eingabeStelle.value;
     ordnungAbleitung.value = eingabeOrdnungAbleitung.value;
     polynomfunktionGueltigPruefen();
-    stelleGueltiPruefen();
+    stelleGueltigPruefen();
     ableitungOrdnungGueltigPruefen();
     polynomfunktionAuslesen();
     polynomfunktionZuArray();

@@ -84,7 +84,7 @@ const polynomfunktionGueltigPruefen = () => {
 // Nullstelle überprüfen -> Sollte eine ganze Zahl sein, keine weiteren Zeichen sind erlaubt
 
 const nullstelleGueltigPruefen = () => {
-    if (/^[+-]?\d+$/.test(eingabeNullstelle.value)) {
+    if (/^\s*[+-]?\d+\s*$/.test(eingabeNullstelle.value)) {
         stelleGueltig.value = true;
     } else {
         stelleGueltig.value = false;
