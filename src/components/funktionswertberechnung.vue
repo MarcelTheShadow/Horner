@@ -53,8 +53,8 @@ import { eingabeFunktion, eingabeStelle, eingabeOrdnungAbleitung, polynomfunktio
             <p>Die eingegebene Funktion ist ungültig!</p>
             <p>Es ist zu beachten:</p>
             <p>Arbeite für die Polynomfunktion mit dem Format a*x^n + b*x^m + c*x^k...</p>
-            <p>Die Koeffizienten a,b,c... und die eingegebene Stelle müssen ganze Zahlen, die Exponenten n,m,k... sowie
-                die angegebene Ordnung der Ableitung natürliche Zahlen
+            <p>Die Koeffizienten a,b,c... und die eingegebene Stelle müssen ganze Zahlen, 
+                <br>die Exponenten n,m,k... sowie die angegebene Ordnung der Ableitung natürliche Zahlen
                 sein</p>
 
             <!-- Fehlermeldung für ungültige Stelle-->

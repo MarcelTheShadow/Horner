@@ -45,14 +45,14 @@ import { eingabeFunktion, eingabeNullstelle, polynomfunktion, nullstelle, funkti
             <p>Die eingegebene Funktion ist ungültig!</p>
             <p>Es ist zu beachten:</p>
             <p>Arbeite für die Polynomfunktion mit dem Format a*x^n + b*x^m + c*x^k...</p>
-            <p>Die Koeffizienten a,b,c... sowie die eingegebene Nullstelle müssen ganze Zahlen, die Exponenten n,m,k...
-                natürliche Zahlen sein</p>
+            <p>Die Koeffizienten a,b,c... sowie die eingegebene Nullstelle müssen ganze Zahlen, <br> 
+                die Exponenten n,m,k... natürliche Zahlen sein</p>
         </div>
 
         <!-- Fehlermeldung für ungültige Nullstelle-->
         <div v-else-if="!stelleGueltig">
-            <p>Es muss eine ganze Zahl als Nullstelle der Polynomfunktion eingegeben werden, die wirklich eine
-                Nullstelle ist!</p>
+            <p>Es muss eine ganze Zahl als Nullstelle der Polynomfunktion eingegeben werden, 
+                <br> die wirklich eine Nullstelle ist!</p>
         </div>
     </div>
 </template>
