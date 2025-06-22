@@ -117,6 +117,7 @@ export const iterationenHornerSchema = () => {
         hornerSchema();
         entferneFunktionswert();
     }
+    hornerSchema();
 };
 
 // Auslesen des Funktionswertes (der angegebenen Ableitung)
@@ -152,6 +153,5 @@ export const eingabeVerarbeiten = () => {
     polynomfunktionAuslesen();
     polynomfunktionZuArray();
     iterationenHornerSchema();
-    hornerSchema();
     funktionswertZuString();
 };
